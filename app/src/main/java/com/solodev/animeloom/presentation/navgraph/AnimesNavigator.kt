@@ -24,19 +24,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.MainViewModel
-import com.solodev.animeloom.presentation.navgraph.component.BottomNavigationItem
 import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
+import com.solodev.animeloom.presentation.navgraph.component.BottomNavigationItem
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkViewModel
-import com.solodev.animeloom.presentation.screens.home.HomeScreen
-import com.solodev.animeloom.presentation.screens.home.HomeViewModel
+import com.solodev.animeloom.presentation.screens.details.AnimeDetailsScreen
+import com.solodev.animeloom.presentation.screens.home.HomeAnimesScreen
+import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
 import com.solodev.animeloom.presentation.screens.search.SearchViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimesNavigator(
+fun AnimesDashboard(
     onNavigate: (String) -> Unit,
 ) {
     val bottomNavigationItems = remember {
@@ -55,6 +57,9 @@ fun AnimesNavigator(
     }
 
     val mainViewModel: MainViewModel = hiltViewModel()
+    val homeAnimesViewModel: HomeAnimeViewModel = hiltViewModel()
+    val searchViewModel: SearchViewModel = hiltViewModel()
+    val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
 
     selectedItem = remember(key1 = backStackState) {
         when (backStackState?.destination?.route) {
@@ -123,58 +128,63 @@ fun AnimesNavigator(
     ) {
         val bottomPadding = it.calculateBottomPadding()
 
-        NavHost(
-            modifier = Modifier.padding(bottom = bottomPadding),
-            navController = navController,
-            startDestination = Route.HomeRoute.route,
-        ) {
+        SharedTransitionLayout {
+            NavHost(
+                modifier = Modifier.padding(bottom = bottomPadding),
+                navController = navController,
+                startDestination = Route.HomeRoute.route,
+            ) {
 
-            composable(Route.HomeRoute.route) {
+                composable(Route.HomeRoute.route) {
 
-                SharedTransitionLayout {
 
-                    val viewModel: HomeViewModel = hiltViewModel()
-                    val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
-                    val animeList by viewModel.animeState.collectAsStateWithLifecycle()
+                    val animeList by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
 
                     val state = bookmarkViewModel.state.value
 
-                    HomeScreen(
+                    HomeAnimesScreen(
                         animeState = animeList,
-                        navigateToSearch = {
-                            navigateToTap(navController = navController, Route.SearchRoute.route)
-                        },
-                        navigateToDetails = { anime ->
-                            navigateToDetails(navController = navController, anime = anime)
-                        },
                         bookmarkState = state,
                         onNavigate = onNavigate,
                         onPullRefresh = {
-                            viewModel.getAnimes()
-                        }
+                            homeAnimesViewModel.getAnimes()
+                        },
+                        onAnimeClick = { cover, id ->
+                            navController.navigate(
+                                Route.AnimeDetailsRoute(
+                                    id = id ?: "",
+                                    coverImage = cover ?: ""
+                                )
+                            )
+                        },
+                        animatedVisibilityScope = this
+                    )
+                }
+                composable<Route.AnimeDetailsRoute> { detail ->
+                    val argsDetail = detail.toRoute<Route.AnimeDetailsRoute>()
+
+                    AnimeDetailsScreen(
+                        id = argsDetail.id,
+                        coverImage = argsDetail.coverImage,
+                        animatedVisibilityScope = this
                     )
                 }
 
+                composable(Route.SearchRoute.route) {
 
-            }
-
-            composable(Route.SearchRoute.route) {
-                val viewModel: SearchViewModel = hiltViewModel()
-                val state = viewModel.state.value
+                    val state = searchViewModel.state.value
 
 
-            }
+                }
 
-            composable(Route.BookmarkRoute.route) {
-                val viewModel: BookmarkViewModel = hiltViewModel()
-                val state = viewModel.state.value
+                composable(Route.BookmarkRoute.route) {
 
-            }
+                    val state = bookmarkViewModel.state.value
 
-            composable<Route.AnimeDetailsRoute> {
-
+                }
             }
         }
+
     }
 }
 

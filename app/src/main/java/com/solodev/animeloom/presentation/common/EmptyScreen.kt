@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import com.solodev.animeloom.R
-import com.solodev.animeloom.theme.LightBlue100
 import com.solodev.animeloom.utils.AnimesPreviews
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -55,7 +54,7 @@ fun EmptyContent(message: String, iconId: Int) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = null,
-            tint = LightBlue100,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .size(120.dp),
         )
@@ -64,7 +63,7 @@ fun EmptyContent(message: String, iconId: Int) {
                 .padding(10.dp),
             text = message,
             style = MaterialTheme.typography.bodyMedium,
-            color = LightBlue100,
+            color = MaterialTheme.colorScheme.primary,
         )
     }
 }

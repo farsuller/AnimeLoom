@@ -1,11 +1,17 @@
 package com.solodev.animeloom.presentation.common
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -25,36 +31,40 @@ import com.solodev.animeloom.data.remote.dto.AnimeDataDto
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.utils.Constants
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimeCard(
+fun SharedTransitionScope.AnimeCard(
     modifier: Modifier = Modifier,
     animeData: AnimeDataDto,
     onClick: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val context = LocalContext.current
 
-    ElevatedCard(
+    Card(
+        onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = Constants.Elevation.level0),
     ) {
         Row(
-            modifier = modifier
-                .padding(all = 10.dp)
-                .clickable {
-                    onClick()
-                },
+            modifier = modifier.padding(all = 10.dp),
         ) {
             AsyncImage(
+                model = animeData.attributes.posterImage?.original,
+                contentDescription = animeData.attributes.canonicalTitle,
                 modifier = Modifier
-                    .size(height = 130.dp, width = 90.dp)
-                    .clip(MaterialTheme.shapes.medium),
-                model = ImageRequest
-                    .Builder(context)
-                    .data(animeData.attributes.posterImage?.large)
-                    .crossfade(true)
-                    .build(),
-                contentScale = ContentScale.FillBounds,
-                contentDescription = null,
+                    .sharedElement(
+                        rememberSharedContentState(key = animeData.id),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        boundsTransform = { _, _ ->
+                            // Use tween to specify the animation behavior
+                            tween(durationMillis = 500)
+                        }
+                    )
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                ,
+                contentScale = ContentScale.Crop
             )
 
             Column(

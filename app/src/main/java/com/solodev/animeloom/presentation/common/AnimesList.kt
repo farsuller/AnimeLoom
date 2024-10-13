@@ -23,14 +23,7 @@ fun AnimeList(
     onClick: (AnimeData) -> Unit,
 ) {
 
-    LazyColumn {
-        items(animeData){
-            AnimeCard(
-                animeData = it,
-                onClick = {},
-            )
-        }
-    }
+
 
 }
 

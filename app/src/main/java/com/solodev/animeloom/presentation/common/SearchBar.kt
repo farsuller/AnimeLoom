@@ -32,7 +32,7 @@ import com.solodev.animeloom.theme.AnimeLoomTheme
 
 import com.solodev.animeloom.utils.Constants.TestTags.SEARCH_BAR
 import com.solodev.animeloom.utils.AnimesPreviews
-import com.solodev.animeloom.theme.LightBlue100
+
 import kotlinx.coroutines.flow.debounce
 
 @OptIn(kotlinx.coroutines.FlowPreview::class)
@@ -116,7 +116,7 @@ fun Modifier.searchBar(): Modifier = composed {
     if (!isSystemInDarkTheme()) {
         border(
             width = 1.dp,
-            color = LightBlue100,
+            color = MaterialTheme.colorScheme.primary,
             shape = MaterialTheme.shapes.medium,
         )
     } else {
