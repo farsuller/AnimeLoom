@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(
+class AnimeDetailsViewModel @Inject constructor(
     private val animesUseCases: AnimesUseCases,
 ) : ViewModel() {
 
@@ -29,13 +29,13 @@ class DetailsViewModel @Inject constructor(
     var sideEffect by mutableStateOf<String?>(null)
         private set
 
-    fun onEvent(event: DetailsEvent) {
+    fun onEvent(event: AnimeDetailsEvent) {
         when (event) {
-            is DetailsEvent.UpsertDeleteAnime -> {
+            is AnimeDetailsEvent.UpsertDeleteAnime -> {
 
             }
 
-            is DetailsEvent.RemoveSideEffect -> {
+            is AnimeDetailsEvent.RemoveSideEffect -> {
                 sideEffect = null
             }
         }
@@ -52,7 +52,8 @@ class DetailsViewModel @Inject constructor(
                     _animeState.value = AnimeState(errorMessage = e.message)
                 }.collectLatest { result ->
 
-                    _animeState.value = AnimeState(animeDataDetail = result.body()?.data)
+                    val detail = result.body()?.data?.toModel()
+                    _animeState.value = AnimeState(animeDataDetail = detail)
                 }
         }
     }

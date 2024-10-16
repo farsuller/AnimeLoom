@@ -10,15 +10,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -34,24 +33,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import coil.compose.AsyncImage
-import com.solodev.animeloom.presentation.common.AnimeCard
+import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
-import com.solodev.animeloom.presentation.screens.home.components.DefaultChipButton
+import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
+import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -65,6 +61,7 @@ import kotlin.math.roundToInt
 fun SharedTransitionScope.HomeAnimesScreen(
     animeState: AnimeState,
     bookmarkState: BookmarkState,
+    categoryState: CategoryState,
     onAnimeClick: (String?, String?) -> Unit,
     onNavigate: (String) -> Unit,
     onPullRefresh: () -> Unit,
@@ -73,8 +70,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
     var isRefreshing by remember { mutableStateOf(false) }
 
-
     val scope = rememberCoroutineScope()
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
@@ -121,26 +118,9 @@ fun SharedTransitionScope.HomeAnimesScreen(
     ) {
         Box(
             modifier = Modifier
+                .pullRefresh(pullRefreshState)
                 .nestedScroll(nestedScrollConnection)
         ) {
-            Column(
-                modifier = Modifier
-                    .zIndex(1f)
-                    .offset { IntOffset(x = 0, y = headerOffsetHeightPx.floatValue.roundToInt()) }
-                    .background(MaterialTheme.colorScheme.surface),
-            ) {
-
-                PosterHeader(
-                    modifier = Modifier.onSizeChanged { headerSize = it },
-                    animePosterHeader = animeState.animeData?.firstOrNull()?.attributes?.posterImage?.large
-                )
-
-                AnimeCategoryChips(
-                    modifier = Modifier.onSizeChanged { tabsSize = it },
-                    animeState = animeState
-                )
-            }
-
             when {
                 animeState.isLoading -> {
                     Box(
@@ -161,7 +141,26 @@ fun SharedTransitionScope.HomeAnimesScreen(
                 }
 
                 animeState.animeData != null -> {
+                    Column(
+                        modifier = Modifier
+                            .zIndex(1f)
+                            .offset { IntOffset(x = 0, y = headerOffsetHeightPx.floatValue.roundToInt()) }
+                            .background(MaterialTheme.colorScheme.surface),
+                    ) {
+
+                        HomeHeader(
+                            modifier = Modifier.onSizeChanged { headerSize = it },
+                            animePosterHeader = animeState.animeData?.firstOrNull()?.attributes?.coverImage?.large
+                        )
+
+                        AnimeCategoryChips(
+                            modifier = Modifier.onSizeChanged { tabsSize = it },
+                            categoryState = categoryState
+                        )
+                    }
+
                     LazyColumn(
+                        modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                         contentPadding = PaddingValues(top = headerHeight + tabsHeight),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
@@ -180,45 +179,17 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     }
                 }
             }
+
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.TopCenter),
+            )
         }
     }
 }
 
-@Composable
-fun PosterHeader(
-    modifier: Modifier,
-    animePosterHeader: String? = null
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.LightGray)
-    ) {
-        AsyncImage(
-            model = animePosterHeader,
-            contentDescription = animePosterHeader,
-            modifier = Modifier
-                .height(200.dp)
-                .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.FillWidth
-        )
-    }
-}
-
-@Composable
-fun AnimeCategoryChips(
-    modifier: Modifier,
-    animeState: AnimeState
-) {
-    LazyRow(modifier = modifier) {
-        items(5) { data ->
-            DefaultChipButton(text = "Funny")
-            DefaultChipButton(text = "Horror")
-            DefaultChipButton(text = "Fantasy")
-            DefaultChipButton(text = "Isekai")
-            DefaultChipButton(text = "Comedy")
-        }
 
 
-    }
-}

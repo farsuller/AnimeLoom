@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -79,11 +79,7 @@ internal fun AnimesBottomNavigationPreview() {
     AnimeLoomTheme {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             AnimesBottomNavigation(
-                items = listOf(
-                    BottomNavigationItem(icon = Icons.Filled.Home, text = "Home"),
-                    BottomNavigationItem(icon = Icons.Filled.Search, text = "Search"),
-                    BottomNavigationItem(icon = Icons.Filled.Bookmark, text = "Bookmark"),
-                ),
+                items = bottomNavItems(),
                 selected = 0,
                 onItemClick = {},
             )

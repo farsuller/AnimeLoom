@@ -26,6 +26,17 @@ import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.utils.AnimesPreviews
 
+@Composable
+private fun AnimeHomeShimmerEffect() {
+    Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+        repeat(10) {
+            AnimeCardShimmerEffect(
+                modifier = Modifier.padding(horizontal = 24.dp),
+            )
+        }
+    }
+}
+
 fun Modifier.shimmerEffect() = composed {
     val transition = rememberInfiniteTransition(label = "")
     val alpha = transition.animateFloat(
@@ -92,6 +103,16 @@ internal fun ShimmerEffectPreview() {
     AnimeLoomTheme {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             AnimeCardShimmerEffect()
+        }
+    }
+}
+
+@AnimesPreviews
+@Composable
+internal fun ShimmerEffectListPreview() {
+    AnimeLoomTheme {
+        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+            AnimeHomeShimmerEffect()
         }
     }
 }

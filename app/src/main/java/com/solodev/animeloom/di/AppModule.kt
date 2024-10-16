@@ -10,6 +10,7 @@ import com.solodev.animeloom.domain.usecase.appentry.AppEntryUseCases
 import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
 import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
 import com.solodev.animeloom.domain.usecase.anime.GetAnimeId
+import com.solodev.animeloom.domain.usecase.anime.GetCategories
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,6 +45,7 @@ object AppModule {
         return AnimesUseCases(
             getAnimes = GetAnime(animeRepository),
             getAnimeId = GetAnimeId(animeRepository),
+            getCategories = GetCategories(animeRepository)
         )
     }
 }

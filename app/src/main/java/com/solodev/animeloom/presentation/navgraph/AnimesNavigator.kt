@@ -4,10 +4,6 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,12 +24,13 @@ import androidx.navigation.toRoute
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.MainViewModel
 import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
-import com.solodev.animeloom.presentation.navgraph.component.BottomNavigationItem
+import com.solodev.animeloom.presentation.navgraph.component.bottomNavItems
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkViewModel
+import com.solodev.animeloom.presentation.screens.manga.CategoryScreen
 import com.solodev.animeloom.presentation.screens.details.AnimeDetailsScreen
 import com.solodev.animeloom.presentation.screens.home.HomeAnimesScreen
 import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
-import com.solodev.animeloom.presentation.screens.search.SearchViewModel
+import com.solodev.animeloom.presentation.screens.manga.MangaViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -41,14 +38,6 @@ import kotlinx.coroutines.delay
 fun AnimesDashboard(
     onNavigate: (String) -> Unit,
 ) {
-    val bottomNavigationItems = remember {
-        listOf(
-            BottomNavigationItem(icon = Icons.Filled.Home, text = "Home"),
-            BottomNavigationItem(icon = Icons.Filled.Search, text = "Search"),
-            BottomNavigationItem(icon = Icons.Filled.Bookmark, text = "Bookmark"),
-        )
-    }
-
     val navController = rememberNavController()
     val backStackState = navController.currentBackStackEntryAsState().value
 
@@ -56,15 +45,10 @@ fun AnimesDashboard(
         mutableIntStateOf(0)
     }
 
-    val mainViewModel: MainViewModel = hiltViewModel()
-    val homeAnimesViewModel: HomeAnimeViewModel = hiltViewModel()
-    val searchViewModel: SearchViewModel = hiltViewModel()
-    val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
-
     selectedItem = remember(key1 = backStackState) {
         when (backStackState?.destination?.route) {
             Route.HomeRoute.route -> 0
-            Route.SearchRoute.route -> 1
+            Route.MangaRoute.route -> 1
             Route.BookmarkRoute.route -> 2
             else -> 0
         }
@@ -72,9 +56,14 @@ fun AnimesDashboard(
 
     val isBottomNavBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == Route.HomeRoute.route ||
-                backStackState?.destination?.route == Route.SearchRoute.route ||
+                backStackState?.destination?.route == Route.MangaRoute.route ||
                 backStackState?.destination?.route == Route.BookmarkRoute.route
     }
+
+    val mainViewModel: MainViewModel = hiltViewModel()
+    val homeAnimesViewModel: HomeAnimeViewModel = hiltViewModel()
+    val categoryViewModel: MangaViewModel = hiltViewModel()
+    val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
 
     val lastRoute = mainViewModel.getLastRoute()
 
@@ -93,7 +82,7 @@ fun AnimesDashboard(
         bottomBar = {
             if (isBottomNavBarVisible) {
                 AnimesBottomNavigation(
-                    items = bottomNavigationItems,
+                    items = bottomNavItems(),
                     selected = selectedItem,
                     onItemClick = { index ->
                         when (index) {
@@ -108,9 +97,9 @@ fun AnimesDashboard(
                             1 -> {
                                 navigateToTap(
                                     navController = navController,
-                                    route = Route.SearchRoute.route,
+                                    route = Route.MangaRoute.route,
                                 )
-                                onNavigate(Route.SearchRoute.route)
+                                onNavigate(Route.MangaRoute.route)
                             }
 
                             2 -> {
@@ -136,18 +125,18 @@ fun AnimesDashboard(
             ) {
 
                 composable(Route.HomeRoute.route) {
-
-
-                    val animeList by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
-
-                    val state = bookmarkViewModel.state.value
+                    val animeState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
+                    val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
+                    val bookmarkState = bookmarkViewModel.state.value
 
                     HomeAnimesScreen(
-                        animeState = animeList,
-                        bookmarkState = state,
+                        animeState = animeState,
+                        bookmarkState = bookmarkState,
+                        categoryState = categoryState,
                         onNavigate = onNavigate,
                         onPullRefresh = {
                             homeAnimesViewModel.getAnimes()
+                            categoryViewModel.getCategory()
                         },
                         onAnimeClick = { cover, id ->
                             navController.navigate(
@@ -170,10 +159,14 @@ fun AnimesDashboard(
                     )
                 }
 
-                composable(Route.SearchRoute.route) {
+                composable(Route.MangaRoute.route) {
 
-                    val state = searchViewModel.state.value
+                    val categoryState by categoryViewModel.categoryState.collectAsStateWithLifecycle()
 
+                    CategoryScreen(
+                        categoryState = categoryState,
+                        onNavigate = onNavigate,
+                    )
 
                 }
 

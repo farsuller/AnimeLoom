@@ -12,7 +12,7 @@ sealed class Route(val route: String) {
     data object HomeRoute : Route(route = "home_route")
 
     @Serializable
-    data object SearchRoute : Route(route = "search_route")
+    data object MangaRoute : Route(route = "manga_route")
 
     @Serializable
     data object BookmarkRoute : Route(route = "bookmark_route")

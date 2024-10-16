@@ -1,10 +1,9 @@
-package com.solodev.animeloom.presentation.common
+package com.solodev.animeloom.presentation.screens.home.components
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,8 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.solodev.animeloom.data.remote.dto.AnimeDataDto
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.utils.Constants
 
@@ -35,12 +32,10 @@ import com.solodev.animeloom.utils.Constants
 @Composable
 fun SharedTransitionScope.AnimeCard(
     modifier: Modifier = Modifier,
-    animeData: AnimeDataDto,
+    animeData: AnimeData,
     onClick: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-    val context = LocalContext.current
-
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -57,7 +52,6 @@ fun SharedTransitionScope.AnimeCard(
                         rememberSharedContentState(key = animeData.id),
                         animatedVisibilityScope = animatedVisibilityScope,
                         boundsTransform = { _, _ ->
-                            // Use tween to specify the animation behavior
                             tween(durationMillis = 500)
                         }
                     )
@@ -83,19 +77,8 @@ fun SharedTransitionScope.AnimeCard(
                 )
 
                 Text(
-                    text = "${animeData.attributes.episodeCount} ${animeData.attributes.episodeLength}",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
                     text = animeData.attributes.ageRating ?: "Default Genre",
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                Text(
-                    text = animeData.attributes.ageRatingGuide ?: "Default Rating",
-                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 

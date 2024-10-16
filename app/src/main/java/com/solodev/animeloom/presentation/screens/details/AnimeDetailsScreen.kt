@@ -44,7 +44,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
-    val viewModel: DetailsViewModel = hiltViewModel()
+    val viewModel: AnimeDetailsViewModel = hiltViewModel()
     val animeState by viewModel.animeState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {

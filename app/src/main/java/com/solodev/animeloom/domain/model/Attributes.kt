@@ -21,6 +21,8 @@ data class Attributes(
     @SerializedName("titles")
     val titles: Titles?,
 
+    val title: String?,
+
     @SerializedName("description")
     val description : String?,
 
@@ -76,6 +78,14 @@ data class Attributes(
     val episodeLength: Int?,
 
     @SerializedName("showType")
-    val showType: String?
+    val showType: String?,
+
+    @SerializedName("totalMediaCount")
+    val totalMediaCount: Int = 0,
+
+    val nsfw: Boolean = false,
+
+    @SerializedName("childCount")
+    val childCount: Int = 0,
 
 )

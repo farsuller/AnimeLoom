@@ -2,6 +2,7 @@ package com.solodev.animeloom.data.remote
 
 
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
+import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.TrendingAnimeListResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -15,6 +16,6 @@ interface AnimeApi {
     @GET("anime/{id}")
     suspend fun getAnimeById(@Path("id") id: Int): Response<AnimeResponse>
 
-    @GET("episodes")
-    suspend fun getEpisodes(): Response<AnimeResponse>
+    @GET("categories")
+    suspend fun getCategories(): Response<CategoriesResponse>
 }

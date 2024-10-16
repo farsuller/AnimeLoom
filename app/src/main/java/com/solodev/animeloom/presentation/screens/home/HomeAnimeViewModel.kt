@@ -21,9 +21,12 @@ class HomeAnimeViewModel @Inject constructor(
     private val _animeState = MutableStateFlow(AnimeState())
     val animeState: StateFlow<AnimeState> = _animeState.asStateFlow()
 
+    private val _categoryState = MutableStateFlow(CategoryState())
+    val categoryState: StateFlow<CategoryState> = _categoryState.asStateFlow()
 
     init {
         getAnimes()
+        getCategory()
     }
 
 
@@ -37,7 +40,27 @@ class HomeAnimeViewModel @Inject constructor(
                     _animeState.value = AnimeState(errorMessage = e.message)
                 }.collectLatest { result ->
 
-                    _animeState.value = AnimeState(animeData = result.body()?.data)
+                    val filteredAnimes = result.body()?.data?.map { it.toModel() }
+                        ?.filter { it.attributes.popularityRank != null }
+                        ?.sortedBy { it.attributes.popularityRank }
+
+                    _animeState.value = AnimeState(animeData = filteredAnimes)
+                }
+        }
+    }
+
+    fun getCategory(){
+        viewModelScope.launch {
+            animesUseCases.getCategories()
+                .onStart {
+                    _categoryState.value = CategoryState(isLoading = true)
+                }
+                .catch { e ->
+                    _categoryState.value = CategoryState(errorMessage = e.message)
+                }.collectLatest { result ->
+
+                    val categories = result.body()?.data?.map { it.toModel() }
+                    _categoryState.value = CategoryState(categories = categories)
                 }
         }
     }
