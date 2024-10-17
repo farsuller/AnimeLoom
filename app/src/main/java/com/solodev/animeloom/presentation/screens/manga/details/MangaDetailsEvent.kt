@@ -4,6 +4,6 @@ import com.solodev.animeloom.domain.model.MangaData
 
 
 sealed class MangaDetailsEvent {
-    data class UpsertDeleteAnime(val mangaData: MangaData) : MangaDetailsEvent()
+    data class UpsertDeleteManga(val mangaData: MangaData) : MangaDetailsEvent()
     data object RemoveSideEffect : MangaDetailsEvent()
 }

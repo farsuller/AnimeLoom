@@ -2,7 +2,7 @@ package com.solodev.animeloom.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.domain.usecase.AnimesUseCases
+import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeAnimeViewModel @Inject constructor(
-    private val animesUseCases: AnimesUseCases,
+    private val animesUseCases: AnimeUseCases,
 ) : ViewModel() {
 
     private val _animeState = MutableStateFlow(AnimeState())
@@ -44,8 +44,8 @@ class HomeAnimeViewModel @Inject constructor(
                 }.collectLatest { result ->
 
                     val filteredAnimes = result.body()?.data?.map { it.toModel() }
-                        ?.filter { it.attributes.popularityRank != null }
-                        ?.sortedBy { it.attributes.popularityRank }
+                        ?.filter { it.attributes?.popularityRank != null }
+                        ?.sortedBy { it.attributes?.popularityRank }
 
                     _animeState.value = AnimeState(animeData = filteredAnimes)
                 }

@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.data.manager.RouteManager
-import com.solodev.animeloom.domain.usecase.appentry.AppEntryUseCases
+import com.solodev.animeloom.domain.usecase.AppEntryUseCases
 import com.solodev.animeloom.presentation.navgraph.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

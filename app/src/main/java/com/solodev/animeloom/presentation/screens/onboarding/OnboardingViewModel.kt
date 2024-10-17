@@ -2,7 +2,7 @@ package com.solodev.animeloom.presentation.screens.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.domain.usecase.appentry.AppEntryUseCases
+import com.solodev.animeloom.domain.usecase.AppEntryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

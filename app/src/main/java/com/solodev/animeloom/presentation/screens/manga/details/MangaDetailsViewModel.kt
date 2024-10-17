@@ -6,8 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
-import com.solodev.animeloom.domain.usecase.AnimesUseCases
-import com.solodev.animeloom.presentation.screens.home.AnimeState
+import com.solodev.animeloom.domain.model.MangaData
+import com.solodev.animeloom.domain.usecase.AnimeUseCases
+import com.solodev.animeloom.domain.usecase.MangaUseCases
+import com.solodev.animeloom.presentation.screens.home.details.AnimeDetailsEvent
 import com.solodev.animeloom.presentation.screens.manga.MangaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MangaDetailsViewModel @Inject constructor(
-    private val animesUseCases: AnimesUseCases,
+    private val mangaUseCases: MangaUseCases,
 ) : ViewModel() {
 
     private val _mangaState = MutableStateFlow(MangaState())
@@ -32,8 +34,16 @@ class MangaDetailsViewModel @Inject constructor(
 
     fun onEvent(event: MangaDetailsEvent) {
         when (event) {
-            is MangaDetailsEvent.UpsertDeleteAnime -> {
-
+            is MangaDetailsEvent.UpsertDeleteManga -> {
+                viewModelScope.launch {
+                    val anime = mangaUseCases.selectMangaById(event.mangaData.id)
+                    if(anime == null){
+                        upsertManga(manga = event.mangaData)
+                    }
+                    else{
+                        deleteManga(manga = event.mangaData)
+                    }
+                }
             }
 
             is MangaDetailsEvent.RemoveSideEffect -> {
@@ -44,7 +54,7 @@ class MangaDetailsViewModel @Inject constructor(
 
     fun getMangaById(id : Int){
         viewModelScope.launch {
-            animesUseCases.getMangaId(id = id)
+            mangaUseCases.getMangaId(id = id)
                 .onStart {
                     _mangaState.value = MangaState(isLoading = true)
                 }
@@ -61,13 +71,13 @@ class MangaDetailsViewModel @Inject constructor(
 
     
 
-    private suspend fun deleteAnime(anime: AnimeData) {
-//        animesUseCases.deleteAnime(anime = anime)
-//        sideEffect = "DeleteAnime"
+    private suspend fun deleteManga(manga: MangaData) {
+        mangaUseCases.deleteManga(mangaData = manga)
+        sideEffect = "DeleteManga"
     }
 
-    private suspend fun upsertAnime(anime: AnimeData) {
-//        animesUseCases.upsertAnime(anime = anime)
-//        sideEffect = "UpsertAnime"
+    private suspend fun upsertManga(manga: MangaData) {
+        mangaUseCases.upsertManga(mangaData = manga)
+        sideEffect = "UpsertManga"
     }
 }

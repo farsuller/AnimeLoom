@@ -87,6 +87,8 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
 
+    implementation (libs.gson)
+
     //Hilt
     implementation(libs.androidx.hilt.compose.navigation)
     implementation(libs.hilt)

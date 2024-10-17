@@ -7,7 +7,7 @@ object Constants {
     const val USER_SETTINGS = "userSettings"
     const val APP_ENTRY = "appEntry"
 
-    const val ANIMES_DB_NAME = "animes_db"
+    const val ANIMES_LOOM_DB_NAME = "animes_loom_db"
 
 
     object Elevation {

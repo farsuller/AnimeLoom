@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
-import com.solodev.animeloom.domain.usecase.AnimesUseCases
+import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.presentation.screens.home.AnimeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimeDetailsViewModel @Inject constructor(
-    private val animesUseCases: AnimesUseCases,
+    private val animesUseCases: AnimeUseCases,
 ) : ViewModel() {
 
     private val _animeState = MutableStateFlow(AnimeState())
@@ -32,7 +32,15 @@ class AnimeDetailsViewModel @Inject constructor(
     fun onEvent(event: AnimeDetailsEvent) {
         when (event) {
             is AnimeDetailsEvent.UpsertDeleteAnime -> {
-
+                viewModelScope.launch {
+                    val anime = animesUseCases.selectAnimeById(event.animeData.id)
+                    if(anime == null){
+                        upsertAnime(animeData = event.animeData)
+                    }
+                    else{
+                        deleteAnime(animeData = event.animeData)
+                    }
+                }
             }
 
             is AnimeDetailsEvent.RemoveSideEffect -> {
@@ -58,13 +66,13 @@ class AnimeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteAnime(anime: AnimeData) {
-//        animesUseCases.deleteAnime(anime = anime)
-//        sideEffect = "DeleteAnime"
+    private suspend fun deleteAnime(animeData: AnimeData) {
+        animesUseCases.deleteAnime(animeData = animeData)
+        sideEffect = "DeleteAnime"
     }
 
-    private suspend fun upsertAnime(anime: AnimeData) {
-//        animesUseCases.upsertAnime(anime = anime)
-//        sideEffect = "UpsertAnime"
+    private suspend fun upsertAnime(animeData: AnimeData) {
+        animesUseCases.upsertAnime(animeData = animeData)
+        sideEffect = "UpsertAnime"
     }
 }

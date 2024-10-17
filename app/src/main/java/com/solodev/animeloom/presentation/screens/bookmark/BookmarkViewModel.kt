@@ -4,7 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.domain.usecase.AnimesUseCases
+import com.solodev.animeloom.domain.usecase.AnimeUseCases
+import com.solodev.animeloom.domain.usecase.MangaUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -12,19 +13,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val animesUseCases: AnimesUseCases,
+    private val animesUseCases: AnimeUseCases,
+    private val mangaUseCases: MangaUseCases
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(BookmarkState())
-    val state: State<BookmarkState> = _state
+    private val _bookMarkState = mutableStateOf(BookmarkState())
+    val bookmarkState: State<BookmarkState> = _bookMarkState
 
     init {
-        getAnimes()
+        getBookmarkedAnimes()
+        getBookmarkedManga()
     }
 
-    private fun getAnimes() {
-//        animesUseCases.selectAnimes().onEach {
-//            _state.value = _state.value.copy(animes = it.asReversed())
-//        }.launchIn(viewModelScope)
+    private fun getBookmarkedAnimes() {
+        animesUseCases.selectAnime().onEach {
+            _bookMarkState.value = _bookMarkState.value.copy(bookMarkAnimeState = it.asReversed())
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getBookmarkedManga() {
+        mangaUseCases.selectManga().onEach {
+            _bookMarkState.value = _bookMarkState.value.copy(bookMarkMangaState = it.asReversed())
+        }.launchIn(viewModelScope)
     }
 }

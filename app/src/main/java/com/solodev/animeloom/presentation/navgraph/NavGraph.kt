@@ -36,7 +36,7 @@ fun NavGraph(
             startDestination = Route.AnimesRoute.route,
         ){
             composable(Route.AnimesRoute.route) {
-                AnimesDashboard(
+                AnimesNavigator(
                     onNavigate = onNavigate
                 )
             }

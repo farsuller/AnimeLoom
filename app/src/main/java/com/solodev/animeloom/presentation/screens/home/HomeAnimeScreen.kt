@@ -150,7 +150,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                         HomeHeader(
                             modifier = Modifier.onSizeChanged { headerSize = it },
-                            animePosterHeader = animeState.animeData?.firstOrNull()?.attributes?.coverImage?.large
+                            animePosterHeader = animeState.animeData.firstOrNull()?.attributes?.coverImage?.large
                         )
 
                         AnimeCategoryChips(
@@ -169,7 +169,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                 animeData = anime,
                                 onClick = {
                                     onAnimeClick(
-                                        anime.attributes.posterImage?.original ?: "",
+                                        anime.attributes?.posterImage?.original ?: "",
                                         anime.id
                                     )
                                 },

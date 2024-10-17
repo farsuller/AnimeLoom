@@ -1,5 +1,6 @@
 package com.solodev.animeloom.presentation.screens.home.components
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -34,7 +35,7 @@ fun SharedTransitionScope.AnimeCard(
     modifier: Modifier = Modifier,
     animeData: AnimeData,
     onClick: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     Card(
         onClick = onClick,
@@ -45,8 +46,8 @@ fun SharedTransitionScope.AnimeCard(
             modifier = modifier.padding(all = 10.dp),
         ) {
             AsyncImage(
-                model = animeData.attributes.posterImage?.original,
-                contentDescription = animeData.attributes.canonicalTitle,
+                model = animeData.attributes?.posterImage?.original,
+                contentDescription = animeData.attributes?.canonicalTitle,
                 modifier = Modifier
                     .sharedElement(
                         rememberSharedContentState(key = animeData.id),
@@ -68,7 +69,7 @@ fun SharedTransitionScope.AnimeCard(
 
                 ) {
                 Text(
-                    text = animeData.attributes.canonicalTitle ?: "Default Title",
+                    text = animeData.attributes?.canonicalTitle ?: "Default Title",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface,
                     lineHeight = 20.sp,
@@ -77,13 +78,13 @@ fun SharedTransitionScope.AnimeCard(
                 )
 
                 Text(
-                    text = animeData.attributes.ageRating ?: "Default Genre",
+                    text = animeData.attributes?.ageRating ?: "Default Genre",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 Text(
-                    text = animeData.attributes.description ?: "Default Description",
+                    text = animeData.attributes?.description ?: "Default Description",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     lineHeight = 15.sp,

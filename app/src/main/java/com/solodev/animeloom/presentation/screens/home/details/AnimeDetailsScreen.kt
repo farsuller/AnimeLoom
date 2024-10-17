@@ -1,5 +1,6 @@
 package com.solodev.animeloom.presentation.screens.home.details
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
@@ -29,30 +30,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
+import com.solodev.animeloom.domain.model.AnimeData
+import com.solodev.animeloom.presentation.common.GenericDetailTopBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.AnimeDetailsScreen(
     id: String,
     coverImage: String,
+    navigateUp: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-
     val viewModel: AnimeDetailsViewModel = hiltViewModel()
     val animeState by viewModel.animeState.collectAsStateWithLifecycle()
+
+    val animeData = animeState.animeDataDetail ?: AnimeData()
 
     LaunchedEffect(true) {
         viewModel.getAnimesById(id.toInt())
     }
+    if (viewModel.sideEffect != null) {
+        Toast.makeText(LocalContext.current, viewModel.sideEffect, Toast.LENGTH_SHORT).show()
+        viewModel.onEvent(AnimeDetailsEvent.RemoveSideEffect)
+    }
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = {
+            GenericDetailTopBar(
+                onBookmarkClick = { viewModel.onEvent(AnimeDetailsEvent.UpsertDeleteAnime(animeData)) },
+                onBackClick = navigateUp,
+            )
+        }
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()

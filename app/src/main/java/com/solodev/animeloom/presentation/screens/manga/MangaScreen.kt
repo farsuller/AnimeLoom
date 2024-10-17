@@ -86,7 +86,7 @@ fun SharedTransitionScope.MangaScreen(
                             mangaData = manga,
                             onClick = {
                                 onMangaClick(
-                                    manga.attributes.posterImage?.original ?: "",
+                                    manga.attributes?.posterImage?.original ?: "",
                                     manga.id
                                 )
                             },

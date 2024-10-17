@@ -25,6 +25,7 @@ import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.MainViewModel
 import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
 import com.solodev.animeloom.presentation.navgraph.component.bottomNavItems
+import com.solodev.animeloom.presentation.screens.bookmark.BookmarkScreen
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkViewModel
 import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
 import com.solodev.animeloom.presentation.screens.home.HomeAnimesScreen
@@ -36,7 +37,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnimesDashboard(
+fun AnimesNavigator(
     onNavigate: (String) -> Unit,
 ) {
     val navController = rememberNavController()
@@ -128,7 +129,7 @@ fun AnimesDashboard(
                 composable(Route.HomeRoute.route) {
                     val animeState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
                     val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
-                    val bookmarkState = bookmarkViewModel.state.value
+                    val bookmarkState = bookmarkViewModel.bookmarkState.value
 
                     HomeAnimesScreen(
                         animeState = animeState,
@@ -141,7 +142,7 @@ fun AnimesDashboard(
                         onAnimeClick = { cover, id ->
                             navController.navigate(
                                 Route.AnimeDetailsRoute(
-                                    id = id ?: "",
+                                    animeId = id ?: "",
                                     coverImage = cover ?: ""
                                 )
                             )
@@ -153,10 +154,14 @@ fun AnimesDashboard(
                     val argsDetail = detail.toRoute<Route.AnimeDetailsRoute>()
 
                     AnimeDetailsScreen(
-                        id = argsDetail.id,
+                        id = argsDetail.animeId,
                         coverImage = argsDetail.coverImage,
+                        navigateUp = {
+                            navController.navigateUp()
+                        },
                         animatedVisibilityScope = this
                     )
+
                 }
 
                 composable(Route.MangaRoute.route) {
@@ -168,7 +173,7 @@ fun AnimesDashboard(
                         onMangaClick = { cover, id ->
                             navController.navigate(
                                 Route.MangaDetailsRoute(
-                                    id = id ?: "",
+                                    mangaId = id ?: "",
                                     coverImage = cover ?: ""
                                 )
                             )
@@ -181,16 +186,34 @@ fun AnimesDashboard(
                     val argsDetail = detail.toRoute<Route.MangaDetailsRoute>()
 
                     MangaDetailsScreen(
-                        id = argsDetail.id,
+                        id = argsDetail.mangaId,
                         coverImage = argsDetail.coverImage,
+                        navigateUp = {
+                            navController.navigateUp()
+                        },
                         animatedVisibilityScope = this
                     )
                 }
 
                 composable(Route.BookmarkRoute.route) {
 
-                    val state = bookmarkViewModel.state.value
+                    val bookmarkState = bookmarkViewModel.bookmarkState.value
 
+                    BookmarkScreen(
+                        bookmarkState = bookmarkState,
+                        onNavigate = onNavigate,
+                        onAnimeClick = { cover, id ->
+                            navController.navigate(
+                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover)
+                            )
+                        },
+                        onMangaClick = { cover, id ->
+                            navController.navigate(
+                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover)
+                            )
+                        },
+                        animatedVisibilityScope = this
+                    )
                 }
             }
         }

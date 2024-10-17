@@ -5,6 +5,7 @@ import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaResponse
+import com.solodev.animeloom.domain.model.AnimeData
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
@@ -15,8 +16,12 @@ interface AnimeRepository {
 
     suspend fun getCategories() : Flow<Response<CategoriesResponse>>
 
-    suspend fun getManga() : Flow<Response<MangaListResponse>>
+    suspend fun upsertAnime(animeData: AnimeData)
 
-    suspend fun getMangaById(id: Int) : Flow<Response<MangaResponse>>
+    suspend fun deleteAnime(animeData: AnimeData)
+
+    fun selectAnime(): Flow<List<AnimeData>>
+
+    suspend fun selectAnimeById(id: String): AnimeData?
 
 }

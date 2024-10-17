@@ -18,10 +18,13 @@ sealed class Route(val route: String) {
     data object BookmarkRoute : Route(route = "bookmark_route")
 
     @Serializable
-    data class AnimeDetailsRoute(val id: String, val coverImage: String)
+    data class AnimeDetailsRoute(val animeId: String, val coverImage: String)
 
     @Serializable
-    data class MangaDetailsRoute(val id: String, val coverImage: String)
+    data class MangaDetailsRoute(val mangaId: String, val coverImage: String)
+
+    @Serializable
+    data class BookmarkDetailsRoute(val bookmarkId: String, val coverImage: String)
 
     @Serializable
     data object AnimesRoute: Route(route = "animes")

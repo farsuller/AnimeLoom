@@ -1,9 +1,11 @@
 package com.solodev.animeloom.domain.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 data class PosterImage(
 
     @SerializedName("tiny")
@@ -21,4 +23,4 @@ data class PosterImage(
     @SerializedName("original")
     val original: String?
 
-)
+) : Parcelable

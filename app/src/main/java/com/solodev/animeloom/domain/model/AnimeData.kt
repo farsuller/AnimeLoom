@@ -1,11 +1,23 @@
 package com.solodev.animeloom.domain.model
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
+@Entity(tableName = "anime_data")
 data class AnimeData(
 
-    val id: String,
+    @PrimaryKey
+    @SerializedName("id")
+    val id: String = "",
 
-    val attributes: Attributes,
-)
+    @SerializedName("attributes")
+    val attributes: Attributes? = null,
+):Parcelable
 
 
 

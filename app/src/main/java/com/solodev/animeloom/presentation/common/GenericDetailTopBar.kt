@@ -1,12 +1,10 @@
-package com.solodev.animeloom.presentation.screens.home.details.components
+package com.solodev.animeloom.presentation.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.OpenInBrowser
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,9 +24,7 @@ import com.solodev.animeloom.utils.Constants.TestTags.DETAIL_TOP_BAR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailTopBar(
-    onBrowsingClick: () -> Unit,
-    onShareClick: () -> Unit,
+fun GenericDetailTopBar(
     onBookmarkClick: () -> Unit,
     onBackClick: () -> Unit,
 ) {
@@ -57,18 +53,6 @@ fun DetailTopBar(
                     contentDescription = "BookmarkButton",
                 )
             }
-            IconButton(onClick = onShareClick) {
-                Icon(
-                    imageVector = Icons.Filled.Share,
-                    contentDescription = "ShareButton",
-                )
-            }
-            IconButton(onClick = onBrowsingClick) {
-                Icon(
-                    imageVector = Icons.Filled.OpenInBrowser,
-                    contentDescription = "BrowseButton",
-                )
-            }
         },
     )
 }
@@ -79,9 +63,7 @@ internal fun DetailTopBarPreview() {
     AnimeLoomTheme {
         Surface {
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-                DetailTopBar(
-                    onBrowsingClick = { },
-                    onShareClick = { },
+                GenericDetailTopBar(
                     onBookmarkClick = {},
                     onBackClick = {},
                 )

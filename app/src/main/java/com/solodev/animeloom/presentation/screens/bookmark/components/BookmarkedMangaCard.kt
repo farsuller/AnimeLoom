@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.manga.components
+package com.solodev.animeloom.presentation.screens.bookmark.components
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -31,7 +31,7 @@ import com.solodev.animeloom.utils.Constants
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.MangaCard(
+fun SharedTransitionScope.BookmarkedMangaCard(
     modifier: Modifier = Modifier,
     mangaData: MangaData,
     onClick: () -> Unit,

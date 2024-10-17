@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.manga.components
+package com.solodev.animeloom.presentation.screens.bookmark.components
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -31,9 +31,9 @@ import com.solodev.animeloom.utils.Constants
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.MangaCard(
+fun SharedTransitionScope.BookmarkedAnimeCard(
     modifier: Modifier = Modifier,
-    mangaData: MangaData,
+    animeData: AnimeData,
     onClick: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
@@ -42,15 +42,15 @@ fun SharedTransitionScope.MangaCard(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = Constants.Elevation.level0),
     ) {
-        Column(
+        Row(
             modifier = modifier.padding(all = 10.dp),
         ) {
             AsyncImage(
-                model = mangaData.attributes?.posterImage?.original,
-                contentDescription = mangaData.attributes?.canonicalTitle,
+                model = animeData.attributes?.posterImage?.original,
+                contentDescription = animeData.attributes?.canonicalTitle,
                 modifier = Modifier
                     .sharedElement(
-                        rememberSharedContentState(key = mangaData.id),
+                        rememberSharedContentState(key = animeData.id),
                         animatedVisibilityScope = animatedVisibilityScope,
                         boundsTransform = { _, _ ->
                             tween(durationMillis = 500)
@@ -62,14 +62,36 @@ fun SharedTransitionScope.MangaCard(
                 contentScale = ContentScale.Crop
             )
 
-            Text(
-                text = mangaData.attributes?.canonicalTitle ?: "Default Title",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-                lineHeight = 20.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
+
+                ) {
+                Text(
+                    text = animeData.attributes?.canonicalTitle ?: "Default Title",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    lineHeight = 20.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                Text(
+                    text = animeData.attributes?.ageRating ?: "Default Genre",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                Text(
+                    text = animeData.attributes?.description ?: "Default Description",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    lineHeight = 15.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 
