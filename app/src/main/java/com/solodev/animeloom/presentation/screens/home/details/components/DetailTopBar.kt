@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.details.components
+package com.solodev.animeloom.presentation.screens.home.details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

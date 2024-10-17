@@ -2,7 +2,7 @@ package com.solodev.animeloom.domain.model
 
 
 
-data class CategoryData(
+data class MangaData(
     val id : String,
     val type : String,
     val links: Links,

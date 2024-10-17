@@ -21,6 +21,9 @@ sealed class Route(val route: String) {
     data class AnimeDetailsRoute(val id: String, val coverImage: String)
 
     @Serializable
+    data class MangaDetailsRoute(val id: String, val coverImage: String)
+
+    @Serializable
     data object AnimesRoute: Route(route = "animes")
 
     @Serializable

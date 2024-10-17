@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.details
+package com.solodev.animeloom.presentation.screens.home.details
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

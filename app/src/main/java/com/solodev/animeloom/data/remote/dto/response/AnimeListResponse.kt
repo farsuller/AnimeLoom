@@ -2,6 +2,6 @@ package com.solodev.animeloom.data.remote.dto.response
 
 import com.solodev.animeloom.data.remote.dto.AnimeDataDto
 
-data class TrendingAnimeListResponse(
+data class AnimeListResponse(
     val data: List<AnimeDataDto>
 )

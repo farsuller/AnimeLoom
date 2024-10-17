@@ -25,12 +25,15 @@ class HomeAnimeViewModel @Inject constructor(
     val categoryState: StateFlow<CategoryState> = _categoryState.asStateFlow()
 
     init {
+        requestApis()
+    }
+
+    fun requestApis(){
         getAnimes()
         getCategory()
     }
 
-
-    fun getAnimes(){
+    private fun getAnimes(){
         viewModelScope.launch {
             animesUseCases.getAnimes()
                 .onStart {
@@ -49,7 +52,7 @@ class HomeAnimeViewModel @Inject constructor(
         }
     }
 
-    fun getCategory(){
+    private fun getCategory(){
         viewModelScope.launch {
             animesUseCases.getCategories()
                 .onStart {
@@ -64,4 +67,6 @@ class HomeAnimeViewModel @Inject constructor(
                 }
         }
     }
+
+
 }

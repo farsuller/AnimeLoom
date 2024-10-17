@@ -3,6 +3,7 @@ package com.solodev.animeloom.presentation.screens.manga
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.usecase.AnimesUseCases
+import com.solodev.animeloom.presentation.screens.home.AnimeState
 import com.solodev.animeloom.presentation.screens.home.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,13 +24,13 @@ class MangaViewModel @Inject constructor(
     val mangaState: StateFlow<MangaState> = _mangaState.asStateFlow()
 
     init {
-        getCategory()
+        getManga()
     }
 
 
-    fun getCategory(){
+    private fun getManga(){
         viewModelScope.launch {
-            animesUseCases.getCategories()
+            animesUseCases.getManga()
                 .onStart {
                     _mangaState.value = MangaState(isLoading = true)
                 }
@@ -42,4 +43,6 @@ class MangaViewModel @Inject constructor(
                 }
         }
     }
+
+
 }

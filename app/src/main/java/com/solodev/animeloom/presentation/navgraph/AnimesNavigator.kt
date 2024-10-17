@@ -26,11 +26,12 @@ import com.solodev.animeloom.presentation.MainViewModel
 import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
 import com.solodev.animeloom.presentation.navgraph.component.bottomNavItems
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkViewModel
-import com.solodev.animeloom.presentation.screens.manga.CategoryScreen
-import com.solodev.animeloom.presentation.screens.details.AnimeDetailsScreen
-import com.solodev.animeloom.presentation.screens.home.HomeAnimesScreen
 import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
+import com.solodev.animeloom.presentation.screens.home.HomeAnimesScreen
+import com.solodev.animeloom.presentation.screens.home.details.AnimeDetailsScreen
+import com.solodev.animeloom.presentation.screens.manga.MangaScreen
 import com.solodev.animeloom.presentation.screens.manga.MangaViewModel
+import com.solodev.animeloom.presentation.screens.manga.details.MangaDetailsScreen
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -62,7 +63,7 @@ fun AnimesDashboard(
 
     val mainViewModel: MainViewModel = hiltViewModel()
     val homeAnimesViewModel: HomeAnimeViewModel = hiltViewModel()
-    val categoryViewModel: MangaViewModel = hiltViewModel()
+    val mangaViewModel: MangaViewModel = hiltViewModel()
     val bookmarkViewModel: BookmarkViewModel = hiltViewModel()
 
     val lastRoute = mainViewModel.getLastRoute()
@@ -135,8 +136,7 @@ fun AnimesDashboard(
                         categoryState = categoryState,
                         onNavigate = onNavigate,
                         onPullRefresh = {
-                            homeAnimesViewModel.getAnimes()
-                            categoryViewModel.getCategory()
+                            homeAnimesViewModel.requestApis()
                         },
                         onAnimeClick = { cover, id ->
                             navController.navigate(
@@ -160,14 +160,31 @@ fun AnimesDashboard(
                 }
 
                 composable(Route.MangaRoute.route) {
+                    val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
 
-                    val categoryState by categoryViewModel.categoryState.collectAsStateWithLifecycle()
-
-                    CategoryScreen(
-                        categoryState = categoryState,
+                    MangaScreen(
+                        mangaState = mangaState,
                         onNavigate = onNavigate,
+                        onMangaClick = { cover, id ->
+                            navController.navigate(
+                                Route.MangaDetailsRoute(
+                                    id = id ?: "",
+                                    coverImage = cover ?: ""
+                                )
+                            )
+                        },
+                        animatedVisibilityScope = this
                     )
+                }
 
+                composable<Route.MangaDetailsRoute> { detail ->
+                    val argsDetail = detail.toRoute<Route.MangaDetailsRoute>()
+
+                    MangaDetailsScreen(
+                        id = argsDetail.id,
+                        coverImage = argsDetail.coverImage,
+                        animatedVisibilityScope = this
+                    )
                 }
 
                 composable(Route.BookmarkRoute.route) {

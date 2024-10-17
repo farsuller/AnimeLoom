@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.details
+package com.solodev.animeloom.presentation.screens.manga.details
 
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -35,20 +35,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
+import com.solodev.animeloom.presentation.screens.manga.MangaViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.AnimeDetailsScreen(
+fun SharedTransitionScope.MangaDetailsScreen(
     id: String,
     coverImage: String,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
-    val viewModel: AnimeDetailsViewModel = hiltViewModel()
-    val animeState by viewModel.animeState.collectAsStateWithLifecycle()
+    val viewModel: MangaDetailsViewModel = hiltViewModel()
+    val mangaState by viewModel.mangaState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
-        viewModel.getAnimesById(id.toInt())
+        viewModel.getMangaById(id.toInt())
     }
 
     Scaffold { innerPadding ->
@@ -68,7 +70,6 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                             rememberSharedContentState(key = id),
                             animatedVisibilityScope = animatedVisibilityScope,
                             boundsTransform = { _, _ ->
-                                // Use tween to specify the animation behavior
                                 tween(durationMillis = 500)
                             }
                         )
@@ -81,7 +82,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
             item {
 
                 when {
-                    animeState.isLoading -> {
+                    mangaState.isLoading -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -90,16 +91,16 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                         }
                     }
 
-                    animeState.errorMessage != null -> {
+                    mangaState.errorMessage != null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "Error: ${animeState.errorMessage}")
+                            Text(text = "Error: ${mangaState.errorMessage}")
                         }
                     }
 
-                    animeState.animeDataDetail != null -> {
+                    mangaState.mangaDataDetail != null -> {
                         Column(
                             modifier = Modifier
                                 .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -107,39 +108,13 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = animeState.animeDataDetail?.attributes?.canonicalTitle
+                                text = mangaState.mangaDataDetail?.attributes?.canonicalTitle
                                     ?: "Default Title",
                                 style = MaterialTheme.typography.displaySmall,
                                 fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             )
 
-                            Row {
-                                Text(
-                                    text = animeState.animeDataDetail?.attributes?.startDate?.split(
-                                        "-"
-                                    )?.first() ?: "-",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Medium
-                                )
-
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(1.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Star,
-                                        contentDescription = null
-                                    )
-
-                                    Text(
-                                        text = animeState.animeDataDetail?.attributes?.averageRating
-                                            ?: "0.0",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Medium
-                                    )
-                                }
-                            }
 
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -149,7 +124,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(text = animeState.animeDataDetail?.attributes?.synopsis ?: "")
+                                Text(text = mangaState.mangaDataDetail?.attributes?.synopsis ?: "")
                             }
                         }
                     }
