@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +14,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
@@ -39,13 +40,14 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
+import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
 import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
 import kotlinx.coroutines.delay
@@ -94,6 +96,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
     val headerOffsetHeightPx = remember { mutableFloatStateOf(0f) }
 
+    var scrollProgress by remember { mutableFloatStateOf(0f) }
+
     val nestedScrollConnection = remember(headerSize) {
         object : NestedScrollConnection {
             val headerHeightPx = headerSize.height.toFloat()
@@ -102,10 +106,19 @@ fun SharedTransitionScope.HomeAnimesScreen(
                 val delta = available.y
                 val newOffset = headerOffsetHeightPx.floatValue + delta
                 headerOffsetHeightPx.floatValue = newOffset.coerceIn(-headerHeightPx, 0f)
+
+                scrollProgress = (-headerOffsetHeightPx.floatValue / headerHeightPx).coerceIn(0f, 1f)
+
                 return Offset.Zero
             }
         }
     }
+
+    val animatedPadding: Dp by animateDpAsState(
+        targetValue = if (scrollProgress > 0.9f) 40.dp else 0.dp,
+        animationSpec = tween(durationMillis = 300),
+        label = "animate-chips"
+    )
 
     LaunchedEffect(Unit) {
         onNavigate(Route.HomeRoute.route)
@@ -114,7 +127,6 @@ fun SharedTransitionScope.HomeAnimesScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding(),
     ) {
         Box(
             modifier = Modifier
@@ -144,7 +156,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     Column(
                         modifier = Modifier
                             .zIndex(1f)
-                            .offset { IntOffset(x = 0, y = headerOffsetHeightPx.floatValue.roundToInt()) }
+                            .offset {
+                                IntOffset(
+                                    x = 0,
+                                    y = headerOffsetHeightPx.floatValue.roundToInt()
+                                )
+                            }
                             .background(MaterialTheme.colorScheme.surface),
                     ) {
 
@@ -154,7 +171,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         )
 
                         AnimeCategoryChips(
-                            modifier = Modifier.onSizeChanged { tabsSize = it },
+                            modifier = Modifier
+                                .onSizeChanged { tabsSize = it }
+                                .padding(top = animatedPadding),
+
                             categoryState = categoryState
                         )
                     }
