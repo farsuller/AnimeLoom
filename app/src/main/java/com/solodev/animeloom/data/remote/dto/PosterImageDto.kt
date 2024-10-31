@@ -12,5 +12,5 @@ data class PosterImageDto(
     val tiny: String? = null
 ) {
     fun toModel(): PosterImage =
-        PosterImage(tiny = tiny, small = small, medium = medium, large = large, original = original)
+        PosterImage(tiny = tiny, small = small, medium = medium, large = large, original = original, meta = meta)
 }

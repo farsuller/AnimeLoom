@@ -4,6 +4,7 @@ import com.solodev.animeloom.data.local.MangaDao
 import com.solodev.animeloom.data.remote.AnimeApi
 import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaResponse
+import com.solodev.animeloom.data.remote.dto.response.TrendingMangaListResponse
 import com.solodev.animeloom.data.remote.safeApiCall
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.repository.MangaRepository
@@ -15,8 +16,12 @@ class MangaRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val mangaDao: MangaDao
 ) : MangaRepository {
+    override suspend fun getTrendingMangaList(): Flow<Response<TrendingMangaListResponse>> = safeApiCall {
+        apiService.getTrendingMangaList()
+    }
+
     override suspend fun getManga(): Flow<Response<MangaListResponse>> = safeApiCall {
-        apiService.getManga()
+        apiService.getMangaList()
     }
 
     override suspend fun getMangaById(id: Int): Flow<Response<MangaResponse>> = safeApiCall {

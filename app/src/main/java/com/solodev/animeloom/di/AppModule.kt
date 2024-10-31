@@ -7,9 +7,10 @@ import com.solodev.animeloom.domain.repository.AnimeRepository
 import com.solodev.animeloom.domain.repository.MangaRepository
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.domain.usecase.MangaUseCases
-import com.solodev.animeloom.domain.usecase.anime.GetAnime
+import com.solodev.animeloom.domain.usecase.anime.GetTrendingAnime
 import com.solodev.animeloom.domain.usecase.AppEntryUseCases
 import com.solodev.animeloom.domain.usecase.anime.DeleteAnime
+import com.solodev.animeloom.domain.usecase.anime.GetAnime
 import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
 import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
 import com.solodev.animeloom.domain.usecase.anime.GetAnimeId
@@ -20,6 +21,7 @@ import com.solodev.animeloom.domain.usecase.anime.UpsertAnime
 import com.solodev.animeloom.domain.usecase.manga.DeleteManga
 import com.solodev.animeloom.domain.usecase.manga.GetManga
 import com.solodev.animeloom.domain.usecase.manga.GetMangaId
+import com.solodev.animeloom.domain.usecase.manga.GetTrendingManga
 import com.solodev.animeloom.domain.usecase.manga.SelectManga
 import com.solodev.animeloom.domain.usecase.manga.SelectMangaById
 import com.solodev.animeloom.domain.usecase.manga.UpsertManga
@@ -52,16 +54,17 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAnimesUseCases(
-        animeRepository: AnimeRepository,
+        repository: AnimeRepository,
     ): AnimeUseCases {
         return AnimeUseCases(
-            getAnimes = GetAnime(animeRepository),
-            getAnimeId = GetAnimeId(animeRepository),
-            getCategories = GetCategories(animeRepository),
-            upsertAnime = UpsertAnime(animeRepository),
-            deleteAnime = DeleteAnime(animeRepository),
-            selectAnime = SelectAnime(animeRepository),
-            selectAnimeById = SelectAnimeById(animeRepository)
+            getTrendingAnimes = GetTrendingAnime(repository),
+            getAnime = GetAnime(repository),
+            getAnimeId = GetAnimeId(repository),
+            getCategories = GetCategories(repository),
+            upsertAnime = UpsertAnime(repository),
+            deleteAnime = DeleteAnime(repository),
+            selectAnime = SelectAnime(repository),
+            selectAnimeById = SelectAnimeById(repository)
 
         )
     }
@@ -69,15 +72,16 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMangaUseCases(
-        mangaRepository: MangaRepository
+        repository: MangaRepository
     ) : MangaUseCases{
         return MangaUseCases(
-            getManga = GetManga(mangaRepository),
-            getMangaId = GetMangaId(mangaRepository),
-            upsertManga = UpsertManga(mangaRepository),
-            deleteManga = DeleteManga(mangaRepository),
-            selectManga = SelectManga(mangaRepository),
-            selectMangaById = SelectMangaById(mangaRepository)
+            getTrendingManga = GetTrendingManga(repository),
+            getManga = GetManga(repository),
+            getMangaId = GetMangaId(repository),
+            upsertManga = UpsertManga(repository),
+            deleteManga = DeleteManga(repository),
+            selectManga = SelectManga(repository),
+            selectMangaById = SelectMangaById(repository)
         )
     }
 }

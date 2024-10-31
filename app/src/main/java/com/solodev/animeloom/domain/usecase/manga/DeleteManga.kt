@@ -1,8 +1,6 @@
 package com.solodev.animeloom.domain.usecase.manga
 
-import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
-import com.solodev.animeloom.domain.repository.AnimeRepository
 import com.solodev.animeloom.domain.repository.MangaRepository
 
 class DeleteManga(

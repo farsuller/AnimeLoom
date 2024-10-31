@@ -1,14 +1,14 @@
 package com.solodev.animeloom.domain.usecase.manga
 
-import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
+import com.solodev.animeloom.data.remote.dto.response.TrendingMangaListResponse
 import com.solodev.animeloom.domain.repository.MangaRepository
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-class GetManga(
+class GetTrendingManga(
     private val repository: MangaRepository,
 ) {
-    suspend operator fun invoke(): Flow<Response<MangaListResponse>> {
-        return repository.getManga()
+    suspend operator fun invoke(): Flow<Response<TrendingMangaListResponse>> {
+        return repository.getTrendingMangaList()
     }
 }

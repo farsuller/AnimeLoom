@@ -2,17 +2,14 @@ package com.solodev.animeloom.data.repository
 
 import com.solodev.animeloom.data.local.AnimeDao
 import com.solodev.animeloom.data.remote.AnimeApi
+import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
 import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
-import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
-import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
-import com.solodev.animeloom.data.remote.dto.response.MangaResponse
+import com.solodev.animeloom.data.remote.dto.response.TrendingAnimeListResponse
 import com.solodev.animeloom.data.remote.safeApiCall
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -20,8 +17,12 @@ class AnimeRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val animeDao: AnimeDao
     ) : AnimeRepository {
-    override suspend fun getTrendingAnimeList(): Flow<Response<AnimeListResponse>> = safeApiCall {
+    override suspend fun getTrendingAnimeList(): Flow<Response<TrendingAnimeListResponse>> = safeApiCall {
         apiService.getTrendingAnimeList()
+    }
+
+    override suspend fun getAnimeList(): Flow<Response<AnimeListResponse>> = safeApiCall {
+        apiService.getAnimeList()
     }
 
     override suspend fun getAnimeById(id: Int): Flow<Response<AnimeResponse>> = safeApiCall {

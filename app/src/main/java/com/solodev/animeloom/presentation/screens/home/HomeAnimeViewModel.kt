@@ -21,6 +21,9 @@ class HomeAnimeViewModel @Inject constructor(
     private val _animeState = MutableStateFlow(AnimeState())
     val animeState: StateFlow<AnimeState> = _animeState.asStateFlow()
 
+    private val _trendingAnimeState = MutableStateFlow(TrendingAnimeState())
+    val trendingAnimeState: StateFlow<TrendingAnimeState> = _trendingAnimeState.asStateFlow()
+
     private val _categoryState = MutableStateFlow(CategoryState())
     val categoryState: StateFlow<CategoryState> = _categoryState.asStateFlow()
 
@@ -29,13 +32,33 @@ class HomeAnimeViewModel @Inject constructor(
     }
 
     fun requestApis(){
+        getTrendingAnimes()
         getAnimes()
         getCategory()
     }
 
+    private fun getTrendingAnimes(){
+        viewModelScope.launch {
+            animesUseCases.getTrendingAnimes()
+                .onStart {
+                    _trendingAnimeState.value = TrendingAnimeState(isLoading = true)
+                }
+                .catch { e ->
+                    _trendingAnimeState.value = TrendingAnimeState(errorMessage = e.message)
+                }.collectLatest { result ->
+
+                    val trendingAnimes = result.body()?.data?.map { it.toModel() }
+                        ?.filter { it.attributes?.popularityRank != null }
+                        ?.sortedBy { it.attributes?.popularityRank }
+
+                    _trendingAnimeState.value = TrendingAnimeState(trendingAnimeList = trendingAnimes)
+                }
+        }
+    }
+
     private fun getAnimes(){
         viewModelScope.launch {
-            animesUseCases.getAnimes()
+            animesUseCases.getAnime()
                 .onStart {
                     _animeState.value = AnimeState(isLoading = true)
                 }
@@ -43,11 +66,11 @@ class HomeAnimeViewModel @Inject constructor(
                     _animeState.value = AnimeState(errorMessage = e.message)
                 }.collectLatest { result ->
 
-                    val filteredAnimes = result.body()?.data?.map { it.toModel() }
+                    val animes = result.body()?.data?.map { it.toModel() }
                         ?.filter { it.attributes?.popularityRank != null }
                         ?.sortedBy { it.attributes?.popularityRank }
 
-                    _animeState.value = AnimeState(animeData = filteredAnimes)
+                    _animeState.value = AnimeState(animeDataList = animes)
                 }
         }
     }

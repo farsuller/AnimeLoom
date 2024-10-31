@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -40,6 +41,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
@@ -50,6 +52,9 @@ import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
 import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
+import com.solodev.animeloom.presentation.screens.home.components.HomeMangaCard
+import com.solodev.animeloom.presentation.screens.manga.MangaState
+import com.solodev.animeloom.presentation.screens.manga.TrendingMangaState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -62,9 +67,13 @@ import kotlin.math.roundToInt
 @Composable
 fun SharedTransitionScope.HomeAnimesScreen(
     animeState: AnimeState,
+    trendingAnimeState: TrendingAnimeState,
+    mangaState: MangaState,
+    trendingManga: TrendingMangaState,
     bookmarkState: BookmarkState,
     categoryState: CategoryState,
     onAnimeClick: (String?, String?) -> Unit,
+    onMangaClick: (String?, String?) -> Unit,
     onNavigate: (String) -> Unit,
     onPullRefresh: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
@@ -107,7 +116,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
                 val newOffset = headerOffsetHeightPx.floatValue + delta
                 headerOffsetHeightPx.floatValue = newOffset.coerceIn(-headerHeightPx, 0f)
 
-                scrollProgress = (-headerOffsetHeightPx.floatValue / headerHeightPx).coerceIn(0f, 1f)
+                scrollProgress =
+                    (-headerOffsetHeightPx.floatValue / headerHeightPx).coerceIn(0f, 1f)
 
                 return Offset.Zero
             }
@@ -152,7 +162,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     }
                 }
 
-                animeState.animeData != null -> {
+                animeState.animeDataList != null -> {
                     Column(
                         modifier = Modifier
                             .zIndex(1f)
@@ -167,7 +177,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                         HomeHeader(
                             modifier = Modifier.onSizeChanged { headerSize = it },
-                            animePosterHeader = animeState.animeData.firstOrNull()?.attributes?.coverImage?.large
+                            animePosterHeader = animeState.animeDataList.firstOrNull()?.attributes?.posterImage?.original
                         )
 
                         AnimeCategoryChips(
@@ -184,18 +194,121 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         contentPadding = PaddingValues(top = headerHeight + tabsHeight),
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
-                        items(animeState.animeData) { anime ->
-                            AnimeCard(
-                                animeData = anime,
-                                onClick = {
-                                    onAnimeClick(
-                                        anime.attributes?.posterImage?.original ?: "",
-                                        anime.id
-                                    )
-                                },
-                                animatedVisibilityScope = animatedVisibilityScope
-                            )
+                        item {
+                            trendingAnimeState.trendingAnimeList.let {
+                                Text(
+                                    text = "Trending Anime",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                )
+
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(animeState.animeDataList) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                            }
+
                         }
+
+                        item {
+                            trendingManga.trendingMangaList?.let {
+                                Text(
+                                    text = "Trending Manga",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                )
+
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(trendingManga.trendingMangaList) { manga ->
+                                        HomeMangaCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            mangaData = manga,
+                                            onClick = {
+                                                onMangaClick(
+                                                    manga.attributes?.posterImage?.original ?: "",
+                                                    manga.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+
+                        item {
+                            animeState.animeDataList.let {
+                                Text(
+                                    text = "Anime",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                )
+
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(animeState.animeDataList) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+
+                        item {
+                            mangaState.manga?.let {
+                                Text(
+                                    text = "Manga",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(mangaState.manga) { manga ->
+                                        HomeMangaCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            mangaData = manga,
+                                            onClick = {
+                                                onMangaClick(
+                                                    manga.attributes?.posterImage?.original ?: "",
+                                                    manga.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+
                     }
                 }
             }

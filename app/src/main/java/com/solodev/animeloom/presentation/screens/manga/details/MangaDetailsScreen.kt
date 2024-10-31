@@ -46,7 +46,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
 ) {
 
     val viewModel: MangaDetailsViewModel = hiltViewModel()
-    val mangaState by viewModel.mangaState.collectAsStateWithLifecycle()
+    val mangaState by viewModel.mangaDetailState.collectAsStateWithLifecycle()
 
     val mangaData = mangaState.mangaDataDetail ?: MangaData()
 

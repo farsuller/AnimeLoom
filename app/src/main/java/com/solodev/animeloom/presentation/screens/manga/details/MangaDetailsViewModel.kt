@@ -10,6 +10,7 @@ import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.presentation.screens.home.details.AnimeDetailsEvent
+import com.solodev.animeloom.presentation.screens.manga.MangaDetailState
 import com.solodev.animeloom.presentation.screens.manga.MangaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,8 +27,8 @@ class MangaDetailsViewModel @Inject constructor(
     private val mangaUseCases: MangaUseCases,
 ) : ViewModel() {
 
-    private val _mangaState = MutableStateFlow(MangaState())
-    val mangaState: StateFlow<MangaState> = _mangaState.asStateFlow()
+    private val _mangaDetailState = MutableStateFlow(MangaDetailState())
+    val mangaDetailState: StateFlow<MangaDetailState> = _mangaDetailState.asStateFlow()
 
     var sideEffect by mutableStateOf<String?>(null)
         private set
@@ -56,14 +57,14 @@ class MangaDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             mangaUseCases.getMangaId(id = id)
                 .onStart {
-                    _mangaState.value = MangaState(isLoading = true)
+                    _mangaDetailState.value = MangaDetailState(isLoading = true)
                 }
                 .catch { e ->
-                    _mangaState.value = MangaState(errorMessage = e.message)
+                    _mangaDetailState.value = MangaDetailState(errorMessage = e.message)
                 }.collectLatest { result ->
 
                     val detail = result.body()?.data?.toModel()
-                    _mangaState.value = MangaState(mangaDataDetail = detail)
+                    _mangaDetailState.value = MangaDetailState(mangaDataDetail = detail)
                 }
         }
     }

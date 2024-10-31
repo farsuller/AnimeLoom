@@ -25,6 +25,8 @@ fun HomeHeader(
             .height(300.dp)
     ) {
         AsyncImage(
+            modifier = Modifier
+                .matchParentSize(),
             model = animePosterHeader,
             contentDescription = animePosterHeader,
             contentScale = ContentScale.Crop

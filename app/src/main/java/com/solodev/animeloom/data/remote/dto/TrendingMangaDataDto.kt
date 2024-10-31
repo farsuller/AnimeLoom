@@ -4,7 +4,8 @@ import com.solodev.animeloom.domain.model.Links
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.model.RelationshipsX
 
-data class MangaDataDto(
+
+data class TrendingMangaDataDto(
     val id: String,
     val type: String,
     val links: Links,
