@@ -11,8 +11,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.solodev.animeloom.R
+import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
 
 @Composable
 fun HomeHeader(
@@ -28,6 +31,7 @@ fun HomeHeader(
             modifier = Modifier
                 .matchParentSize(),
             model = animePosterHeader,
+            placeholder = painterResource(R.drawable.ic_launcher_foreground),
             contentDescription = animePosterHeader,
             contentScale = ContentScale.Crop
         )

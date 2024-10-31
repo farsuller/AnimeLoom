@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.manga
+package com.solodev.animeloom.presentation.screens.manga.states
 
 import com.solodev.animeloom.domain.model.MangaData
 

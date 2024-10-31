@@ -5,13 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
-import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.domain.usecase.MangaUseCases
-import com.solodev.animeloom.presentation.screens.home.details.AnimeDetailsEvent
-import com.solodev.animeloom.presentation.screens.manga.MangaDetailState
-import com.solodev.animeloom.presentation.screens.manga.MangaState
+import com.solodev.animeloom.presentation.screens.manga.states.MangaDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,14 +53,16 @@ class MangaDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             mangaUseCases.getMangaId(id = id)
                 .onStart {
-                    _mangaDetailState.value = MangaDetailState(isLoading = true)
+                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _mangaDetailState.value = MangaDetailState(errorMessage = e.message)
+                    _mangaDetailState.value = _mangaDetailState.value.copy(errorMessage = e.message)
+                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = false)
                 }.collectLatest { result ->
 
                     val detail = result.body()?.data?.toModel()
-                    _mangaDetailState.value = MangaDetailState(mangaDataDetail = detail)
+                    _mangaDetailState.value = _mangaDetailState.value.copy(mangaDataDetail = detail)
+                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = false)
                 }
         }
     }

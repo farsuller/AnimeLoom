@@ -40,15 +40,15 @@ fun DefaultChipButton(
             null
         },
         colors = FilterChipDefaults.filterChipColors(
-            labelColor = MaterialTheme.colorScheme.tertiary,
+            labelColor = MaterialTheme.colorScheme.onSurface,
             selectedLabelColor = surfaceLight,
-            selectedContainerColor = MaterialTheme.colorScheme.tertiary
+            selectedContainerColor = MaterialTheme.colorScheme.onSurface
         ),
 
         border = FilterChipDefaults.filterChipBorder(
             enabled = isSelected,
             selected = isSelected,
-            disabledBorderColor = MaterialTheme.colorScheme.tertiary,
+            disabledBorderColor = MaterialTheme.colorScheme.onSurface,
         )
     )
 }

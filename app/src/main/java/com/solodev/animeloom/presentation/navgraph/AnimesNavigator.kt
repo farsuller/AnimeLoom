@@ -149,7 +149,7 @@ fun AnimesNavigator(
                             navController.navigate(
                                 Route.AnimeDetailsRoute(
                                     animeId = id ?: "",
-                                    coverImage = cover ?: ""
+                                    coverImage = cover ?: "",
                                 )
                             )
                         },

@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
-import com.solodev.animeloom.presentation.screens.home.AnimeDetailState
-import com.solodev.animeloom.presentation.screens.home.AnimeState
-import com.solodev.animeloom.presentation.screens.home.TrendingAnimeState
+import com.solodev.animeloom.presentation.screens.home.states.AnimeDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,10 +59,12 @@ class AnimeDetailsViewModel @Inject constructor(
                 }
                 .catch { e ->
                     _animeDetailState.value = AnimeDetailState(errorMessage = e.message)
+                    _animeDetailState.value = _animeDetailState.value.copy(isLoading = false)
 
                 }.collectLatest { result ->
                     val detail = result.body()?.data?.toModel()
                     _animeDetailState.value = AnimeDetailState(animeDataDetail = detail)
+                    _animeDetailState.value = _animeDetailState.value.copy(isLoading = false)
                 }
         }
     }

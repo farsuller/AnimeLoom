@@ -3,6 +3,8 @@ package com.solodev.animeloom.presentation.screens.manga
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.usecase.MangaUseCases
+import com.solodev.animeloom.presentation.screens.manga.states.MangaState
+import com.solodev.animeloom.presentation.screens.manga.states.TrendingMangaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,13 +35,15 @@ class MangaViewModel @Inject constructor(
         viewModelScope.launch {
             mangaUseCases.getTrendingManga()
                 .onStart {
-                    _trendingMangaState.value = TrendingMangaState(isLoading = true)
+                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _trendingMangaState.value = TrendingMangaState(errorMessage = e.message)
+                    _trendingMangaState.value = _trendingMangaState.value.copy(errorMessage = e.message)
+                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = false)
                 }.collectLatest { result ->
                     val trendingManga = result.body()?.data?.map { it.toModel() }
-                    _trendingMangaState.value = TrendingMangaState(trendingMangaList = trendingManga)
+                    _trendingMangaState.value = _trendingMangaState.value.copy(trendingMangaList = trendingManga)
+                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = false)
                 }
 
         }
@@ -50,13 +54,15 @@ class MangaViewModel @Inject constructor(
         viewModelScope.launch {
             mangaUseCases.getManga()
                 .onStart {
-                    _mangaState.value = MangaState(isLoading = true)
+                    _mangaState.value = _mangaState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _mangaState.value = MangaState(errorMessage = e.message)
+                    _mangaState.value = _mangaState.value.copy(errorMessage = e.message)
+                    _mangaState.value = _mangaState.value.copy(isLoading = false)
                 }.collectLatest { result ->
                     val manga = result.body()?.data?.map { it.toModel() }
-                    _mangaState.value = MangaState(manga = manga)
+                    _mangaState.value = _mangaState.value.copy(manga = manga)
+                    _mangaState.value = _mangaState.value.copy(isLoading = false)
                 }
         }
     }

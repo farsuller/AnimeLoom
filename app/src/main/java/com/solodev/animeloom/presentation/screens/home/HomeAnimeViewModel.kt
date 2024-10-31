@@ -3,6 +3,9 @@ package com.solodev.animeloom.presentation.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
+import com.solodev.animeloom.presentation.screens.home.states.AnimeState
+import com.solodev.animeloom.presentation.screens.home.states.CategoryState
+import com.solodev.animeloom.presentation.screens.home.states.TrendingAnimeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,17 +44,15 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             animesUseCases.getTrendingAnimes()
                 .onStart {
-                    _trendingAnimeState.value = TrendingAnimeState(isLoading = true)
+                    _trendingAnimeState.value =  _trendingAnimeState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _trendingAnimeState.value = TrendingAnimeState(errorMessage = e.message)
+                    _trendingAnimeState.value =  _trendingAnimeState.value.copy(errorMessage = e.message)
+                    _trendingAnimeState.value = _trendingAnimeState.value.copy(isLoading = false)
                 }.collectLatest { result ->
-
                     val trendingAnimes = result.body()?.data?.map { it.toModel() }
-                        ?.filter { it.attributes?.popularityRank != null }
-                        ?.sortedBy { it.attributes?.popularityRank }
-
-                    _trendingAnimeState.value = TrendingAnimeState(trendingAnimeList = trendingAnimes)
+                    _trendingAnimeState.value = _trendingAnimeState.value.copy(trendingAnimeList = trendingAnimes)
+                    _trendingAnimeState.value =  _trendingAnimeState.value.copy(isLoading = false)
                 }
         }
     }
@@ -60,17 +61,19 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             animesUseCases.getAnime()
                 .onStart {
-                    _animeState.value = AnimeState(isLoading = true)
+                    _animeState.value = _animeState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _animeState.value = AnimeState(errorMessage = e.message)
+                    _animeState.value = _animeState.value.copy(errorMessage = e.message)
+                    _animeState.value = _animeState.value.copy(isLoading = false)
                 }.collectLatest { result ->
 
                     val animes = result.body()?.data?.map { it.toModel() }
                         ?.filter { it.attributes?.popularityRank != null }
                         ?.sortedBy { it.attributes?.popularityRank }
 
-                    _animeState.value = AnimeState(animeDataList = animes)
+                    _animeState.value = _animeState.value.copy(animeDataList = animes)
+                    _animeState.value = _animeState.value.copy(isLoading = false)
                 }
         }
     }
@@ -79,14 +82,16 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             animesUseCases.getCategories()
                 .onStart {
-                    _categoryState.value = CategoryState(isLoading = true)
+                    _categoryState.value = _categoryState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _categoryState.value = CategoryState(errorMessage = e.message)
+                    _categoryState.value = _categoryState.value.copy(errorMessage = e.message)
+                    _categoryState.value = _categoryState.value.copy(isLoading = false)
                 }.collectLatest { result ->
 
                     val categories = result.body()?.data?.map { it.toModel() }
-                    _categoryState.value = CategoryState(categories = categories)
+                    _categoryState.value = _categoryState.value.copy(categories = categories)
+                    _categoryState.value = _categoryState.value.copy(isLoading = false)
                 }
         }
     }
