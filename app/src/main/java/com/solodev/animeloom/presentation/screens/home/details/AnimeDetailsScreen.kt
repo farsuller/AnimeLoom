@@ -65,7 +65,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     Scaffold(
         topBar = {
             GenericDetailTopBar(
-                onBookmarkClick = { viewModel.onEvent(AnimeDetailsEvent.UpsertDeleteAnime(animeData)) },
+                onBookmarkClick = { viewModel.onEvent(AnimeDetailsEvent.UpsertDeleteAnime(animeData.copy(localId = id.hashCode().toString()))) },
                 onBackClick = navigateUp,
             )
         }

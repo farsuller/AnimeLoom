@@ -138,7 +138,7 @@ fun AnimesNavigator(
                         animeState = animeState,
                         trendingAnimeState = trendingAnimeState,
                         mangaState = mangaState,
-                        trendingManga = trendingManga,
+                        trendingMangaState = trendingManga,
                         bookmarkState = bookmarkState,
                         categoryState = categoryState,
                         onNavigate = onNavigate,

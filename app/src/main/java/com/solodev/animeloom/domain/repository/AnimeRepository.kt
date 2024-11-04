@@ -19,7 +19,7 @@ interface AnimeRepository {
 
     suspend fun upsertAnime(animeData: AnimeData)
 
-    suspend fun deleteAnime(animeData: AnimeData)
+    suspend fun deleteAnimeById(deleteAnimeById: String)
 
     fun selectAnime(): Flow<List<AnimeData>>
 

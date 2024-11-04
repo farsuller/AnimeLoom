@@ -55,17 +55,19 @@ fun SharedTransitionScope.BookmarkScreen(
         LazyRow(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(bookmarkState.bookMarkMangaState) { manga ->
-                BookmarkedMangaCard(
-                    mangaData = manga,
-                    onClick = {
-                        onMangaClick(
-                            manga.attributes?.posterImage?.original ?: "",
-                            manga.id
-                        )
-                    },
-                    animatedVisibilityScope = animatedVisibilityScope
-                )
+            bookmarkState.bookMarkMangaList?.let {
+                items(bookmarkState.bookMarkMangaList) { manga ->
+                    BookmarkedMangaCard(
+                        mangaData = manga,
+                        onClick = {
+                            onMangaClick(
+                                manga.attributes?.posterImage?.original ?: "",
+                                manga.id
+                            )
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                }
             }
         }
 
@@ -73,17 +75,19 @@ fun SharedTransitionScope.BookmarkScreen(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(bookmarkState.bookMarkAnimeState) { anime ->
-                BookmarkedAnimeCard(
-                    animeData = anime,
-                    onClick = {
-                        onAnimeClick(
-                            anime.attributes?.posterImage?.original ?: "",
-                            anime.id
-                        )
-                    },
-                    animatedVisibilityScope = animatedVisibilityScope
-                )
+            bookmarkState.bookMarkAnimeList?.let {
+                items(bookmarkState.bookMarkAnimeList) { anime ->
+                    BookmarkedAnimeCard(
+                        animeData = anime,
+                        onClick = {
+                            onAnimeClick(
+                                anime.attributes?.posterImage?.original ?: "",
+                                anime.id
+                            )
+                        },
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
+                }
             }
         }
 

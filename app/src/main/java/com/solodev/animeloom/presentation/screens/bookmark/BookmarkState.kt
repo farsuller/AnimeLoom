@@ -4,6 +4,8 @@ import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
 
 data class BookmarkState(
-    val bookMarkAnimeState: List<AnimeData> = emptyList(),
-    val bookMarkMangaState: List<MangaData> = emptyList(),
+    val bookMarkAnimeList: List<AnimeData>? = null,
+    val bookMarkMangaList: List<MangaData>? = null,
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 )

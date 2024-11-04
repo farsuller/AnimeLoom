@@ -34,14 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
-import com.solodev.animeloom.presentation.common.ShimmerEffectCarousel
+import com.solodev.animeloom.presentation.common.ShimmerEffectCarouselWithHeader
 import com.solodev.animeloom.presentation.common.ShimmerEffectCategoryCarousel
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
+import com.solodev.animeloom.presentation.screens.home.components.HeaderSeeAll
 import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
-import com.solodev.animeloom.presentation.screens.home.components.HomeHeaderTitle
 import com.solodev.animeloom.presentation.screens.home.components.HomeMangaCard
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
 import com.solodev.animeloom.presentation.screens.home.states.CategoryState
@@ -61,7 +61,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
     animeState: AnimeState,
     trendingAnimeState: TrendingAnimeState,
     mangaState: MangaState,
-    trendingManga: TrendingMangaState,
+    trendingMangaState: TrendingMangaState,
     bookmarkState: BookmarkState,
     categoryState: CategoryState,
     onAnimeClick: (String?, String?) -> Unit,
@@ -118,7 +118,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         trendingAnimeState.trendingAnimeList != null -> {
                             HomeHeader(
                                 modifier = Modifier,
-                                animePosterHeader = trendingAnimeState.trendingAnimeList.firstOrNull()?.attributes?.posterImage?.original
+                                animeData = trendingAnimeState.trendingAnimeList.firstOrNull()
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                         }
@@ -149,7 +149,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                 }
                 item {
                     when {
-                        trendingAnimeState.isLoading -> ShimmerEffectCarousel()
+                        trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
                         trendingAnimeState.errorMessage != null -> {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
@@ -160,13 +160,13 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         }
 
                         trendingAnimeState.trendingAnimeList != null -> {
-                            HomeHeaderTitle(text = "Trending Anime")
+                            HeaderSeeAll(headerTitle = "Trending Anime")
 
                             LazyRow(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                items(trendingAnimeState.trendingAnimeList) { anime ->
+                                items(trendingAnimeState.trendingAnimeList.take(7)) { anime ->
                                     AnimeCard(
                                         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                         animeData = anime,
@@ -180,33 +180,31 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     )
                                 }
                             }
-
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
                 }
 
                 item {
                     when {
-                        trendingManga.isLoading -> ShimmerEffectCarousel()
-                        trendingManga.errorMessage != null -> {
+                        trendingMangaState.isLoading -> ShimmerEffectCarouselWithHeader()
+                        trendingMangaState.errorMessage != null -> {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(text = "Error: ${animeState.errorMessage}")
                             }
-
                         }
 
-                        trendingManga.trendingMangaList != null -> {
-                            HomeHeaderTitle(text = "Trending Manga")
+                        trendingMangaState.trendingMangaList != null -> {
+                            HeaderSeeAll(headerTitle = "Trending Manga")
 
                             LazyRow(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                items(trendingManga.trendingMangaList) { manga ->
+                                items(trendingMangaState.trendingMangaList.take(7)) { manga ->
                                     HomeMangaCard(
                                         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                         mangaData = manga,
@@ -220,15 +218,14 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
                 }
 
-
                 item {
                     when {
-                        animeState.isLoading -> ShimmerEffectCarousel()
+                        animeState.isLoading -> ShimmerEffectCarouselWithHeader()
                         animeState.errorMessage != null -> {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
@@ -236,16 +233,16 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             ) {
                                 Text(text = "Error: ${animeState.errorMessage}")
                             }
-
                         }
 
                         animeState.animeDataList != null -> {
-                            HomeHeaderTitle(text = "Anime")
+                            HeaderSeeAll(headerTitle = "Anime")
+
                             LazyRow(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                items(animeState.animeDataList) { anime ->
+                                items(animeState.animeDataList.take(7)) { anime ->
                                     AnimeCard(
                                         modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                         animeData = anime,
@@ -259,7 +256,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
                 }
@@ -274,6 +271,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
         }
     }
 }
+
+
 
 
 

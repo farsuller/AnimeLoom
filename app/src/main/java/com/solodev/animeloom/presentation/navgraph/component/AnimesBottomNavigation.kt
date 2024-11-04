@@ -58,10 +58,10 @@ fun AnimesBottomNavigation(
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = MaterialTheme.colorScheme.secondary,
-                    selectedTextColor = MaterialTheme.colorScheme.secondary,
-                    unselectedIconColor = MaterialTheme.colorScheme.primary,
-                    unselectedTextColor = MaterialTheme.colorScheme.primary,
+                    selectedIconColor = MaterialTheme.colorScheme.onSurface,
+                    selectedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    unselectedTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                 ),
             )
         }

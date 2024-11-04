@@ -11,10 +11,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HomeHeaderTitle(text : String= "", modifier : Modifier = Modifier){
     Text(
-        modifier = modifier
-            .padding(start = 8.dp, bottom = 10.dp),
+        modifier = modifier.padding(start = 8.dp, bottom = 10.dp),
         text = text,
-        style = MaterialTheme.typography.titleLarge,
+        style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
     )
 }

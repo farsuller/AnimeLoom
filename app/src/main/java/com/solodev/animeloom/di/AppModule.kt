@@ -9,7 +9,7 @@ import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.domain.usecase.anime.GetTrendingAnime
 import com.solodev.animeloom.domain.usecase.AppEntryUseCases
-import com.solodev.animeloom.domain.usecase.anime.DeleteAnime
+import com.solodev.animeloom.domain.usecase.anime.DeleteAnimeById
 import com.solodev.animeloom.domain.usecase.anime.GetAnime
 import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
 import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
@@ -62,7 +62,7 @@ object AppModule {
             getAnimeId = GetAnimeId(repository),
             getCategories = GetCategories(repository),
             upsertAnime = UpsertAnime(repository),
-            deleteAnime = DeleteAnime(repository),
+            deleteAnimeById = DeleteAnimeById(repository),
             selectAnime = SelectAnime(repository),
             selectAnimeById = SelectAnimeById(repository)
 

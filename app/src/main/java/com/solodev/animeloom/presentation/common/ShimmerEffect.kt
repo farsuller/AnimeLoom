@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,14 +26,28 @@ import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.toDp
 
 @Composable
-fun ShimmerEffectCarousel() {
-    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        repeat(10) {
-            AnimeCardShimmerEffect(
-                modifier = Modifier.padding(horizontal = 24.dp),
-            )
+fun ShimmerEffectCarouselWithHeader() {
+
+    Column {
+        Box(
+            modifier = Modifier
+                .padding(all = 4.dp)
+                .height(102.toDp())
+                .width(494.toDp())
+                .clip(MaterialTheme.shapes.small)
+                .shimmerEffect(),
+        )
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            repeat(10) {
+                AnimeCardShimmerEffect(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                )
+            }
         }
     }
+
+
 }
 
 @Composable
@@ -76,7 +91,7 @@ fun AnimeCardShimmerEffect(modifier: Modifier = Modifier) {
 fun HeaderShimmerEffect(modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
-            .height(300.dp)
+            .height(360.dp)
             .width(500.dp)
             .shimmerEffect(),
     )
@@ -112,7 +127,7 @@ internal fun ShimmerEffectPreview() {
 internal fun ShimmerEffectListPreview() {
     AnimeLoomTheme {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-            ShimmerEffectCarousel()
+            ShimmerEffectCarouselWithHeader()
         }
     }
 }

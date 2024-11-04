@@ -27,13 +27,13 @@ class BookmarkViewModel @Inject constructor(
 
     private fun getBookmarkedAnimes() {
         animesUseCases.selectAnime().onEach {
-            _bookMarkState.value = _bookMarkState.value.copy(bookMarkAnimeState = it.asReversed())
+            _bookMarkState.value = _bookMarkState.value.copy(bookMarkAnimeList = it.asReversed())
         }.launchIn(viewModelScope)
     }
 
     private fun getBookmarkedManga() {
         mangaUseCases.selectManga().onEach {
-            _bookMarkState.value = _bookMarkState.value.copy(bookMarkMangaState = it.asReversed())
+            _bookMarkState.value = _bookMarkState.value.copy(bookMarkMangaList = it.asReversed())
         }.launchIn(viewModelScope)
     }
 }

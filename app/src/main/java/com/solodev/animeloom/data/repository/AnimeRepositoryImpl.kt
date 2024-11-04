@@ -37,8 +37,8 @@ class AnimeRepositoryImpl @Inject constructor(
         animeDao.upsert(animeData = animeData)
     }
 
-    override suspend fun deleteAnime(animeData: AnimeData) {
-        animeDao.delete(animeData = animeData)
+    override suspend fun deleteAnimeById(deleteAnimeById: String) {
+        animeDao.deleteById(id = deleteAnimeById)
     }
 
     override fun selectAnime(): Flow<List<AnimeData>> {

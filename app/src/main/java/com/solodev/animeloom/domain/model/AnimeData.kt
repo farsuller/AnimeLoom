@@ -17,6 +17,8 @@ data class AnimeData(
 
     @SerializedName("attributes")
     val attributes: Attributes? = null,
+
+    val localId: String = ""
 ):Parcelable
 
 

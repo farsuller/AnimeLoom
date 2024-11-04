@@ -39,7 +39,7 @@ class AnimeDetailsViewModel @Inject constructor(
                         upsertAnime(animeData = event.animeData)
                     }
                     else{
-                        deleteAnime(animeData = event.animeData)
+                        deleteAnime(deleteAnimeById = event.animeData.localId)
                     }
                 }
             }
@@ -69,8 +69,8 @@ class AnimeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteAnime(animeData: AnimeData) {
-        animesUseCases.deleteAnime(animeData = animeData)
+    private suspend fun deleteAnime(deleteAnimeById: String) {
+        animesUseCases.deleteAnimeById(deleteAnimeById = deleteAnimeById)
         sideEffect = "DeleteAnime"
     }
 
