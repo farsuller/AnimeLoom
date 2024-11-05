@@ -27,11 +27,17 @@ class MangaViewModel @Inject constructor(
     val trendingMangaState: StateFlow<TrendingMangaState> = _trendingMangaState.asStateFlow()
 
     init {
-        getManga()
-        getTrendingManga()
+        requestApis()
     }
 
-    private fun getTrendingManga(){
+    fun requestApis() {
+        viewModelScope.launch {
+            getManga()
+            getTrendingManga()
+        }
+    }
+
+    private fun getTrendingManga() {
         viewModelScope.launch {
             mangaUseCases.getTrendingManga()
                 .onStart {

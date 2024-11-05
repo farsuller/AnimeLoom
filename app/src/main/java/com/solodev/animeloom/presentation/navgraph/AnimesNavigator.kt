@@ -69,6 +69,14 @@ fun AnimesNavigator(
 
     val lastRoute = mainViewModel.getLastRoute()
 
+    val animeState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
+    val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
+    val trendingManga by homeAnimesViewModel.trendingMangaState.collectAsStateWithLifecycle()
+    val isLoadingHomeData by homeAnimesViewModel.isLoadingData.collectAsStateWithLifecycle()
+    val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
+    val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
+    val bookmarkState = bookmarkViewModel.bookmarkState.value
+
     LaunchedEffect(key1 = Unit) {
         delay(300L)
         if (lastRoute.isNotEmpty() && lastRoute != Route.AnimesNavigation.route) {
@@ -127,13 +135,6 @@ fun AnimesNavigator(
             ) {
 
                 composable(Route.HomeRoute.route) {
-                    val animeState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
-                    val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
-                    val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
-                    val trendingManga by mangaViewModel.trendingMangaState.collectAsStateWithLifecycle()
-                    val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
-                    val bookmarkState = bookmarkViewModel.bookmarkState.value
-
                     HomeAnimesScreen(
                         animeState = animeState,
                         trendingAnimeState = trendingAnimeState,
@@ -141,9 +142,11 @@ fun AnimesNavigator(
                         trendingMangaState = trendingManga,
                         bookmarkState = bookmarkState,
                         categoryState = categoryState,
+                        isLoadingData = isLoadingHomeData,
                         onNavigate = onNavigate,
                         onPullRefresh = {
                             homeAnimesViewModel.requestApis()
+                            mangaViewModel.requestApis()
                         },
                         onAnimeClick = { cover, id ->
                             navController.navigate(
@@ -179,8 +182,6 @@ fun AnimesNavigator(
                 }
 
                 composable(Route.MangaRoute.route) {
-                    val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
-
                     MangaScreen(
                         mangaState = mangaState,
                         onNavigate = onNavigate,
@@ -210,9 +211,6 @@ fun AnimesNavigator(
                 }
 
                 composable(Route.BookmarkRoute.route) {
-
-                    val bookmarkState = bookmarkViewModel.bookmarkState.value
-
                     BookmarkScreen(
                         bookmarkState = bookmarkState,
                         onNavigate = onNavigate,

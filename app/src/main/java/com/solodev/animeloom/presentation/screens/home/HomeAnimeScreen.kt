@@ -19,6 +19,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,6 +65,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
     trendingMangaState: TrendingMangaState,
     bookmarkState: BookmarkState,
     categoryState: CategoryState,
+    isLoadingData : Boolean,
     onAnimeClick: (String?, String?) -> Unit,
     onMangaClick: (String?, String?) -> Unit,
     onNavigate: (String) -> Unit,
@@ -99,168 +101,176 @@ fun SharedTransitionScope.HomeAnimesScreen(
             modifier = Modifier
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
 
-                item {
-                    when {
-                        trendingAnimeState.isLoading -> HeaderShimmerEffect()
-                        trendingAnimeState.errorMessage != null -> {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error: ${animeState.errorMessage}")
-                            }
-                        }
+            if (isLoadingData) {
+                CircularProgressIndicator()
+            }
+            else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
 
-                        trendingAnimeState.trendingAnimeList != null -> {
-                            HomeHeader(
-                                modifier = Modifier,
-                                animeData = trendingAnimeState.trendingAnimeList.firstOrNull()
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
-                    }
-                }
-
-                item {
-                    when {
-                        categoryState.isLoading -> ShimmerEffectCategoryCarousel()
-                        categoryState.errorMessage != null -> {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error: ${animeState.errorMessage}")
-                            }
-                        }
-
-                        categoryState.categories != null -> {
-                            AnimeCategoryChips(
-                                modifier = Modifier,
-                                categoryState = categoryState
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                        }
-                    }
-
-                }
-                item {
-                    when {
-                        trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                        trendingAnimeState.errorMessage != null -> {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error: ${animeState.errorMessage}")
-                            }
-                        }
-
-                        trendingAnimeState.trendingAnimeList != null -> {
-                            HeaderSeeAll(headerTitle = "Trending Anime")
-
-                            LazyRow(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(trendingAnimeState.trendingAnimeList.take(7)) { anime ->
-                                    AnimeCard(
-                                        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                                        animeData = anime,
-                                        onClick = {
-                                            onAnimeClick(
-                                                anime.attributes?.posterImage?.original ?: "",
-                                                anime.id
-                                            )
-                                        },
-                                        animatedVisibilityScope = animatedVisibilityScope
-                                    )
+                    item {
+                        when {
+                            trendingAnimeState.isLoading -> HeaderShimmerEffect()
+                            trendingAnimeState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
                                 }
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+
+                            trendingAnimeState.trendingAnimeList != null -> {
+                                HomeHeader(
+                                    modifier = Modifier,
+                                    animeData = trendingAnimeState.trendingAnimeList.firstOrNull()
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
                         }
                     }
-                }
 
-                item {
-                    when {
-                        trendingMangaState.isLoading -> ShimmerEffectCarouselWithHeader()
-                        trendingMangaState.errorMessage != null -> {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error: ${animeState.errorMessage}")
+                    item {
+                        when {
+                            categoryState.isLoading -> ShimmerEffectCategoryCarousel()
+                            categoryState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            categoryState.categories != null -> {
+                                AnimeCategoryChips(
+                                    modifier = Modifier,
+                                    categoryState = categoryState
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
 
-                        trendingMangaState.trendingMangaList != null -> {
-                            HeaderSeeAll(headerTitle = "Trending Manga")
-
-                            LazyRow(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(trendingMangaState.trendingMangaList.take(7)) { manga ->
-                                    HomeMangaCard(
-                                        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                                        mangaData = manga,
-                                        onClick = {
-                                            onMangaClick(
-                                                manga.attributes?.posterImage?.original ?: "",
-                                                manga.id
-                                            )
-                                        },
-                                        animatedVisibilityScope = animatedVisibilityScope
-                                    )
+                    }
+                    item {
+                        when {
+                            trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            trendingAnimeState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
                                 }
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+
+                            trendingAnimeState.trendingAnimeList != null -> {
+                                HeaderSeeAll(headerTitle = "Trending Anime")
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(trendingAnimeState.trendingAnimeList.take(7)) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
                         }
                     }
-                }
 
-                item {
-                    when {
-                        animeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                        animeState.errorMessage != null -> {
-                            Box(
-                                modifier = Modifier.fillMaxWidth(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(text = "Error: ${animeState.errorMessage}")
-                            }
-                        }
-
-                        animeState.animeDataList != null -> {
-                            HeaderSeeAll(headerTitle = "Anime")
-
-                            LazyRow(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(animeState.animeDataList.take(7)) { anime ->
-                                    AnimeCard(
-                                        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                                        animeData = anime,
-                                        onClick = {
-                                            onAnimeClick(
-                                                anime.attributes?.posterImage?.original ?: "",
-                                                anime.id
-                                            )
-                                        },
-                                        animatedVisibilityScope = animatedVisibilityScope
-                                    )
+                    item {
+                        when {
+                            trendingMangaState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            trendingMangaState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
                                 }
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+
+                            trendingMangaState.trendingMangaList != null -> {
+                                HeaderSeeAll(headerTitle = "Trending Manga")
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(trendingMangaState.trendingMangaList.take(7)) { manga ->
+                                        HomeMangaCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            mangaData = manga,
+                                            onClick = {
+                                                onMangaClick(
+                                                    manga.attributes?.posterImage?.original ?: "",
+                                                    manga.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
+                        }
+                    }
+
+                    item {
+                        when {
+                            animeState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            animeState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            animeState.animeDataList != null -> {
+                                HeaderSeeAll(headerTitle = "Anime")
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(animeState.animeDataList.take(7)) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
                         }
                     }
                 }
             }
+
+
             PullRefreshIndicator(
                 refreshing = isRefreshing,
                 state = pullRefreshState,
