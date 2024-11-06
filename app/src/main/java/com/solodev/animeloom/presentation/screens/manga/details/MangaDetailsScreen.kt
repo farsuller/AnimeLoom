@@ -144,8 +144,6 @@ fun SharedTransitionScope.MangaDetailsScreen(
                 }
             }
         }
-
-
     }
 }
 
