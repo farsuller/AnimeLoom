@@ -17,25 +17,19 @@ val provider = GoogleFont.Provider(
 )
 
 val bodyFontFamily = FontFamily(
-    Font(
-        googleFont = GoogleFont("Ubuntu"),
-        fontProvider = provider,
-    )
+    Font(googleFont = GoogleFont("Ubuntu"),
+        fontProvider = provider,)
 )
 
 val displayFontFamily = FontFamily(
-    Font(
-        googleFont = GoogleFont("Ubuntu"),
-        fontProvider = provider,
-    )
+    Font(googleFont = GoogleFont("Ubuntu"),
+        fontProvider = provider,)
 )
 
 val posterHeaderFontFamily = FontFamily(
     Font(R.font.bigshot_one_regular, FontWeight.Normal),
 )
 
-
-// Default Material 3 typography values
 val baseline = Typography()
 
 val AppTypography = Typography(
