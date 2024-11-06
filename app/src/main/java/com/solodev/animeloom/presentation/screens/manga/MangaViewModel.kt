@@ -51,10 +51,8 @@ class MangaViewModel @Inject constructor(
                     _trendingMangaState.value = _trendingMangaState.value.copy(trendingMangaList = trendingManga)
                     _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = false)
                 }
-
         }
     }
-
 
     private fun getManga() {
         viewModelScope.launch {
