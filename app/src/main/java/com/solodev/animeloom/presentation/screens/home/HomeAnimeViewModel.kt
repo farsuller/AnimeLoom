@@ -134,6 +134,4 @@ class HomeAnimeViewModel @Inject constructor(
                 }
         }
     }
-
-
 }
