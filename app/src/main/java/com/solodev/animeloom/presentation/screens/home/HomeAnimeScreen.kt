@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.solodev.animeloom.presentation.common.HeaderBar
 import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
 import com.solodev.animeloom.presentation.common.ShimmerEffectCarouselWithHeader
 import com.solodev.animeloom.presentation.common.ShimmerEffectCategoryCarousel
@@ -41,7 +42,8 @@ import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
-import com.solodev.animeloom.presentation.screens.home.components.HeaderSeeAll
+import com.solodev.animeloom.presentation.common.HeaderTitle
+import com.solodev.animeloom.presentation.common.SeeAll
 import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
 import com.solodev.animeloom.presentation.screens.home.components.HomeMangaCard
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
@@ -167,7 +169,9 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             trendingAnimeState.trendingAnimeList != null -> {
-                                HeaderSeeAll(headerTitle = "Trending Anime")
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Trending Anime"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime"))
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -205,7 +209,9 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             trendingMangaState.trendingMangaList != null -> {
-                                HeaderSeeAll(headerTitle = "Trending Manga")
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Trending Manga"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga"))
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -243,7 +249,9 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             animeState.animeDataList != null -> {
-                                HeaderSeeAll(headerTitle = "Anime")
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Anime"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Anime"))
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),

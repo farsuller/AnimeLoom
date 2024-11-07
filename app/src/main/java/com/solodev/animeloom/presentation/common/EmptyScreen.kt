@@ -24,7 +24,6 @@ import com.solodev.animeloom.utils.AnimesPreviews
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-//Reused Screen for Search Empty Screen and Bookmark Screen
 @Composable
 fun EmptyScreen(error: LoadState.Error? = null, isBookmarkScreen: Boolean = false) {
     var message by remember {

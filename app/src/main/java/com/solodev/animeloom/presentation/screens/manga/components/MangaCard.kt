@@ -64,7 +64,7 @@ fun SharedTransitionScope.MangaCard(
 
             Text(
                 text = mangaData.attributes?.canonicalTitle ?: "Default Title",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface,
                 lineHeight = 20.sp,
                 maxLines = 2,
