@@ -18,7 +18,7 @@ interface MangaRepository {
 
     suspend fun upsertManga(mangaData: MangaData)
 
-    suspend fun deleteManga(mangaData: MangaData)
+    suspend fun deleteMangaById(deleteMangaById: String)
 
     fun selectManga(): Flow<List<MangaData>>
 

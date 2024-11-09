@@ -1,12 +1,13 @@
 package com.solodev.animeloom.domain.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-
+@Immutable
 @Parcelize
 @Entity(tableName = "manga_data")
 data class MangaData(
@@ -20,4 +21,6 @@ data class MangaData(
 
     @SerializedName("attributes")
     val attributes : Attributes? = null,
+
+    val localId: String = ""
 ):Parcelable

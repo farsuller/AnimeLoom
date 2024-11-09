@@ -21,9 +21,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.solodev.animeloom.presentation.common.EmptyBookmarked
+import com.solodev.animeloom.presentation.common.HeaderBar
+import com.solodev.animeloom.presentation.common.HeaderTitle
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.components.BookmarkedAnimeCard
 import com.solodev.animeloom.presentation.screens.bookmark.components.BookmarkedMangaCard
+import com.solodev.animeloom.utils.alasIdString
+import com.solodev.animeloom.utils.aliasLocalIdString
+import com.solodev.animeloom.utils.aliasPosterString
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -31,11 +37,10 @@ import com.solodev.animeloom.presentation.screens.bookmark.components.Bookmarked
 fun SharedTransitionScope.BookmarkScreen(
     bookmarkState: BookmarkState,
     onNavigate: (String) -> Unit,
-    onAnimeClick: (String, String) -> Unit,
-    onMangaClick: (String, String) -> Unit,
+    onAnimeClick: (aliasPosterString, alasIdString, aliasLocalIdString) -> Unit,
+    onMangaClick: (aliasPosterString, alasIdString, aliasLocalIdString) -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-
     LaunchedEffect(Unit) {
         onNavigate(Route.BookmarkRoute.route)
     }
@@ -44,25 +49,33 @@ fun SharedTransitionScope.BookmarkScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .padding(top = 24.dp, start = 24.dp, end = 24.dp),
+            .padding(top = 24.dp),
     ) {
         Text(
+            modifier = Modifier.padding(start = 8.dp,),
             text = "Bookmark",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface,
         )
+        Spacer(modifier = Modifier.height(10.dp))
 
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            bookmarkState.bookMarkMangaList?.let {
+        HeaderBar(headerTitle = HeaderTitle(text = "Manga"))
+        if (bookmarkState.bookMarkMangaList?.isEmpty() == true || bookmarkState.bookMarkMangaList == null) {
+            EmptyBookmarked(
+                message = "Bookmark your Favorite Manga")
+        } else {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
                 items(bookmarkState.bookMarkMangaList) { manga ->
                     BookmarkedMangaCard(
                         mangaData = manga,
                         onClick = {
                             onMangaClick(
                                 manga.attributes?.posterImage?.original ?: "",
-                                manga.id
+                                manga.id,
+                                manga.localId
                             )
                         },
                         animatedVisibilityScope = animatedVisibilityScope
@@ -70,19 +83,27 @@ fun SharedTransitionScope.BookmarkScreen(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        HeaderBar(headerTitle = HeaderTitle(text = "Anime"))
 
-        LazyColumn(
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            bookmarkState.bookMarkAnimeList?.let {
+        if (bookmarkState.bookMarkAnimeList?.isEmpty() == true || bookmarkState.bookMarkAnimeList == null) {
+            EmptyBookmarked(
+                message = "Bookmark your Favorite Anime",
+                modifier = Modifier.fillMaxWidth().height(300.dp))
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+
                 items(bookmarkState.bookMarkAnimeList) { anime ->
                     BookmarkedAnimeCard(
                         animeData = anime,
                         onClick = {
                             onAnimeClick(
                                 anime.attributes?.posterImage?.original ?: "",
-                                anime.id
+                                anime.id,
+                                anime.localId
                             )
                         },
                         animatedVisibilityScope = animatedVisibilityScope
@@ -90,9 +111,6 @@ fun SharedTransitionScope.BookmarkScreen(
                 }
             }
         }
-
         Spacer(modifier = Modifier.height(24.dp))
-
-
     }
 }

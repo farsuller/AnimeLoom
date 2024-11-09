@@ -50,7 +50,7 @@ fun SharedTransitionScope.BookmarkedAnimeCard(
                 contentDescription = animeData.attributes?.canonicalTitle,
                 modifier = Modifier
                     .sharedElement(
-                        rememberSharedContentState(key = animeData.id),
+                        rememberSharedContentState(key = animeData.localId),
                         animatedVisibilityScope = animatedVisibilityScope,
                         boundsTransform = { _, _ ->
                             tween(durationMillis = 500)
@@ -70,9 +70,9 @@ fun SharedTransitionScope.BookmarkedAnimeCard(
                 ) {
                 Text(
                     text = animeData.attributes?.canonicalTitle ?: "Default Title",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface,
-                    lineHeight = 20.sp,
+                    lineHeight = 30.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )

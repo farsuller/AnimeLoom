@@ -9,14 +9,18 @@ import androidx.compose.ui.Modifier
 
 
 @Composable
-fun HeaderBar(headerTitle: HeaderTitle, seeAll: SeeAll) {
+fun HeaderBar(headerTitle: HeaderTitle? = null, seeAll: SeeAll? = null) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        headerTitle()
-        seeAll()
+        if (headerTitle != null) {
+            headerTitle()
+        }
+        if (seeAll != null) {
+            seeAll()
+        }
     }
 }

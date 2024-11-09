@@ -9,22 +9,22 @@ import kotlinx.parcelize.Parcelize
 data class PosterImage(
 
     @SerializedName("tiny")
-    val tiny: String?,
+    val tiny: String? = null,
 
     @SerializedName("small")
-    val small: String?,
+    val small: String? = null,
 
     @SerializedName("medium")
-    val medium: String?,
+    val medium: String? = null,
 
     @SerializedName("large")
-    val large: String?,
+    val large: String? = null,
 
     @SerializedName("original")
-    val original: String?,
+    val original: String? = null,
 
     @SerializedName("meta")
-    val meta: Meta?
+    val meta: Meta? = null
 
 
 ) : Parcelable

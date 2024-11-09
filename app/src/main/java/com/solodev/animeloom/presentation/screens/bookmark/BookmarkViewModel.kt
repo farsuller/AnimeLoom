@@ -17,7 +17,7 @@ class BookmarkViewModel @Inject constructor(
     private val mangaUseCases: MangaUseCases
 ) : ViewModel() {
 
-    private val _bookMarkState = mutableStateOf(BookmarkState())
+    private val _bookMarkState = mutableStateOf(BookmarkState(bookMarkAnimeList = null, bookMarkMangaList = null))
     val bookmarkState: State<BookmarkState> = _bookMarkState
 
     init {

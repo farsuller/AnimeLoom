@@ -71,11 +71,11 @@ class AnimeDetailsViewModel @Inject constructor(
 
     private suspend fun deleteAnime(deleteAnimeById: String) {
         animesUseCases.deleteAnimeById(deleteAnimeById = deleteAnimeById)
-        sideEffect = "DeleteAnime"
+        sideEffect = "Deleted Bookmarked"
     }
 
     private suspend fun upsertAnime(animeData: AnimeData) {
         animesUseCases.upsertAnime(animeData = animeData)
-        sideEffect = "UpsertAnime"
+        sideEffect = "Bookmarked"
     }
 }

@@ -32,18 +32,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.solodev.animeloom.domain.model.AnimeData
-import com.solodev.animeloom.presentation.common.GenericDetailTopBar
+import com.solodev.animeloom.presentation.common.DetailHeaderBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.AnimeDetailsScreen(
     id: String,
+    localId: String = "",
+    isFromBookmark: Boolean = false,
     coverImage: String,
     navigateUp: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
@@ -63,12 +64,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     }
 
     Scaffold(
-        topBar = {
-            GenericDetailTopBar(
-                onBookmarkClick = { viewModel.onEvent(AnimeDetailsEvent.UpsertDeleteAnime(animeData.copy(localId = id.hashCode().toString()))) },
-                onBackClick = navigateUp,
-            )
-        }
+        modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -83,7 +79,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .sharedElement(
-                            rememberSharedContentState(key = id),
+                            rememberSharedContentState(key = if (isFromBookmark) localId else id),
                             animatedVisibilityScope = animatedVisibilityScope,
                             boundsTransform = { _, _ ->
                                 tween(durationMillis = 500)
@@ -118,18 +114,21 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                     animeState.animeDataDetail != null -> {
                         Column(
-                            modifier = Modifier
-                                .padding(horizontal = 20.dp, vertical = 10.dp)
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = animeState.animeDataDetail?.attributes?.canonicalTitle
-                                    ?: "Default Title",
-                                style = MaterialTheme.typography.displaySmall,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            DetailHeaderBar(
+                                navigateUp = navigateUp,
+                                titleDetail = animeState.animeDataDetail?.attributes?.canonicalTitle,
+                                onBookmarkClick = {
+                                    viewModel.onEvent(
+                                        AnimeDetailsEvent.UpsertDeleteAnime(
+                                            animeData.copy(localId = id.hashCode().toString())
+                                        )
+                                    )
+                                })
 
                             Row {
                                 Text(
@@ -160,7 +159,12 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            Column(horizontalAlignment = Alignment.Start) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(horizontal = 20.dp, vertical = 10.dp)
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.Start
+                            ) {
                                 Text(
                                     text = "Synopsis",
                                     style = MaterialTheme.typography.titleLarge,
@@ -173,8 +177,6 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                 }
             }
         }
-
-
     }
 }
 

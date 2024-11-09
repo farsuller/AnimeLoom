@@ -2,6 +2,10 @@ package com.solodev.animeloom.utils
 
 import androidx.compose.ui.unit.dp
 
+typealias alasIdString = String
+typealias aliasPosterString = String
+typealias aliasLocalIdString = String
+
 object Constants {
 
     const val USER_SETTINGS = "userSettings"

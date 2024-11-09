@@ -148,19 +148,23 @@ fun AnimesNavigator(
                             homeAnimesViewModel.requestApis()
                             mangaViewModel.requestApis()
                         },
-                        onAnimeClick = { cover, id ->
+                        onAnimeClick = { cover, id, localId ->
                             navController.navigate(
                                 Route.AnimeDetailsRoute(
                                     animeId = id ?: "",
                                     coverImage = cover ?: "",
+                                    localId = localId,
+                                    isFromBookmarked = false
                                 )
                             )
                         },
-                        onMangaClick = { cover, id ->
+                        onMangaClick = { cover, id, localId ->
                             navController.navigate(
                                 Route.MangaDetailsRoute(
                                     mangaId = id ?: "",
-                                    coverImage = cover ?: ""
+                                    coverImage = cover ?: "",
+                                    localId = localId,
+                                    isFromBookmarked = false
                                 )
                             )
                         },
@@ -185,11 +189,13 @@ fun AnimesNavigator(
                     MangaScreen(
                         mangaState = mangaState,
                         onNavigate = onNavigate,
-                        onMangaClick = { cover, id ->
+                        onMangaClick = { cover, id , localId ->
                             navController.navigate(
                                 Route.MangaDetailsRoute(
                                     mangaId = id ?: "",
-                                    coverImage = cover ?: ""
+                                    coverImage = cover ?: "",
+                                    localId = localId,
+                                    isFromBookmarked = false
                                 )
                             )
                         },
@@ -214,14 +220,14 @@ fun AnimesNavigator(
                     BookmarkScreen(
                         bookmarkState = bookmarkState,
                         onNavigate = onNavigate,
-                        onAnimeClick = { cover, id ->
+                        onAnimeClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover)
+                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover, localId = localId, isFromBookmarked = true)
                             )
                         },
-                        onMangaClick = { cover, id ->
+                        onMangaClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover)
+                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover, localId = localId, isFromBookmarked = true)
                             )
                         },
                         animatedVisibilityScope = this

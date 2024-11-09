@@ -38,7 +38,7 @@ class MangaDetailsViewModel @Inject constructor(
                         upsertManga(manga = event.mangaData)
                     }
                     else{
-                        deleteManga(manga = event.mangaData)
+                        deleteMangaById(deleteMangaById = event.mangaData.localId)
                     }
                 }
             }
@@ -70,13 +70,13 @@ class MangaDetailsViewModel @Inject constructor(
 
     
 
-    private suspend fun deleteManga(manga: MangaData) {
-        mangaUseCases.deleteManga(mangaData = manga)
-        sideEffect = "DeleteManga"
+    private suspend fun deleteMangaById(deleteMangaById: String) {
+        mangaUseCases.deleteMangaById(deleteMangaById = deleteMangaById)
+        sideEffect = "Deleted Bookmarked"
     }
 
     private suspend fun upsertManga(manga: MangaData) {
         mangaUseCases.upsertManga(mangaData = manga)
-        sideEffect = "UpsertManga"
+        sideEffect = "Bookmarked"
     }
 }

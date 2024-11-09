@@ -32,8 +32,8 @@ class MangaRepositoryImpl @Inject constructor(
         mangaDao.upsert(mangaData = mangaData)
     }
 
-    override suspend fun deleteManga(mangaData: MangaData) {
-        mangaDao.delete(mangaData = mangaData)
+    override suspend fun deleteMangaById(deleteMangaById: String) {
+        mangaDao.deleteById(id = deleteMangaById)
     }
 
     override fun selectManga(): Flow<List<MangaData>> {

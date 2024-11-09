@@ -27,19 +27,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.solodev.animeloom.domain.model.MangaData
-import com.solodev.animeloom.presentation.common.GenericDetailTopBar
-import com.solodev.animeloom.presentation.screens.home.details.AnimeDetailsEvent
+import com.solodev.animeloom.presentation.common.DetailHeaderBar
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.MangaDetailsScreen(
-    id: String,
+    id: String = "",
+    localId: String = "",
+    isFromBookmark: Boolean = false,
     coverImage: String,
     navigateUp: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
@@ -59,14 +59,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
         viewModel.getMangaById(id.toInt())
     }
 
-    Scaffold(
-        topBar = {
-            GenericDetailTopBar(
-                onBookmarkClick = { viewModel.onEvent(MangaDetailsEvent.UpsertDeleteManga(mangaData)) },
-                onBackClick = navigateUp,
-            )
-        }
-    ) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -80,7 +73,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .sharedElement(
-                            rememberSharedContentState(key = id),
+                            rememberSharedContentState(key = if (isFromBookmark) localId else id),
                             animatedVisibilityScope = animatedVisibilityScope,
                             boundsTransform = { _, _ ->
                                 tween(durationMillis = 500)
@@ -115,23 +108,28 @@ fun SharedTransitionScope.MangaDetailsScreen(
 
                     mangaState.mangaDataDetail != null -> {
                         Column(
-                            modifier = Modifier
-                                .padding(horizontal = 20.dp, vertical = 10.dp)
-                                .fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = mangaState.mangaDataDetail?.attributes?.canonicalTitle
-                                    ?: "Default Title",
-                                style = MaterialTheme.typography.displaySmall,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
+                            Spacer(modifier = Modifier.height(10.dp))
 
+                            DetailHeaderBar(
+                                navigateUp = navigateUp,
+                                titleDetail = mangaState.mangaDataDetail?.attributes?.canonicalTitle,
+                                onBookmarkClick = {
+                                    viewModel.onEvent(
+                                        MangaDetailsEvent.UpsertDeleteManga(
+                                            mangaData.copy(localId = id.hashCode().toString())
+                                        )
+                                    )
+                                })
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            Column(horizontalAlignment = Alignment.Start) {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
+                                horizontalAlignment = Alignment.Start
+                            ) {
                                 Text(
                                     text = "Synopsis",
                                     style = MaterialTheme.typography.titleLarge,

@@ -51,6 +51,9 @@ import com.solodev.animeloom.presentation.screens.home.states.CategoryState
 import com.solodev.animeloom.presentation.screens.home.states.TrendingAnimeState
 import com.solodev.animeloom.presentation.screens.manga.states.MangaState
 import com.solodev.animeloom.presentation.screens.manga.states.TrendingMangaState
+import com.solodev.animeloom.utils.alasIdString
+import com.solodev.animeloom.utils.aliasPosterString
+import com.solodev.animeloom.utils.aliasLocalIdString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -68,8 +71,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
     bookmarkState: BookmarkState,
     categoryState: CategoryState,
     isLoadingData : Boolean,
-    onAnimeClick: (String?, String?) -> Unit,
-    onMangaClick: (String?, String?) -> Unit,
+    onAnimeClick: (aliasPosterString?, alasIdString?, aliasLocalIdString) -> Unit,
+    onMangaClick: (aliasPosterString?, alasIdString?, aliasLocalIdString) -> Unit,
     onNavigate: (String) -> Unit,
     onPullRefresh: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
@@ -169,6 +172,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             trendingAnimeState.trendingAnimeList != null -> {
+                                val takeAnimeList = trendingAnimeState.trendingAnimeList.take(7)
+
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Anime"),
                                     seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime"))
@@ -177,14 +182,15 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    items(trendingAnimeState.trendingAnimeList.take(7)) { anime ->
+                                    items(takeAnimeList) { anime ->
                                         AnimeCard(
                                             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                             animeData = anime,
                                             onClick = {
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
-                                                    anime.id
+                                                    anime.id,
+                                                    anime.localId
                                                 )
                                             },
                                             animatedVisibilityScope = animatedVisibilityScope
@@ -209,6 +215,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             trendingMangaState.trendingMangaList != null -> {
+                                val filterRank = trendingMangaState.trendingMangaList.filter { f -> f.attributes?.ratingRank != null && f.attributes.ratingRank < 5000 }
+
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Manga"),
                                     seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga"))
@@ -217,14 +225,15 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    items(trendingMangaState.trendingMangaList.take(7)) { manga ->
+                                    items(filterRank) { manga ->
                                         HomeMangaCard(
                                             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                             mangaData = manga,
                                             onClick = {
                                                 onMangaClick(
                                                     manga.attributes?.posterImage?.original ?: "",
-                                                    manga.id
+                                                    manga.id,
+                                                    manga.localId
                                                 )
                                             },
                                             animatedVisibilityScope = animatedVisibilityScope
@@ -249,6 +258,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             }
 
                             animeState.animeDataList != null -> {
+                                val takeAnimeList = animeState.animeDataList.take(7)
+
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Anime"),
                                     seeAll = SeeAll(text = "See All", headerText = "See All Anime"))
@@ -257,14 +268,15 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                     modifier = Modifier.padding(horizontal = 8.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                    items(animeState.animeDataList.take(7)) { anime ->
+                                    items(takeAnimeList) { anime ->
                                         AnimeCard(
                                             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                                             animeData = anime,
                                             onClick = {
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
-                                                    anime.id
+                                                    anime.id,
+                                                    anime.localId
                                                 )
                                             },
                                             animatedVisibilityScope = animatedVisibilityScope

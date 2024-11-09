@@ -18,7 +18,7 @@ import com.solodev.animeloom.domain.usecase.anime.GetCategories
 import com.solodev.animeloom.domain.usecase.anime.SelectAnime
 import com.solodev.animeloom.domain.usecase.anime.SelectAnimeById
 import com.solodev.animeloom.domain.usecase.anime.UpsertAnime
-import com.solodev.animeloom.domain.usecase.manga.DeleteManga
+import com.solodev.animeloom.domain.usecase.manga.DeleteMangaById
 import com.solodev.animeloom.domain.usecase.manga.GetManga
 import com.solodev.animeloom.domain.usecase.manga.GetMangaId
 import com.solodev.animeloom.domain.usecase.manga.GetTrendingManga
@@ -79,7 +79,7 @@ object AppModule {
             getManga = GetManga(repository),
             getMangaId = GetMangaId(repository),
             upsertManga = UpsertManga(repository),
-            deleteManga = DeleteManga(repository),
+            deleteMangaById = DeleteMangaById(repository),
             selectManga = SelectManga(repository),
             selectMangaById = SelectMangaById(repository)
         )
