@@ -16,12 +16,12 @@ val pages = listOf(
         image = R.drawable.onboarding1,
     ),
     Page(
-        title = "Discover and Watch",
+        title = "Discover and Read",
         description = "Explore Timely Stories from Across the Globe",
         image = R.drawable.onboarding2,
     ),
     Page(
-        title = "Animes Recommendations ",
+        title = "Animes & Manga ",
         description = "Tailored to Suit Your Interests",
         image = R.drawable.onboarding3,
     ),
