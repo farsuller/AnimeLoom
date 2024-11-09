@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +10,20 @@ plugins {
     alias(libs.plugins.devtool.ksp)
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
+}
+
+val animeLoomProperties: Properties by lazy {
+    val properties = Properties()
+
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.inputStream())
+    } else {
+        throw FileNotFoundException("Local properties file not found.")
+    }
+
+    properties
 }
 
 android {
