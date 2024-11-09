@@ -35,7 +35,25 @@
 -keepclassmembers class androidx.compose.ui.platform.AndroidComposeView {
     android.view.View findViewByAccessibilityIdTraversal(int); }
 
--keep class com.solodev.animeloom.** { *; }
+-keep class com.solodev.animeloom.domain.model.** { *; }
+-keep class com.solodev.animeloom.data.** { *; }
+
+-keepclasseswithmembernames class * {
+    @retrofit2.* <methods>;
+}
+
+-keepclasseswithmembernames interface * {
+    @retrofit2.* <methods>;
+}
+
+-keepclasseswithmembernames class * {
+    @retrofit2.http.* <methods>;
+}
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
 
 # Users can create Modifier.Node instances that implement multiple Modifier.Node interfaces,
 # so we cannot tell whether two modifier.node instances are of the same type without using
