@@ -17,10 +17,12 @@ android {
         applicationId = "com.solodev.animeloom"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", "\"https://kitsu.io/api/edge/\"")
     }
 
     buildTypes {
