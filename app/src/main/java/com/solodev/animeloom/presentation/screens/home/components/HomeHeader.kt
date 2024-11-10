@@ -55,7 +55,7 @@ fun HomeHeader(
         ) {
             Text(
                 text = animeData?.attributes?.canonicalTitle ?: "",
-                style = MaterialTheme.typography.displayLarge.copy(fontSize = 57.sp),
+                style = MaterialTheme.typography.displayLarge.copy(fontSize = 50.sp),
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }

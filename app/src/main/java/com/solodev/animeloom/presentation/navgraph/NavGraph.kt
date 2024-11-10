@@ -24,7 +24,7 @@ fun NavGraph(
         navigation(
             route = Route.AppStartNavigation.route,
             startDestination = Route.OnboardingRoute.route,
-        ){
+        ) {
             composable(Route.OnboardingRoute.route) {
                 val viewModel: OnboardingViewModel = hiltViewModel()
                 OnboardingScreen(event = viewModel::onEvent)
@@ -34,7 +34,7 @@ fun NavGraph(
         navigation(
             route = Route.AnimesNavigation.route,
             startDestination = Route.AnimesRoute.route,
-        ){
+        ) {
             composable(Route.AnimesRoute.route) {
                 AnimesNavigator(
                     onNavigate = onNavigate

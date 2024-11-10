@@ -11,8 +11,8 @@ data class Page(
 
 val pages = listOf(
     Page(
-        title = "Get the Latest Animes",
-        description = "New Animes, TV Shows, and Updates",
+        title = "Get the Latest",
+        description = "Animes & Manga Updates Every Week",
         image = R.drawable.onboarding1,
     ),
     Page(
