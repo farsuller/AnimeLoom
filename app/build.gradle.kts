@@ -27,19 +27,23 @@ val animeLoomProperties: Properties by lazy {
 }
 
 android {
-    namespace = "com.solodev.animeloom"
-    compileSdk = 35
+    namespace = ProjectConfig.NAMESPACE
+    compileSdk = ProjectConfig.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.solodev.animeloom"
-        minSdk = 26
-        targetSdk = 35
-        versionCode = 2
-        versionName = "1.0"
+        applicationId = ProjectConfig.APPLICATION_ID
+        minSdk = ProjectConfig.MIN_SDK
+        targetSdk = ProjectConfig.TARGET_SDK
+        versionCode = ProjectConfig.VERSION_CODE
+        versionName = "${ProjectConfig.MAJOR_VERSION}.${ProjectConfig.MINOR_VERSION}.${ProjectConfig.PATCH_VERSION}"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BASE_URL", "\"https://kitsu.io/api/edge/\"")
+    }
+
+    applicationVariants.all {
+        base.archivesName.set("${ProjectConfig.APP_FILENAME}-${buildType.name}-$versionCode-$versionName")
     }
 
     buildTypes {

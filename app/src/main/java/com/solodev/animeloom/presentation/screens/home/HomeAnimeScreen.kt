@@ -176,7 +176,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Anime"),
-                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime"))
+                                    //seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime")
+                                )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -219,7 +220,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Manga"),
-                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga"))
+                                    //seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga")
+                                )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
@@ -262,7 +264,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Anime"),
-                                    seeAll = SeeAll(text = "See All", headerText = "See All Anime"))
+                                    //seeAll = SeeAll(text = "See All", headerText = "See All Anime")
+                                )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
