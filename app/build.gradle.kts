@@ -42,7 +42,7 @@ android {
         buildConfigField("String", "BASE_URL", "\"https://kitsu.io/api/edge/\"")
     }
 
-    if(ProjectConfig.GENERATE_LOCAL){
+    if(ProjectConfig.GENERATE_LOCAL_ARCHIVE){
         applicationVariants.all {
             base.archivesName.set("${ProjectConfig.APP_FILENAME}-${buildType.name}-$versionCode-$versionName")
         }
