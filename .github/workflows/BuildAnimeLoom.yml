@@ -81,3 +81,4 @@ jobs:
           track: internal
           status: 'completed'
           whatsNewDirectory: whatsNew/
+          changesNotSentForReview: false
