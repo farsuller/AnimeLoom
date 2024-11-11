@@ -137,28 +137,28 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         }
                     }
 
-                    item {
-                        when {
-                            categoryState.isLoading -> ShimmerEffectCategoryCarousel()
-                            categoryState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
-                            categoryState.categories != null -> {
-                                AnimeCategoryChips(
-                                    modifier = Modifier,
-                                    categoryState = categoryState
-                                )
-                                Spacer(modifier = Modifier.height(10.dp))
-                            }
-                        }
-
-                    }
+//                    item {
+//                        when {
+//                            categoryState.isLoading -> ShimmerEffectCategoryCarousel()
+//                            categoryState.errorMessage != null -> {
+//                                Box(
+//                                    modifier = Modifier.fillMaxWidth(),
+//                                    contentAlignment = Alignment.Center
+//                                ) {
+//                                    Text(text = "Error: ${animeState.errorMessage}")
+//                                }
+//                            }
+//
+//                            categoryState.categories != null -> {
+//                                AnimeCategoryChips(
+//                                    modifier = Modifier,
+//                                    categoryState = categoryState
+//                                )
+//                                Spacer(modifier = Modifier.height(10.dp))
+//                            }
+//                        }
+//
+//                    }
                     item {
                         when {
                             trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
