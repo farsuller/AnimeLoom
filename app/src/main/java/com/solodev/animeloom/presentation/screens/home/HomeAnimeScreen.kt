@@ -65,6 +65,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SharedTransitionScope.HomeAnimesScreen(
     animeState: AnimeState,
+    animeHighRateState : AnimeState,
+    animeRomanceState : AnimeState,
     trendingAnimeState: TrendingAnimeState,
     mangaState: MangaState,
     trendingMangaState: TrendingMangaState,
@@ -117,8 +119,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                     item {
                         when {
-                            trendingAnimeState.isLoading -> HeaderShimmerEffect()
-                            trendingAnimeState.errorMessage != null -> {
+                            animeState.isLoading -> HeaderShimmerEffect()
+                            animeState.errorMessage != null -> {
                                 Box(
                                     modifier = Modifier.fillMaxWidth(),
                                     contentAlignment = Alignment.Center
@@ -127,38 +129,38 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                 }
                             }
 
-                            trendingAnimeState.trendingAnimeList != null -> {
+                            animeState.animeDataList != null -> {
                                 HomeHeader(
                                     modifier = Modifier,
-                                    animeData = trendingAnimeState.trendingAnimeList.firstOrNull()
+                                    animeData = animeState.animeDataList.firstOrNull()
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
                     }
 
-//                    item {
-//                        when {
-//                            categoryState.isLoading -> ShimmerEffectCategoryCarousel()
-//                            categoryState.errorMessage != null -> {
-//                                Box(
-//                                    modifier = Modifier.fillMaxWidth(),
-//                                    contentAlignment = Alignment.Center
-//                                ) {
-//                                    Text(text = "Error: ${animeState.errorMessage}")
-//                                }
-//                            }
-//
-//                            categoryState.categories != null -> {
-//                                AnimeCategoryChips(
-//                                    modifier = Modifier,
-//                                    categoryState = categoryState
-//                                )
-//                                Spacer(modifier = Modifier.height(10.dp))
-//                            }
-//                        }
-//
-//                    }
+                    item {
+                        when {
+                            categoryState.isLoading -> ShimmerEffectCategoryCarousel()
+                            categoryState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            categoryState.categories != null -> {
+                                AnimeCategoryChips(
+                                    modifier = Modifier,
+                                    categoryState = categoryState
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
+                        }
+
+                    }
                     item {
                         when {
                             trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
@@ -176,7 +178,139 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Anime"),
-                                    //seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime")
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Anime")
+                                )
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(takeAnimeList) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id,
+                                                    anime.localId
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
+                        }
+                    }
+
+                    item {
+                        when {
+                            animeState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            animeState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            animeState.animeDataList != null -> {
+                                val takeAnimeList = animeState.animeDataList.take(7)
+
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Upcoming Anime"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Anime")
+                                )
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(takeAnimeList) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id,
+                                                    anime.localId
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
+                        }
+                    }
+
+                    item {
+                        when {
+                            animeHighRateState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            animeHighRateState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            animeHighRateState.animeDataList != null -> {
+                                val takeAnimeList = animeHighRateState.animeDataList.take(7)
+
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Highest Rated Anime"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Anime")
+                                )
+
+                                LazyRow(
+                                    modifier = Modifier.padding(horizontal = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(takeAnimeList) { anime ->
+                                        AnimeCard(
+                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                                            animeData = anime,
+                                            onClick = {
+                                                onAnimeClick(
+                                                    anime.attributes?.posterImage?.original ?: "",
+                                                    anime.id,
+                                                    anime.localId
+                                                )
+                                            },
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+                            }
+                        }
+                    }
+
+                    item {
+                        when {
+                            animeRomanceState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            animeRomanceState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = "Error: ${animeRomanceState.errorMessage}")
+                                }
+                            }
+
+                            animeRomanceState.animeDataList != null -> {
+                                val takeAnimeList = animeRomanceState.animeDataList.take(7)
+
+                                HeaderBar(
+                                    headerTitle = HeaderTitle(text = "Romance Anime"),
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Anime")
                                 )
 
                                 LazyRow(
@@ -220,7 +354,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = "Trending Manga"),
-                                    //seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga")
+                                    seeAll = SeeAll(text = "See All", headerText = "See All Trending Manga")
                                 )
 
                                 LazyRow(
@@ -236,50 +370,6 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                                     manga.attributes?.posterImage?.original ?: "",
                                                     manga.id,
                                                     manga.localId
-                                                )
-                                            },
-                                            animatedVisibilityScope = animatedVisibilityScope
-                                        )
-                                    }
-                                }
-                                Spacer(modifier = Modifier.height(20.dp))
-                            }
-                        }
-                    }
-
-                    item {
-                        when {
-                            animeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            animeState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
-                            animeState.animeDataList != null -> {
-                                val takeAnimeList = animeState.animeDataList.take(7)
-
-                                HeaderBar(
-                                    headerTitle = HeaderTitle(text = "Anime"),
-                                    //seeAll = SeeAll(text = "See All", headerText = "See All Anime")
-                                )
-
-                                LazyRow(
-                                    modifier = Modifier.padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
-                                    items(takeAnimeList) { anime ->
-                                        AnimeCard(
-                                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                                            animeData = anime,
-                                            onClick = {
-                                                onAnimeClick(
-                                                    anime.attributes?.posterImage?.original ?: "",
-                                                    anime.id,
-                                                    anime.localId
                                                 )
                                             },
                                             animatedVisibilityScope = animatedVisibilityScope

@@ -9,8 +9,11 @@ fun <T> safeApiCall(apiCall: suspend () -> Response<T>): Flow<Response<T>> = flo
         try {
             val response = apiCall()
             emit(Response.success(response.body()))
+            println("apiCall: $response")
         } catch (e: Exception) {
             val errorResponseBody = (e.message ?: "Unknown error").toResponseBody(null)
+
+            println("apiCall: $e")
             emit(Response.error(500, errorResponseBody))
         }
     }

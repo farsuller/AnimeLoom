@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -54,9 +55,11 @@ fun HomeHeader(
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = animeData?.attributes?.canonicalTitle ?: "",
-                style = MaterialTheme.typography.displayLarge.copy(fontSize = 50.sp),
+                style = MaterialTheme.typography.displayLarge.copy(fontSize = 40.sp),
                 color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center
             )
         }
 

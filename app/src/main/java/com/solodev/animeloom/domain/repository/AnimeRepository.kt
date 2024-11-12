@@ -9,13 +9,18 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface AnimeRepository {
-    suspend fun getTrendingAnimeList() : Flow<Response<TrendingAnimeListResponse>>
+    suspend fun getTrendingAnimeList(): Flow<Response<TrendingAnimeListResponse>>
 
-    suspend fun getAnimeList() : Flow<Response<AnimeListResponse>>
+    suspend fun getAnimeList(
+        status: String?,
+        categories: String?,
+        limit: Int,
+        sort: String
+    ): Flow<Response<AnimeListResponse>>
 
-    suspend fun getAnimeById(id: Int) : Flow<Response<AnimeResponse>>
+    suspend fun getAnimeById(id: Int): Flow<Response<AnimeResponse>>
 
-    suspend fun getCategories() : Flow<Response<CategoriesResponse>>
+    suspend fun getCategories(): Flow<Response<CategoriesResponse>>
 
     suspend fun upsertAnime(animeData: AnimeData)
 

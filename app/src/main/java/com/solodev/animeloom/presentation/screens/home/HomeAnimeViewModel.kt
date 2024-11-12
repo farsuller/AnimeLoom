@@ -29,6 +29,12 @@ class HomeAnimeViewModel @Inject constructor(
     private val _animeState = MutableStateFlow(AnimeState())
     val animeState: StateFlow<AnimeState> = _animeState.asStateFlow()
 
+    private val _animeHighRateState = MutableStateFlow(AnimeState())
+    val animeHighRateState: StateFlow<AnimeState> = _animeHighRateState.asStateFlow()
+
+    private val _animeRomanceState = MutableStateFlow(AnimeState())
+    val animeRomanceState: StateFlow<AnimeState> = _animeRomanceState.asStateFlow()
+
     private val _trendingAnimeState = MutableStateFlow(TrendingAnimeState())
     val trendingAnimeState: StateFlow<TrendingAnimeState> = _trendingAnimeState.asStateFlow()
 
@@ -55,7 +61,9 @@ class HomeAnimeViewModel @Inject constructor(
             _isLoadingData.value = true
             getTrendingAnimes()
             getTrendingManga()
-            getAnimes()
+            getUpcomingAnimes()
+            getHighestRatedAnimes()
+            getAnimesRomance()
             getCategory()
             _isLoadingData.value = false
         }
@@ -96,9 +104,9 @@ class HomeAnimeViewModel @Inject constructor(
         }
     }
 
-    private fun getAnimes() {
+    private fun getUpcomingAnimes() {
         viewModelScope.launch {
-            animesUseCases.getAnime()
+            animesUseCases.getAnime(status = "upcoming", limit = 15, sort = "-user_count")
                 .onStart {
                     _animeState.value = _animeState.value.copy(isLoading = true)
                 }
@@ -106,13 +114,43 @@ class HomeAnimeViewModel @Inject constructor(
                     _animeState.value = _animeState.value.copy(errorMessage = e.message)
                     _animeState.value = _animeState.value.copy(isLoading = false)
                 }.collectLatest { result ->
-
                     val animes = result.body()?.data?.map { it.toModel() }
-                        ?.filter { it.attributes?.popularityRank != null }
-                        ?.sortedBy { it.attributes?.popularityRank }
-
                     _animeState.value = _animeState.value.copy(animeDataList = animes)
                     _animeState.value = _animeState.value.copy(isLoading = false)
+                }
+        }
+    }
+
+    private fun getAnimesRomance() {
+        viewModelScope.launch {
+            animesUseCases.getAnime(categories = "romance", limit = 15, sort = "-user_count")
+                .onStart {
+                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = true)
+                }
+                .catch { e ->
+                    _animeRomanceState.value = _animeRomanceState.value.copy(errorMessage = e.message)
+                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = false)
+                }.collectLatest { result ->
+                    val animes = result.body()?.data?.map { it.toModel() }
+                    _animeRomanceState.value = _animeRomanceState.value.copy(animeDataList = animes)
+                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = false)
+                }
+        }
+    }
+
+    private fun getHighestRatedAnimes() {
+        viewModelScope.launch {
+            animesUseCases.getAnime(limit = 15, sort = "-average_rating")
+                .onStart {
+                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = true)
+                }
+                .catch { e ->
+                    _animeHighRateState.value = _animeHighRateState.value.copy(errorMessage = e.message)
+                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = false)
+                }.collectLatest { result ->
+                    val animes = result.body()?.data?.map { it.toModel() }
+                    _animeHighRateState.value = _animeHighRateState.value.copy(animeDataList = animes)
+                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = false)
                 }
         }
     }

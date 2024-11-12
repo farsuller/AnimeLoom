@@ -16,13 +16,24 @@ import javax.inject.Inject
 class AnimeRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val animeDao: AnimeDao
-    ) : AnimeRepository {
-    override suspend fun getTrendingAnimeList(): Flow<Response<TrendingAnimeListResponse>> = safeApiCall {
-        apiService.getTrendingAnimeList()
-    }
+) : AnimeRepository {
+    override suspend fun getTrendingAnimeList(): Flow<Response<TrendingAnimeListResponse>> =
+        safeApiCall {
+            apiService.getTrendingAnimeList()
+        }
 
-    override suspend fun getAnimeList(): Flow<Response<AnimeListResponse>> = safeApiCall {
-        apiService.getAnimeList()
+    override suspend fun getAnimeList(
+        status: String?,
+        categories: String?,
+        limit: Int,
+        sort: String
+    ): Flow<Response<AnimeListResponse>> = safeApiCall {
+        apiService.getAnimeList(
+            status = status,
+            categories = categories,
+            limit = limit,
+            sort = sort
+        )
     }
 
     override suspend fun getAnimeById(id: Int): Flow<Response<AnimeResponse>> = safeApiCall {
@@ -30,7 +41,7 @@ class AnimeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCategories(): Flow<Response<CategoriesResponse>> = safeApiCall {
-        apiService.getCategories()
+        apiService.getCategories(limit = 40, sort = "-total_media_count")
     }
 
     override suspend fun upsertAnime(animeData: AnimeData) {

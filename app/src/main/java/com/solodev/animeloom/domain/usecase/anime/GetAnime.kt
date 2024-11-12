@@ -8,7 +8,17 @@ import retrofit2.Response
 class GetAnime(
     private val animeRepository: AnimeRepository,
 ) {
-    suspend operator fun invoke(): Flow<Response<AnimeListResponse>> {
-        return animeRepository.getAnimeList()
+    suspend operator fun invoke(
+        status: String? = null,
+        categories: String? = null,
+        limit: Int,
+        sort: String
+    ): Flow<Response<AnimeListResponse>> {
+        return animeRepository.getAnimeList(
+            status = status,
+            categories = categories,
+            limit = limit,
+            sort = sort
+        )
     }
 }
