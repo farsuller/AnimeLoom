@@ -73,9 +73,12 @@ fun AnimesNavigator(
     val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
     val animeHighRateState by homeAnimesViewModel.animeHighRateState.collectAsStateWithLifecycle()
     val animeRomanceState by homeAnimesViewModel.animeRomanceState.collectAsStateWithLifecycle()
-    val trendingManga by homeAnimesViewModel.trendingMangaState.collectAsStateWithLifecycle()
+
     val isLoadingHomeData by homeAnimesViewModel.isLoadingData.collectAsStateWithLifecycle()
+
+    val trendingMangaState by mangaViewModel.trendingMangaState.collectAsStateWithLifecycle()
     val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
+
     val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
     val bookmarkState = bookmarkViewModel.bookmarkState.value
 
@@ -142,9 +145,6 @@ fun AnimesNavigator(
                         animeHighRateState = animeHighRateState,
                         animeRomanceState = animeRomanceState,
                         trendingAnimeState = trendingAnimeState,
-                        mangaState = mangaState,
-                        trendingMangaState = trendingManga,
-                        bookmarkState = bookmarkState,
                         categoryState = categoryState,
                         isLoadingData = isLoadingHomeData,
                         onNavigate = onNavigate,
@@ -156,16 +156,6 @@ fun AnimesNavigator(
                             navController.navigate(
                                 Route.AnimeDetailsRoute(
                                     animeId = id ?: "",
-                                    coverImage = cover ?: "",
-                                    localId = localId,
-                                    isFromBookmarked = false
-                                )
-                            )
-                        },
-                        onMangaClick = { cover, id, localId ->
-                            navController.navigate(
-                                Route.MangaDetailsRoute(
-                                    mangaId = id ?: "",
                                     coverImage = cover ?: "",
                                     localId = localId,
                                     isFromBookmarked = false
@@ -191,6 +181,7 @@ fun AnimesNavigator(
 
                 composable(Route.MangaRoute.route) {
                     MangaScreen(
+                        trendingMangaState = trendingMangaState,
                         mangaState = mangaState,
                         onNavigate = onNavigate,
                         onMangaClick = { cover, id , localId ->

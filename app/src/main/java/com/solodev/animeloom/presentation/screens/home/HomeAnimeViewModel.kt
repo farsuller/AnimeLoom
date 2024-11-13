@@ -38,9 +38,6 @@ class HomeAnimeViewModel @Inject constructor(
     private val _trendingAnimeState = MutableStateFlow(TrendingAnimeState())
     val trendingAnimeState: StateFlow<TrendingAnimeState> = _trendingAnimeState.asStateFlow()
 
-    private val _trendingMangaState = MutableStateFlow(TrendingMangaState())
-    val trendingMangaState: StateFlow<TrendingMangaState> = _trendingMangaState.asStateFlow()
-
     private val _categoryState = MutableStateFlow(CategoryState())
     val categoryState: StateFlow<CategoryState> = _categoryState.asStateFlow()
 
@@ -60,7 +57,6 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoadingData.value = true
             getTrendingAnimes()
-            getTrendingManga()
             getUpcomingAnimes()
             getHighestRatedAnimes()
             getAnimesRomance()
@@ -83,24 +79,6 @@ class HomeAnimeViewModel @Inject constructor(
                     _trendingAnimeState.value = _trendingAnimeState.value.copy(trendingAnimeList = trendingAnimes)
                     _trendingAnimeState.value = _trendingAnimeState.value.copy(isLoading = false)
                 }
-        }
-    }
-
-    private fun getTrendingManga() {
-        viewModelScope.launch {
-            mangaUseCases.getTrendingManga()
-                .onStart {
-                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _trendingMangaState.value = _trendingMangaState.value.copy(errorMessage = e.message)
-                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val trendingManga = result.body()?.data?.map { it.toModel() }
-                    _trendingMangaState.value = _trendingMangaState.value.copy(trendingMangaList = trendingManga)
-                    _trendingMangaState.value = _trendingMangaState.value.copy(isLoading = false)
-                }
-
         }
     }
 
