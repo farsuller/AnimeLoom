@@ -14,15 +14,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import coil.compose.AsyncImage
-import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.presentation.screens.onboarding.Page
 import com.solodev.animeloom.presentation.screens.onboarding.pages
 import com.solodev.animeloom.theme.AnimeLoomTheme
+import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.Dimens.MediumPadding1
 import com.solodev.animeloom.utils.Dimens.MediumPadding2
 
@@ -33,7 +31,7 @@ fun OnboardingPage(
 ) {
     Column(modifier = modifier) {
 
-        Box(modifier = Modifier.fillMaxWidth()){
+        Box(modifier = Modifier.fillMaxWidth()) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth()

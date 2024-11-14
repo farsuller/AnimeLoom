@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.utils.Constants
 import com.solodev.animeloom.utils.toDp
@@ -46,9 +46,11 @@ fun SharedTransitionScope.HomeMangaCard(
                     }
                 )
                 .height(mangaData.attributes?.posterImage?.meta?.dimensions?.small?.height?.toDp()
-                        ?: 0.dp)
+                        ?: 0.dp
+                )
                 .width(mangaData.attributes?.posterImage?.meta?.dimensions?.small?.width?.toDp()
-                        ?: 0.dp)
+                        ?: 0.dp
+                )
                 .clip(RoundedCornerShape(10.dp)),
             contentScale = ContentScale.Crop
         )

@@ -41,7 +41,7 @@ fun ShimmerEffectCarouselWithHeader() {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             repeat(10) {
                 AnimeCardShimmerEffect(
-                    modifier = Modifier.padding(horizontal = 24.dp),
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp, bottom = 4.dp),
                 )
             }
         }
@@ -67,7 +67,7 @@ fun Modifier.shimmerEffect() = composed {
         initialValue = 0.2f,
         targetValue = 0.9f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000),
+            animation = tween(durationMillis = 700),
             repeatMode = RepeatMode.Reverse,
         ),
         label = "",
@@ -76,12 +76,11 @@ fun Modifier.shimmerEffect() = composed {
 }
 
 @Composable
-fun AnimeCardShimmerEffect(modifier: Modifier = Modifier) {
+fun AnimeCardShimmerEffect(modifier: Modifier = Modifier, height: Int = 402, width: Int = 284) {
     Box(
-        modifier = Modifier
-            .padding(start = 4.dp, top = 4.dp, bottom = 4.dp)
-            .height(402.toDp())
-            .width(284.toDp())
+        modifier = modifier
+            .height(height.toDp())
+            .width(width.toDp())
             .clip(MaterialTheme.shapes.medium)
             .shimmerEffect(),
     )
