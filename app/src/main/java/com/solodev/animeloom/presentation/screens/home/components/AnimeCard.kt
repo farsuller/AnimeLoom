@@ -6,14 +6,19 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -60,8 +66,12 @@ fun SharedTransitionScope.AnimeCard(
             .background(MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = Constants.Elevation.level0),
     ) {
+        val image = animeData.attributes?.posterImage?.original
+        val imageHeight = animeData.attributes?.posterImage?.meta?.dimensions?.small?.height ?: 402
+        val imageWidth = animeData.attributes?.posterImage?.meta?.dimensions?.small?.width ?: 284
+
         AsyncImage(
-            model = animeData.attributes?.posterImage?.original,
+            model = image,
             contentDescription = animeData.attributes?.canonicalTitle,
             modifier = Modifier
                 .sharedElement(
@@ -71,18 +81,11 @@ fun SharedTransitionScope.AnimeCard(
                         tween(durationMillis = 500)
                     }
                 )
-                .height(
-                    animeData.attributes?.posterImage?.meta?.dimensions?.small?.height?.toDp()
-                        ?: 0.dp
-                )
-                .width(
-                    animeData.attributes?.posterImage?.meta?.dimensions?.small?.width?.toDp()
-                        ?: 0.dp
-                )
+                .height(imageHeight.toDp())
+                .width(imageWidth.toDp())
                 .clip(RoundedCornerShape(10.dp)),
             contentScale = ContentScale.Crop
         )
-
     }
 
 }
@@ -92,7 +95,6 @@ fun AnimeCard(
     modifier: Modifier = Modifier,
     animeData: AnimeData,
     onClick: () -> Unit = {},
-
     ) {
     Card(
         onClick = onClick,
@@ -131,10 +133,21 @@ fun AnimeCard(
                         contentDescription = ""
                     )
                 } else {
-                    Icon(
-                        imageVector = Icons.Default.Error,
-                        contentDescription = ""
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            imageVector = Icons.Outlined.ErrorOutline,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Failed to Load Image",
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center)
+                    }
                 }
             }
         )
