@@ -36,27 +36,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.solodev.animeloom.domain.model.CategoryData
 import com.solodev.animeloom.presentation.common.HeaderBar
 import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
-import com.solodev.animeloom.presentation.common.ShimmerEffectCarouselWithHeader
-import com.solodev.animeloom.presentation.common.ShimmerEffectCategoryCarousel
-import com.solodev.animeloom.presentation.navgraph.Route
-import com.solodev.animeloom.presentation.screens.bookmark.BookmarkState
-import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
-import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
 import com.solodev.animeloom.presentation.common.HeaderTitle
 import com.solodev.animeloom.presentation.common.PartialBottomSheet
 import com.solodev.animeloom.presentation.common.SeeAll
+import com.solodev.animeloom.presentation.common.ShimmerEffectCarouselWithHeader
+import com.solodev.animeloom.presentation.common.ShimmerEffectCategoryCarousel
+import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
+import com.solodev.animeloom.presentation.navgraph.Route
+import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
+import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
 import com.solodev.animeloom.presentation.screens.home.components.HomeHeader
-import com.solodev.animeloom.presentation.screens.home.components.HomeMangaCard
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
 import com.solodev.animeloom.presentation.screens.home.states.CategoryState
-import com.solodev.animeloom.presentation.screens.home.states.TrendingAnimeState
-import com.solodev.animeloom.presentation.screens.manga.states.MangaState
-import com.solodev.animeloom.presentation.screens.manga.states.TrendingMangaState
 import com.solodev.animeloom.utils.alasIdString
-import com.solodev.animeloom.utils.aliasPosterString
 import com.solodev.animeloom.utils.aliasLocalIdString
+import com.solodev.animeloom.utils.aliasPosterString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -68,25 +65,29 @@ import kotlinx.coroutines.launch
 @Composable
 fun SharedTransitionScope.HomeAnimesScreen(
     animeState: AnimeState,
-    animeHighRateState : AnimeState,
-    animeRomanceState : AnimeState,
-    trendingAnimeState: TrendingAnimeState,
+    animeHighRateState: AnimeState,
+    animeRomanceState: AnimeState,
+    trendingAnimeState: AnimeState,
+    animeByCategoryState: AnimeState,
+    animeBySeeAllState: AnimeState,
     categoryState: CategoryState,
-    isLoadingData : Boolean,
+    isLoadingData: Boolean,
     onAnimeClick: (aliasPosterString?, alasIdString?, aliasLocalIdString) -> Unit,
     onNavigate: (String) -> Unit,
     onPullRefresh: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    selectedCategory:(CategoryData?) -> Unit = {},
+    selectedSeeAll:(String?) -> Unit = {}
 ) {
-    var selectedSeeAll by remember { mutableStateOf("Trending Anime") }
+    var selectedSeeAllAnime by remember { mutableStateOf("Trending Anime") }
+    var selectedCategoryAnime by remember { mutableStateOf("Romance") }
+
     var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false,)
+    var isSeeAllSelected by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
     var isRefreshing by remember { mutableStateOf(false) }
-
     val scope = rememberCoroutineScope()
-
-    val seeAllText = "See All"
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
@@ -115,12 +116,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
             if (isLoadingData) {
                 CircularProgressIndicator()
-            }
-            else {
+            } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-
                     item {
                         when {
                             animeState.isLoading -> HeaderShimmerEffect()
@@ -136,7 +135,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             animeState.animeDataList != null -> {
                                 HomeHeader(
                                     modifier = Modifier,
-                                    animeData = animeState.animeDataList.firstOrNull()
+                                    animeData = animeState.animeDataList.getOrNull(1)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
@@ -158,7 +157,13 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             categoryState.categories != null -> {
                                 AnimeCategoryChips(
                                     modifier = Modifier,
-                                    categoryState = categoryState
+                                    categoryState = categoryState,
+                                    onClickCategory = { category ->
+                                        showBottomSheet = true
+                                        isSeeAllSelected = false
+                                        selectedCategory(category)
+                                        selectedCategoryAnime = category?.attributes?.title ?: ""
+                                    }
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
@@ -177,15 +182,17 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                 }
                             }
 
-                            trendingAnimeState.trendingAnimeList != null -> {
-                                val takeAnimeList = trendingAnimeState.trendingAnimeList.take(7)
+                            trendingAnimeState.animeDataList != null -> {
+                                val takeAnimeList = trendingAnimeState.animeDataList.take(7)
                                 val trendingAnimeText = "Trending Anime"
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = trendingAnimeText),
-                                    seeAll = SeeAll(text = seeAllText, seeAllClicked = {
+                                    seeAll = SeeAll(seeAllClicked = {
                                         showBottomSheet = true
-                                        selectedSeeAll = trendingAnimeText
+                                        selectedSeeAll(trendingAnimeText)
+                                        selectedSeeAllAnime = trendingAnimeText
+                                        isSeeAllSelected = true
                                     })
                                 )
 
@@ -231,9 +238,11 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = upcomingAnimeText),
-                                    seeAll = SeeAll(text = seeAllText, seeAllClicked = {
+                                    seeAll = SeeAll(seeAllClicked = {
                                         showBottomSheet = true
-                                        selectedSeeAll = upcomingAnimeText
+                                        isSeeAllSelected = true
+                                        selectedSeeAll(upcomingAnimeText)
+                                        selectedSeeAllAnime = upcomingAnimeText
                                     })
                                 )
 
@@ -279,9 +288,11 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = highestAnimeText),
-                                    seeAll = SeeAll(text = seeAllText, seeAllClicked = {
+                                    seeAll = SeeAll(seeAllClicked = {
                                         showBottomSheet = true
-                                        selectedSeeAll = highestAnimeText
+                                        isSeeAllSelected = true
+                                        selectedSeeAll(highestAnimeText)
+                                        selectedSeeAllAnime = highestAnimeText
                                     })
                                 )
 
@@ -323,13 +334,15 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                             animeRomanceState.animeDataList != null -> {
                                 val takeAnimeList = animeRomanceState.animeDataList.take(7)
-                                val romanceAnimeText = "Romance Anime"
+                                val romanceAnimeText = "Anime"
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = romanceAnimeText),
-                                    seeAll = SeeAll(text = seeAllText, seeAllClicked = {
+                                    seeAll = SeeAll(seeAllClicked = {
                                         showBottomSheet = true
-                                        selectedSeeAll = romanceAnimeText
+                                        isSeeAllSelected = true
+                                        selectedSeeAll(romanceAnimeText)
+                                        selectedSeeAllAnime = romanceAnimeText
                                     })
                                 )
 
@@ -358,14 +371,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     }
                 }
             }
-            if(showBottomSheet){
+            if (showBottomSheet) {
                 PartialBottomSheet(
                     sheetState = sheetState,
                     dismissBottomSheet = { showBottomSheet = false },
-                    trendingAnimeList = trendingAnimeState.trendingAnimeList,
-                    upcomingAnimeList = animeState.animeDataList,
-                    highestRatedAnimeList = animeHighRateState.animeDataList,
-                    animeRomanceAnimeList = animeRomanceState.animeDataList,
                     onClickItem = { anime ->
                         onAnimeClick(
                             anime.attributes?.posterImage?.original ?: "",
@@ -373,10 +382,13 @@ fun SharedTransitionScope.HomeAnimesScreen(
                             anime.localId
                         )
                     },
-                    selectedSeeAll = selectedSeeAll
+                    selectedSeeAllTitle = selectedSeeAllAnime,
+                    selectedCategoryTitle = selectedCategoryAnime ,
+                    isSelectedSeeAll = isSeeAllSelected,
+                    animeByCategoryState = animeByCategoryState,
+                    animeBySeeAllState = animeBySeeAllState
                 )
             }
-
 
             PullRefreshIndicator(
                 refreshing = isRefreshing,

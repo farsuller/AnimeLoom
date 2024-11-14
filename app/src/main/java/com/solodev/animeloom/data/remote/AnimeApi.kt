@@ -6,7 +6,6 @@ import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
 import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaResponse
-import com.solodev.animeloom.data.remote.dto.response.TrendingAnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.TrendingMangaListResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,7 +15,7 @@ import retrofit2.http.Query
 
 interface AnimeApi {
     @GET("trending/anime")
-    suspend fun getTrendingAnimeList(): Response<TrendingAnimeListResponse>
+    suspend fun getTrendingAnimeList(): Response<AnimeListResponse>
 
     @GET("anime")
     suspend fun getAnimeList(

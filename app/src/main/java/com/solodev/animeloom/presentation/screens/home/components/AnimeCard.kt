@@ -121,9 +121,7 @@ fun AnimeCard(
                     contentAlignment = Alignment.Center,
                 ) {
                     AnimeCardShimmerEffect(height = imageHeight, width = imageWidth)
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.surface
-                    )
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
                 }
             },
             error = {

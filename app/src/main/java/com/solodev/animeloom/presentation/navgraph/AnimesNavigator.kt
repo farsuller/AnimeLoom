@@ -73,7 +73,8 @@ fun AnimesNavigator(
     val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
     val animeHighRateState by homeAnimesViewModel.animeHighRateState.collectAsStateWithLifecycle()
     val animeRomanceState by homeAnimesViewModel.animeRomanceState.collectAsStateWithLifecycle()
-
+    val animeByCategoryState by homeAnimesViewModel.animeByCategoryState.collectAsStateWithLifecycle()
+    val animeBySeeAllState by homeAnimesViewModel.animeBySeeAllState.collectAsStateWithLifecycle()
     val isLoadingHomeData by homeAnimesViewModel.isLoadingData.collectAsStateWithLifecycle()
 
     val trendingMangaState by mangaViewModel.trendingMangaState.collectAsStateWithLifecycle()
@@ -162,7 +163,17 @@ fun AnimesNavigator(
                                 )
                             )
                         },
-                        animatedVisibilityScope = this
+                        animatedVisibilityScope = this,
+                        selectedCategory = { category ->
+                            if (category == null) return@HomeAnimesScreen
+                            homeAnimesViewModel.getAnimesByCategory(categorySelected = category.attributes.slug)
+                        },
+                        selectedSeeAll = { selectedSeeAll ->
+                            if (selectedSeeAll == null) return@HomeAnimesScreen
+                            homeAnimesViewModel.getAnimeBySeeAll(selectedSeeAll = selectedSeeAll)
+                        },
+                        animeByCategoryState = animeByCategoryState,
+                        animeBySeeAllState = animeBySeeAllState
                     )
                 }
                 composable<Route.AnimeDetailsRoute> { detail ->

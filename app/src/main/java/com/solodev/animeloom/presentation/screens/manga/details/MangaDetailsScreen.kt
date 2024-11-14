@@ -80,7 +80,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
                             }
                         )
                         .fillMaxWidth()
-                        .height(300.dp)
+                        .height(400.dp)
                         .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
                     contentScale = ContentScale.Crop
                 )
@@ -115,7 +115,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
 
                             DetailHeaderBar(
                                 navigateUp = navigateUp,
-                                titleDetail = mangaState.mangaDataDetail?.attributes?.canonicalTitle,
+                                titleDetail = mangaState.mangaDataDetail?.attributes?.titles?.en,
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         MangaDetailsEvent.UpsertDeleteManga(

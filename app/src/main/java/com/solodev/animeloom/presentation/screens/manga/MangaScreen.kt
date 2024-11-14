@@ -78,7 +78,7 @@ fun SharedTransitionScope.MangaScreen(
 
                     HeaderBar(
                         headerTitle = HeaderTitle(text = "Trending Manga"),
-                        seeAll = SeeAll(text = "See All", seeAllClicked = {})
+                        seeAll = SeeAll(seeAllClicked = {})
                     )
 
                     LazyRow(

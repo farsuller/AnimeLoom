@@ -38,6 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.common.DetailHeaderBar
+import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
+import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -51,7 +53,6 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 ) {
     val viewModel: AnimeDetailsViewModel = hiltViewModel()
     val animeState by viewModel.animeDetailState.collectAsStateWithLifecycle()
-
 
     val animeData = animeState.animeDataDetail ?: AnimeData()
 
@@ -68,10 +69,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    bottom = innerPadding.calculateBottomPadding() + 10.dp
-                )
+                .padding(bottom = innerPadding.calculateBottomPadding() + 10.dp)
         ) {
             item {
                 AsyncImage(
@@ -86,7 +84,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                             }
                         )
                         .fillMaxWidth()
-                        .height(300.dp)
+                        .height(400.dp)
                         .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
                     contentScale = ContentScale.Crop
                 )
@@ -94,14 +92,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
             item {
 
                 when {
-                    animeState.isLoading -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
+                    animeState.isLoading -> ShimmerEffectDetailColumn()
 
                     animeState.errorMessage != null -> {
                         Box(
@@ -121,7 +112,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                             DetailHeaderBar(
                                 navigateUp = navigateUp,
-                                titleDetail = animeState.animeDataDetail?.attributes?.canonicalTitle,
+                                titleDetail = animeData.attributes?.titles?.en,
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         AnimeDetailsEvent.UpsertDeleteAnime(

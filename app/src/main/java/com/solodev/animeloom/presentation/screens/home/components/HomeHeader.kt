@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,11 +56,12 @@ fun HomeHeader(
             contentAlignment = Alignment.BottomCenter
         ) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = animeData?.attributes?.canonicalTitle ?: "",
-                style = MaterialTheme.typography.displayLarge.copy(fontSize = 40.sp),
+                modifier = Modifier.width(300.dp),
+                text = animeData?.attributes?.titles?.en ?: "",
+                style = MaterialTheme.typography.displayLarge.copy(fontSize = 30.sp),
                 color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 25.sp
             )
         }
 

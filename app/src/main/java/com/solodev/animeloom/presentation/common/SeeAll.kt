@@ -10,8 +10,7 @@ import com.solodev.animeloom.utils.clickableWithoutRipple
 
 
 class SeeAll(
-    private val text: String,
-    private val seeAllClicked: (String) -> Unit = {}
+    private val seeAllClicked: () -> Unit = {}
 ) : @Composable () -> Unit {
 
 
@@ -20,8 +19,8 @@ class SeeAll(
         Text(
             modifier = Modifier
                 .padding(end = 8.dp, bottom = 10.dp)
-                .clickableWithoutRipple { seeAllClicked(text) },
-            text = text,
+                .clickableWithoutRipple { seeAllClicked() },
+            text = "See All",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurface,
         )

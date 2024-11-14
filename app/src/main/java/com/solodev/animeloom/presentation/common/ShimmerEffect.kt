@@ -10,24 +10,104 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.toDp
 
+
+
+@Composable
+fun ShimmerEffectDetailColumn() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween) {
+
+            Box(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .height(142.toDp())
+                    .width(144.toDp())
+                    .clip(MaterialTheme.shapes.medium)
+                    .shimmerEffect(),
+            )
+
+            Box(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .height(182.toDp())
+                    .width(594.toDp())
+                    .clip(MaterialTheme.shapes.medium)
+                    .shimmerEffect(),
+            )
+
+            Box(
+                modifier = Modifier
+                    .padding(all = 4.dp)
+                    .height(142.toDp())
+                    .width(144.toDp())
+                    .clip(MaterialTheme.shapes.medium)
+                    .shimmerEffect(),
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(26.dp))
+        Box(
+            modifier = Modifier
+                .padding(all = 8.dp)
+                .fillMaxWidth()
+
+                .height(682.toDp())
+                .clip(MaterialTheme.shapes.medium)
+                .shimmerEffect(),
+            contentAlignment = Alignment.Center
+        ){
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
+        }
+    }
+}
+
+@Composable
+fun ShimmerEffectVerticalGrid() {
+    LazyVerticalGrid(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 8.dp),
+        columns = GridCells.Fixed(3),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(10) {
+            AnimeCardShimmerEffect(
+                modifier = Modifier.padding(start = 4.dp, top = 4.dp, bottom = 4.dp),
+            )
+        }
+    }
+}
+
 @Composable
 fun ShimmerEffectCarouselWithHeader() {
-
     Column {
         Box(
             modifier = Modifier
@@ -46,8 +126,6 @@ fun ShimmerEffectCarouselWithHeader() {
             }
         }
     }
-
-
 }
 
 @Composable
@@ -106,6 +184,32 @@ fun CategoryShimmerEffect(modifier: Modifier = Modifier) {
             .clip(MaterialTheme.shapes.medium)
             .shimmerEffect(),
     )
+}
+
+@AnimesPreviews
+@Composable
+internal fun ShimmerEffectDetailColumnPreview() {
+    AnimeLoomTheme {
+        Surface {
+            Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+                ShimmerEffectDetailColumn()
+            }
+        }
+
+    }
+}
+
+@AnimesPreviews
+@Composable
+internal fun ShimmerEffectVerticalGridPreview() {
+    AnimeLoomTheme {
+        Surface {
+            Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+                ShimmerEffectVerticalGrid()
+            }
+        }
+
+    }
 }
 
 @AnimesPreviews

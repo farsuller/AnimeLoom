@@ -5,7 +5,6 @@ import com.solodev.animeloom.data.remote.AnimeApi
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
 import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
-import com.solodev.animeloom.data.remote.dto.response.TrendingAnimeListResponse
 import com.solodev.animeloom.data.remote.safeApiCall
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.repository.AnimeRepository
@@ -17,7 +16,7 @@ class AnimeRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val animeDao: AnimeDao
 ) : AnimeRepository {
-    override suspend fun getTrendingAnimeList(): Flow<Response<TrendingAnimeListResponse>> =
+    override suspend fun getTrendingAnimeList(): Flow<Response<AnimeListResponse>> =
         safeApiCall {
             apiService.getTrendingAnimeList()
         }
