@@ -7,6 +7,7 @@ import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
 import com.solodev.animeloom.presentation.screens.home.states.CategoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,8 +31,8 @@ class HomeAnimeViewModel @Inject constructor(
     private val _animeHighRateState = MutableStateFlow(AnimeState())
     val animeHighRateState: StateFlow<AnimeState> = _animeHighRateState.asStateFlow()
 
-    private val _animeRomanceState = MutableStateFlow(AnimeState())
-    val animeRomanceState: StateFlow<AnimeState> = _animeRomanceState.asStateFlow()
+    private val _animeUpcomingState = MutableStateFlow(AnimeState())
+    val animeUpcomingState: StateFlow<AnimeState> = _animeUpcomingState.asStateFlow()
 
     private val _trendingAnimeState = MutableStateFlow(AnimeState())
     val trendingAnimeState: StateFlow<AnimeState> = _trendingAnimeState.asStateFlow()
@@ -56,7 +57,6 @@ class HomeAnimeViewModel @Inject constructor(
         requestApis()
     }
 
-
     fun requestApis() {
         viewModelScope.launch {
             _isLoadingData.value = true
@@ -71,111 +71,135 @@ class HomeAnimeViewModel @Inject constructor(
 
     fun getAnimeBySeeAll(selectedSeeAll: String) {
         viewModelScope.launch {
-            val fetchAnimes = when (selectedSeeAll) {
-                "Trending Anime" -> { animesUseCases.getTrendingAnimes() }
-                "Upcoming Anime" -> { animesUseCases.getAnime(status = "upcoming", limit = 15, sort = "-user_count") }
-                "Highest Rated Anime" -> { animesUseCases.getAnime(limit = 15, sort = "-average_rating") }
-                "Anime" -> { animesUseCases.getAnime(status = "upcoming", limit = 15, sort = "-start_date") }
+            when (selectedSeeAll) {
+                "Trending Anime" -> {
+                    getSeeAllAnimes(fetchAnimeData = {
+                        animesUseCases.getTrendingAnimes(
+                            status = "current",
+                            limit = 20,
+                            sort = "-start_date"
+                        )
+                    })
+                }
+
+                "Upcoming Anime" -> {
+                    getSeeAllAnimes(fetchAnimeData = {
+                        animesUseCases.getAnime(
+                            status = "upcoming",
+                            limit = 20,
+                            sort = "-user_count"
+                        )
+                    })
+
+                }
+                "Highest Rated Anime" -> {
+                    getSeeAllAnimes(fetchAnimeData = {
+                        animesUseCases.getAnime(limit = 20, sort = "-average_rating")
+                    })
+                }
+
+                "Anime" -> {
+                    getSeeAllAnimes(fetchAnimeData = {
+                        animesUseCases.getAnime(
+                            status = "upcoming",
+                            limit = 20,
+                            sort = "-start_date"
+                        )
+                    })
+                }
                 else -> return@launch
             }
+        }
+    }
 
-            fetchAnimes
-                .onStart { _animeBySeeAllState.value = _animeBySeeAllState.value.copy(isLoading = true) }
-                .catch { e -> _animeBySeeAllState.value = _animeBySeeAllState.value.copy(
-                    errorMessage = e.message,
-                    isLoading = false
-                ) }
+    private fun fetchAndSetAnimeState(
+        state: MutableStateFlow<AnimeState>,
+        fetchAnimeData: suspend () -> Flow<Response<AnimeListResponse>>
+    ) {
+        viewModelScope.launch {
+            fetchAnimeData()
+                .onStart {
+                    state.value = state.value.copy(isLoading = true)
+                }
+                .catch { e ->
+                    state.value = state.value.copy(errorMessage = e.message, isLoading = false)
+                }
                 .collectLatest { result ->
-                    val animes = result.body()?.data?.map { it.toModel() }
-                    _animeBySeeAllState.value = _animeBySeeAllState.value.copy(animeDataList = animes)
-                    _animeBySeeAllState.value = _animeBySeeAllState.value.copy(isLoading = false)
+                    val animeList = result.body()?.data?.map { it.toModel() }
+                    state.value = state.value.copy(animeDataList = animeList, isLoading = false)
                 }
         }
+    }
+
+    private fun getSeeAllAnimes(fetchAnimeData: suspend () -> Flow<Response<AnimeListResponse>>) {
+        fetchAndSetAnimeState(
+            state = _animeBySeeAllState,
+            fetchAnimeData = { fetchAnimeData() }
+        )
     }
 
     private fun getTrendingAnimes() {
-        viewModelScope.launch {
-            animesUseCases.getTrendingAnimes()
-                .onStart {
-                    _trendingAnimeState.value = _trendingAnimeState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _trendingAnimeState.value = _trendingAnimeState.value.copy(errorMessage = e.message)
-                    _trendingAnimeState.value = _trendingAnimeState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val trendingAnimes = result.body()?.data?.map { it.toModel() }
-                    _trendingAnimeState.value = _trendingAnimeState.value.copy(animeDataList = trendingAnimes)
-                    _trendingAnimeState.value = _trendingAnimeState.value.copy(isLoading = false)
-                }
-        }
+        fetchAndSetAnimeState(
+            state = _trendingAnimeState,
+            fetchAnimeData = {
+                animesUseCases.getTrendingAnimes(
+                    status = "current",
+                    limit = 20,
+                    sort = "-start_date"
+                )
+            }
+        )
     }
 
     private fun getUpcomingAnimes() {
-        viewModelScope.launch {
-            animesUseCases.getAnime(status = "upcoming", limit = 15, sort = "-user_count")
-                .onStart {
-                    _animeState.value = _animeState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _animeState.value = _animeState.value.copy(errorMessage = e.message)
-                    _animeState.value = _animeState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val animes = result.body()?.data?.map { it.toModel() }
-                    _animeState.value = _animeState.value.copy(animeDataList = animes)
-                    _animeState.value = _animeState.value.copy(isLoading = false)
-                }
-        }
+        fetchAndSetAnimeState(
+            state = _animeUpcomingState,
+            fetchAnimeData = {
+                animesUseCases.getAnime(
+                    status = "upcoming",
+                    limit = 20,
+                    sort = "-user_count"
+                )
+            }
+        )
     }
 
     private fun getAnimes() {
-        viewModelScope.launch {
-            animesUseCases.getAnime(status = "upcoming", limit = 15, sort = "-start_date")
-                .onStart {
-                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _animeRomanceState.value = _animeRomanceState.value.copy(errorMessage = e.message)
-                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val animes = result.body()?.data?.map { it.toModel() }
-                    _animeRomanceState.value = _animeRomanceState.value.copy(animeDataList = animes)
-                    _animeRomanceState.value = _animeRomanceState.value.copy(isLoading = false)
-                }
-        }
-    }
-
-    fun getAnimesByCategory(categorySelected: String?) {
-        viewModelScope.launch {
-            animesUseCases.getAnime(status = "current", categories = categorySelected, limit = 15, sort = "-start_date")
-                .onStart {
-                    _animeByCategoryState.value = _animeByCategoryState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _animeByCategoryState.value = _animeByCategoryState.value.copy(errorMessage = e.message)
-                    _animeByCategoryState.value = _animeByCategoryState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val animes = result.body()?.data?.map { it.toModel() }
-                    _animeByCategoryState.value = _animeByCategoryState.value.copy(animeDataList = animes)
-                    _animeByCategoryState.value = _animeByCategoryState.value.copy(isLoading = false)
-                }
-        }
+        fetchAndSetAnimeState(
+            state = _animeState,
+            fetchAnimeData = {
+                animesUseCases.getAnime(
+                    status = "upcoming",
+                    limit = 20,
+                    sort = "-start_date"
+                )
+            }
+        )
     }
 
     private fun getHighestRatedAnimes() {
-        viewModelScope.launch {
-            animesUseCases.getAnime(limit = 15, sort = "-average_rating")
-                .onStart {
-                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = true)
-                }
-                .catch { e ->
-                    _animeHighRateState.value = _animeHighRateState.value.copy(errorMessage = e.message)
-                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = false)
-                }.collectLatest { result ->
-                    val animes = result.body()?.data?.map { it.toModel() }
-                    _animeHighRateState.value = _animeHighRateState.value.copy(animeDataList = animes)
-                    _animeHighRateState.value = _animeHighRateState.value.copy(isLoading = false)
-                }
-        }
+        fetchAndSetAnimeState(
+            state = _animeHighRateState,
+            fetchAnimeData = {
+                animesUseCases.getAnime(
+                    limit = 20,
+                    sort = "-average_rating")
+            }
+        )
+    }
+
+    fun getAnimesByCategory(categorySelected: String?) {
+        fetchAndSetAnimeState(
+            state = _animeByCategoryState,
+            fetchAnimeData = {
+                animesUseCases.getAnime(
+                    status = "current",
+                    categories = categorySelected,
+                    limit = 15,
+                    sort = "-start_date"
+                )
+            }
+        )
     }
 
     private fun getCategory() {
@@ -185,10 +209,8 @@ class HomeAnimeViewModel @Inject constructor(
                     _categoryState.value = _categoryState.value.copy(isLoading = true)
                 }
                 .catch { e ->
-                    _categoryState.value = _categoryState.value.copy(errorMessage = e.message)
-                    _categoryState.value = _categoryState.value.copy(isLoading = false)
+                    _categoryState.value = _categoryState.value.copy(errorMessage = e.message, isLoading = false)
                 }.collectLatest { result ->
-
                     val categories = result.body()?.data?.map { it.toModel() }
                     _categoryState.value = _categoryState.value.copy(categories = categories)
                     _categoryState.value = _categoryState.value.copy(isLoading = false)

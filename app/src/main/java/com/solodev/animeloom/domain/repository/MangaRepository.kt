@@ -9,9 +9,19 @@ import retrofit2.Response
 
 interface MangaRepository {
 
-    suspend fun getTrendingMangaList() : Flow<Response<TrendingMangaListResponse>>
+    suspend fun getTrendingMangaList(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ) : Flow<Response<TrendingMangaListResponse>>
 
-    suspend fun getManga() : Flow<Response<MangaListResponse>>
+    suspend fun getManga(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ) : Flow<Response<MangaListResponse>>
 
     suspend fun getMangaById(id: Int) : Flow<Response<MangaResponse>>
 

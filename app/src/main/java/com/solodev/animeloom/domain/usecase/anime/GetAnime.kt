@@ -11,8 +11,8 @@ class GetAnime(
     suspend operator fun invoke(
         status: String? = null,
         categories: String? = null,
-        limit: Int,
-        sort: String
+        limit: Int? = null,
+        sort: String? = null
     ): Flow<Response<AnimeListResponse>> {
         return animeRepository.getAnimeList(
             status = status,

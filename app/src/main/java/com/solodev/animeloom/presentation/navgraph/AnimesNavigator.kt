@@ -69,16 +69,15 @@ fun AnimesNavigator(
 
     val lastRoute = mainViewModel.getLastRoute()
 
-    val animeState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
+    val animeState by homeAnimesViewModel.animeUpcomingState.collectAsStateWithLifecycle()
     val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
     val animeHighRateState by homeAnimesViewModel.animeHighRateState.collectAsStateWithLifecycle()
-    val animeRomanceState by homeAnimesViewModel.animeRomanceState.collectAsStateWithLifecycle()
+    val animeRomanceState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
     val animeByCategoryState by homeAnimesViewModel.animeByCategoryState.collectAsStateWithLifecycle()
     val animeBySeeAllState by homeAnimesViewModel.animeBySeeAllState.collectAsStateWithLifecycle()
     val isLoadingHomeData by homeAnimesViewModel.isLoadingData.collectAsStateWithLifecycle()
 
-    val trendingMangaState by mangaViewModel.trendingMangaState.collectAsStateWithLifecycle()
-    val mangaState by mangaViewModel.mangaState.collectAsStateWithLifecycle()
+    val mangaState by mangaViewModel.combinedMangaState.collectAsStateWithLifecycle()
 
     val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
     val bookmarkState = bookmarkViewModel.bookmarkState.value
@@ -192,7 +191,6 @@ fun AnimesNavigator(
 
                 composable(Route.MangaRoute.route) {
                     MangaScreen(
-                        trendingMangaState = trendingMangaState,
                         mangaState = mangaState,
                         onNavigate = onNavigate,
                         onMangaClick = { cover, id , localId ->

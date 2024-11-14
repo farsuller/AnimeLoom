@@ -8,13 +8,18 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface AnimeRepository {
-    suspend fun getTrendingAnimeList(): Flow<Response<AnimeListResponse>>
+    suspend fun getTrendingAnimeList(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ): Flow<Response<AnimeListResponse>>
 
     suspend fun getAnimeList(
         status: String?,
         categories: String?,
-        limit: Int,
-        sort: String
+        limit: Int?,
+        sort: String?
     ): Flow<Response<AnimeListResponse>>
 
     suspend fun getAnimeById(id: Int): Flow<Response<AnimeResponse>>

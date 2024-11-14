@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
 
-@Database(entities = [AnimeData::class, MangaData::class], version = 1, exportSchema = false)
+@Database(entities = [AnimeData::class, MangaData::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AnimeLoomDatabase : RoomDatabase() {
     abstract fun animeDao(): AnimeDao

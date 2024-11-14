@@ -4,15 +4,19 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +29,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.solodev.animeloom.domain.model.MangaData
+import com.solodev.animeloom.presentation.common.AnimeCardShimmerEffect
 import com.solodev.animeloom.utils.Constants
+import com.solodev.animeloom.utils.toDp
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -36,45 +43,43 @@ fun SharedTransitionScope.MangaCard(
     onClick: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
+
+    val image = mangaData.attributes?.posterImage?.original
+    val imageHeight = mangaData.attributes?.posterImage?.meta?.dimensions?.small?.height ?: 402
+    val imageWidth = mangaData.attributes?.posterImage?.meta?.dimensions?.small?.width ?: 284
+
     Card(
         onClick = onClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .height(130.dp),
+            .height(imageHeight.toDp())
+            .width(imageWidth.toDp())
+            .background(MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = Constants.Elevation.level0),
     ) {
-        Column(
+        SubcomposeAsyncImage(
+            model = image,
+            contentDescription = mangaData.attributes?.canonicalTitle,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            AsyncImage(
-                model = mangaData.attributes?.posterImage?.original,
-                contentDescription = mangaData.attributes?.canonicalTitle,
-                modifier = Modifier
-                    .sharedElement(
-                        rememberSharedContentState(key = mangaData.id),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        boundsTransform = { _, _ ->
-                            tween(durationMillis = 500)
-                        }
-                    )
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
-            )
-
-            Text(
-                text = mangaData.attributes?.canonicalTitle ?: "Default Title",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-                lineHeight = 20.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+                .sharedElement(
+                    rememberSharedContentState(key = mangaData.id),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    boundsTransform = { _, _ ->
+                        tween(durationMillis = 500)
+                    }
+                )
+                .height(imageHeight.toDp())
+                .width(imageWidth.toDp())
+                .clip(RoundedCornerShape(10.dp)),
+            contentScale = ContentScale.Crop,
+            loading = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    AnimeCardShimmerEffect(height = imageHeight, width = imageWidth)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
+                }
+            }
+        )
     }
 
 }

@@ -16,12 +16,32 @@ class MangaRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val mangaDao: MangaDao
 ) : MangaRepository {
-    override suspend fun getTrendingMangaList(): Flow<Response<TrendingMangaListResponse>> = safeApiCall {
-        apiService.getTrendingMangaList()
+    override suspend fun getTrendingMangaList(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ): Flow<Response<TrendingMangaListResponse>> = safeApiCall {
+        apiService.getTrendingMangaList(
+            status = status,
+            categories = categories,
+            limit = limit,
+            sort = sort
+        )
     }
 
-    override suspend fun getManga(): Flow<Response<MangaListResponse>> = safeApiCall {
-        apiService.getMangaList()
+    override suspend fun getManga(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ): Flow<Response<MangaListResponse>> = safeApiCall {
+        apiService.getMangaList(
+            status = status,
+            categories = categories,
+            limit = limit,
+            sort = sort
+        )
     }
 
     override suspend fun getMangaById(id: Int): Flow<Response<MangaResponse>> = safeApiCall {

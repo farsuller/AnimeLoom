@@ -104,6 +104,9 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                     }
 
                     animeState.animeDataDetail != null -> {
+
+                        val title = animeData.attributes?.titles?.en ?: animeData.attributes?.canonicalTitle
+
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -112,7 +115,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                             DetailHeaderBar(
                                 navigateUp = navigateUp,
-                                titleDetail = animeData.attributes?.titles?.en,
+                                titleDetail = title,
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         AnimeDetailsEvent.UpsertDeleteAnime(

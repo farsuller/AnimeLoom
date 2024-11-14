@@ -15,14 +15,19 @@ import retrofit2.http.Query
 
 interface AnimeApi {
     @GET("trending/anime")
-    suspend fun getTrendingAnimeList(): Response<AnimeListResponse>
+    suspend fun getTrendingAnimeList(
+        @Query("filter[status]") status: String? = null,
+        @Query("filter[categories]") categories: String? = null,
+        @Query("page[limit]") limit: Int? = null,
+        @Query("sort") sort: String? = null
+    ): Response<AnimeListResponse>
 
     @GET("anime")
     suspend fun getAnimeList(
         @Query("filter[status]") status: String? = null,
         @Query("filter[categories]") categories: String? = null,
-        @Query("page[limit]") limit: Int,
-        @Query("sort") sort: String
+        @Query("page[limit]") limit: Int? = null,
+        @Query("sort") sort: String? = null
     ): Response<AnimeListResponse>
 
     @GET("anime/{id}")
@@ -30,15 +35,25 @@ interface AnimeApi {
 
     @GET("categories")
     suspend fun getCategories(
-        @Query("page[limit]") limit: Int,
-        @Query("sort") sort: String
+        @Query("page[limit]") limit: Int? = null,
+        @Query("sort") sort: String? = null
     ): Response<CategoriesResponse>
 
     @GET("trending/manga")
-    suspend fun getTrendingMangaList(): Response<TrendingMangaListResponse>
+    suspend fun getTrendingMangaList(
+        @Query("filter[status]") status: String? = null,
+        @Query("filter[categories]") categories: String? = null,
+        @Query("page[limit]") limit: Int? = null,
+        @Query("sort") sort: String? = null
+    ): Response<TrendingMangaListResponse>
 
     @GET("manga")
-    suspend fun getMangaList(): Response<MangaListResponse>
+    suspend fun getMangaList(
+        @Query("filter[status]") status: String? = null,
+        @Query("filter[categories]") categories: String? = null,
+        @Query("page[limit]") limit: Int? = null,
+        @Query("sort") sort: String? = null
+    ): Response<MangaListResponse>
 
     @GET("manga/{id}")
     suspend fun getMangaById(@Path("id") id: Int): Response<MangaResponse>

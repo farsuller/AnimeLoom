@@ -9,7 +9,17 @@ import retrofit2.Response
 class GetTrendingAnime(
     private val animeRepository: AnimeRepository,
 ) {
-    suspend operator fun invoke(): Flow<Response<AnimeListResponse>> {
-        return animeRepository.getTrendingAnimeList()
+    suspend operator fun invoke(
+        status: String? = null,
+        categories: String? = null,
+        limit: Int? = null,
+        sort: String? = null
+    ): Flow<Response<AnimeListResponse>> {
+        return animeRepository.getTrendingAnimeList(
+            status = status,
+            categories = categories,
+            limit = limit,
+            sort = sort
+        )
     }
 }

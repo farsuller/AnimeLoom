@@ -16,16 +16,26 @@ class AnimeRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
     private val animeDao: AnimeDao
 ) : AnimeRepository {
-    override suspend fun getTrendingAnimeList(): Flow<Response<AnimeListResponse>> =
+    override suspend fun getTrendingAnimeList(
+        status: String?,
+        categories: String?,
+        limit: Int?,
+        sort: String?
+    ): Flow<Response<AnimeListResponse>> =
         safeApiCall {
-            apiService.getTrendingAnimeList()
+            apiService.getTrendingAnimeList(
+                status = status,
+                categories = categories,
+                limit = limit,
+                sort = sort
+            )
         }
 
     override suspend fun getAnimeList(
         status: String?,
         categories: String?,
-        limit: Int,
-        sort: String
+        limit: Int?,
+        sort: String?
     ): Flow<Response<AnimeListResponse>> = safeApiCall {
         apiService.getAnimeList(
             status = status,

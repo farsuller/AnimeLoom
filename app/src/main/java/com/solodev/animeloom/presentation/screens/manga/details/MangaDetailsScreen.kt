@@ -5,8 +5,10 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +16,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -107,6 +113,8 @@ fun SharedTransitionScope.MangaDetailsScreen(
                     }
 
                     mangaState.mangaDataDetail != null -> {
+                        val title = mangaState.mangaDataDetail?.attributes?.titles?.en ?: mangaState.mangaDataDetail?.attributes?.canonicalTitle
+                        val details = mangaState.mangaDataDetail?.attributes?.description ?: mangaState.mangaDataDetail?.attributes?.synopsis
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -115,7 +123,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
 
                             DetailHeaderBar(
                                 navigateUp = navigateUp,
-                                titleDetail = mangaState.mangaDataDetail?.attributes?.titles?.en,
+                                titleDetail = title,
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         MangaDetailsEvent.UpsertDeleteManga(
@@ -124,19 +132,55 @@ fun SharedTransitionScope.MangaDetailsScreen(
                                     )
                                 })
 
+                            Row {
+                                Text(
+                                    text = mangaState.mangaDataDetail?.attributes?.startDate?.split("-")?.first() ?: "-",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Medium
+                                )
+
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(1.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Star,
+                                        contentDescription = null
+                                    )
+
+                                    Text(
+                                        text = mangaState.mangaDataDetail?.attributes?.averageRating
+                                            ?: "0.0",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                }
+                            }
+
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            Column(
-                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp),
-                                horizontalAlignment = Alignment.Start
-                            ) {
-                                Text(
-                                    text = "Synopsis",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(text = mangaState.mangaDataDetail?.attributes?.synopsis ?: "")
+
+                            details?.let { synopsis ->
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                                    horizontalAlignment = Alignment.Start
+                                ) {
+                                    Text(
+                                        modifier = Modifier
+                                            .fillMaxWidth(),
+                                        text = "Synopsis",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Start
+                                    )
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        text = synopsis)
+                                }
                             }
+
                         }
                     }
                 }
