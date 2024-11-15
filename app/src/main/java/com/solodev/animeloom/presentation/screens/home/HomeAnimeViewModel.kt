@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -92,6 +93,7 @@ class HomeAnimeViewModel @Inject constructor(
                     })
 
                 }
+
                 "Highest Rated Anime" -> {
                     getSeeAllAnimes(fetchAnimeData = {
                         animesUseCases.getAnime(limit = 20, sort = "-average_rating")
@@ -107,6 +109,7 @@ class HomeAnimeViewModel @Inject constructor(
                         )
                     })
                 }
+
                 else -> return@launch
             }
         }
@@ -119,14 +122,25 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             fetchAnimeData()
                 .onStart {
-                    state.value = state.value.copy(isLoading = true)
+                    state.update {
+                        it.copy(isLoading = true)
+                    }
                 }
                 .catch { e ->
-                    state.value = state.value.copy(errorMessage = e.message, isLoading = false)
+                    state.update {
+                        it.copy(
+                            errorMessage = e.message,
+                            isLoading = false)
+                    }
                 }
                 .collectLatest { result ->
                     val animeList = result.body()?.data?.map { it.toModel() }
-                    state.value = state.value.copy(animeDataList = animeList, isLoading = false)
+
+                    state.update {
+                        it.copy(
+                            animeDataList = animeList,
+                            isLoading = false)
+                    }
                 }
         }
     }
@@ -183,7 +197,8 @@ class HomeAnimeViewModel @Inject constructor(
             fetchAnimeData = {
                 animesUseCases.getAnime(
                     limit = 20,
-                    sort = "-average_rating")
+                    sort = "-average_rating"
+                )
             }
         )
     }
@@ -206,14 +221,23 @@ class HomeAnimeViewModel @Inject constructor(
         viewModelScope.launch {
             animesUseCases.getCategories()
                 .onStart {
-                    _categoryState.value = _categoryState.value.copy(isLoading = true)
+                    _categoryState.update {
+                        it.copy(isLoading = true)
+                    }
                 }
                 .catch { e ->
-                    _categoryState.value = _categoryState.value.copy(errorMessage = e.message, isLoading = false)
+                    _categoryState.update {
+                        it.copy(
+                            errorMessage = e.message,
+                            isLoading = false)
+                    }
                 }.collectLatest { result ->
                     val categories = result.body()?.data?.map { it.toModel() }
-                    _categoryState.value = _categoryState.value.copy(categories = categories)
-                    _categoryState.value = _categoryState.value.copy(isLoading = false)
+                    _categoryState.update {
+                        it.copy(
+                            categories = categories,
+                            isLoading = false)
+                    }
                 }
         }
     }
