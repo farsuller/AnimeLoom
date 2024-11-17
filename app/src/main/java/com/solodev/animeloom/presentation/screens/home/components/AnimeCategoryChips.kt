@@ -18,14 +18,16 @@ fun AnimeCategoryChips(
 ) {
 
     categoryState.categories?.let {
-        LazyRow(modifier = modifier.padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        LazyRow(
+            modifier = modifier.padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             items(it) { category ->
                 DefaultChipButton(
                     text = category.attributes.title ?: "Anime",
                     onClickedCategory = {
-                    onClickCategory(category)
-                })
+                        onClickCategory(category)
+                    })
             }
         }
     }

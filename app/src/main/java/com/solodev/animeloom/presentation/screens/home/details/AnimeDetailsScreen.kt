@@ -15,10 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,7 +40,9 @@ import coil3.compose.AsyncImage
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.common.DetailHeaderBar
 import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
+import com.solodev.animeloom.presentation.common.ShimmerEffectCastings
 import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
+import com.solodev.animeloom.presentation.screens.home.components.CharactersItem
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -53,11 +56,14 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 ) {
     val viewModel: AnimeDetailsViewModel = hiltViewModel()
     val animeState by viewModel.animeDetailState.collectAsStateWithLifecycle()
+    val castingsState by viewModel.castingsState.collectAsStateWithLifecycle()
 
     val animeData = animeState.animeDataDetail ?: AnimeData()
+    val castingData = castingsState.castingDataList?.filter { it.type == "characters"} ?: emptyList()
 
     LaunchedEffect(true) {
         viewModel.getAnimesById(id.toInt())
+        viewModel.getCastingsById(mediaId = id.toInt(), mediaType = "Anime")
     }
     if (viewModel.sideEffect != null) {
         Toast.makeText(LocalContext.current, viewModel.sideEffect, Toast.LENGTH_SHORT).show()
@@ -89,6 +95,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                     contentScale = ContentScale.Crop
                 )
             }
+
             item {
 
                 when {
@@ -104,8 +111,9 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                     }
 
                     animeState.animeDataDetail != null -> {
-
-                        val title = animeData.attributes?.titles?.en ?: animeData.attributes?.canonicalTitle
+                        val animeDataAttributes = animeData.attributes
+                        val title = animeDataAttributes?.titles?.en ?: animeDataAttributes?.canonicalTitle
+                        val details = animeDataAttributes?.synopsis ?: animeDataAttributes?.description
 
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -126,9 +134,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                             Row {
                                 Text(
-                                    text = animeState.animeDataDetail?.attributes?.startDate?.split(
-                                        "-"
-                                    )?.first() ?: "-",
+                                    text = animeDataAttributes?.startDate?.split("-")?.first() ?: "-",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -143,8 +149,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                                     )
 
                                     Text(
-                                        text = animeState.animeDataDetail?.attributes?.averageRating
-                                            ?: "0.0",
+                                        text = animeDataAttributes?.averageRating ?: "0.0",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -153,18 +158,50 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            Column(
-                                modifier = Modifier
-                                    .padding(horizontal = 20.dp, vertical = 10.dp)
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.Start
-                            ) {
-                                Text(
-                                    text = "Synopsis",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold
+                            details?.let { synopsis ->
+                                Column(
+                                    modifier = Modifier
+                                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                                        .fillMaxWidth(),
+                                    horizontalAlignment = Alignment.Start
+                                ) {
+                                    Text(
+                                        text = "Synopsis",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Text(text = synopsis)
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            item {
+                when {
+                    castingsState.isLoading -> ShimmerEffectCastings()
+
+                    castingsState.errorMessage != null -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "Error: ${castingsState.errorMessage}")
+                        }
+                    }
+
+                    castingsState.castingDataList != null ->{
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            items(castingData){ cast ->
+                                CharactersItem(
+                                    castingsData = cast,
+                                    onClick = {}
                                 )
-                                Text(text = animeState.animeDataDetail?.attributes?.synopsis ?: "")
                             }
                         }
                     }

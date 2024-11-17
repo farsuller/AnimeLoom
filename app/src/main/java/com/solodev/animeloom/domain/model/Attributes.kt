@@ -1,7 +1,6 @@
 package com.solodev.animeloom.domain.model
 
 import android.os.Parcelable
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -26,7 +25,7 @@ data class Attributes(
     val title: String? = null,
 
     @SerializedName("description")
-    val description : String? = null,
+    val description: String? = null,
 
     @SerializedName("canonicalTitle")
     val canonicalTitle: String? = null,
@@ -90,4 +89,19 @@ data class Attributes(
     @SerializedName("childCount")
     val childCount: Int? = null,
 
-): Parcelable
+    @SerializedName("names")
+    val names: Names? = null,
+
+    @SerializedName("name")
+    val name: String? = null,
+
+    @SerializedName("canonicalName")
+    val canonicalName: String? = null,
+
+    @SerializedName("otherNames")
+    val otherNames: List<String>? = null,
+
+    @SerializedName("image")
+    val image: Image? = null,
+
+    ) : Parcelable

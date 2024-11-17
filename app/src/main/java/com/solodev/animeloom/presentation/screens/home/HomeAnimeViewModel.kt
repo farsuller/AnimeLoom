@@ -219,7 +219,7 @@ class HomeAnimeViewModel @Inject constructor(
 
     private fun getCategory() {
         viewModelScope.launch {
-            animesUseCases.getCategories()
+            animesUseCases.getCategories(limit = 40, sort = "-total_media_count")
                 .onStart {
                     _categoryState.update {
                         it.copy(isLoading = true)

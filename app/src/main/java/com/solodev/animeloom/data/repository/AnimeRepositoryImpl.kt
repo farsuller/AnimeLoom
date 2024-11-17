@@ -5,6 +5,7 @@ import com.solodev.animeloom.data.remote.AnimeApi
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
 import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
+import com.solodev.animeloom.data.remote.dto.response.CastingsResponse
 import com.solodev.animeloom.data.remote.safeApiCall
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.repository.AnimeRepository
@@ -49,8 +50,26 @@ class AnimeRepositoryImpl @Inject constructor(
         apiService.getAnimeById(id = id)
     }
 
-    override suspend fun getCategories(): Flow<Response<CategoriesResponse>> = safeApiCall {
-        apiService.getCategories(limit = 40, sort = "-total_media_count")
+    override suspend fun getCastingsById(
+        mediaType: String?,
+        mediaId: Int?,
+        isCharacter: Boolean?,
+        language: String?,
+        include: String?,
+        sort: String?
+    ): Flow<Response<CastingsResponse>> = safeApiCall {
+        apiService.getCastingsById(
+            mediaType = mediaType,
+            mediaId = mediaId,
+            isCharacter = isCharacter,
+            language = language,
+            include = include,
+            sort = sort
+        )
+    }
+
+    override suspend fun getCategories(limit: Int?, sort: String?): Flow<Response<CategoriesResponse>> = safeApiCall {
+        apiService.getCategories(limit = limit, sort = sort)
     }
 
     override suspend fun upsertAnime(animeData: AnimeData) {

@@ -7,6 +7,7 @@ import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaResponse
 import com.solodev.animeloom.data.remote.dto.response.TrendingMangaListResponse
+import com.solodev.animeloom.data.remote.dto.response.CastingsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -32,6 +33,16 @@ interface AnimeApi {
 
     @GET("anime/{id}")
     suspend fun getAnimeById(@Path("id") id: Int): Response<AnimeResponse>
+
+    @GET("castings")
+    suspend fun getCastingsById(
+        @Query("filter[media_type]") mediaType: String? = null,
+        @Query("filter[media_id]") mediaId: Int? = null,
+        @Query("filter[is_character]") isCharacter: Boolean? = null,
+        @Query("filter[language]") language: String? = null,
+        @Query("include") include: String? = null,
+        @Query("sort") sort: String? = null,
+    ): Response<CastingsResponse>
 
     @GET("categories")
     suspend fun getCategories(

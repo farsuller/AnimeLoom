@@ -1,6 +1,7 @@
 package com.solodev.animeloom.data.remote.dto
 
 import com.solodev.animeloom.domain.model.Attributes
+import com.solodev.animeloom.domain.model.Names
 
 data class AttributesDto(
     val updatedAt: String? = null,
@@ -31,7 +32,12 @@ data class AttributesDto(
     val episodeLength: Int? = null,
     val youtubeVideoId: String? = null,
     val showType: String? = null,
-    val nsfw: Boolean? = null
+    val nsfw: Boolean? = null,
+    val names: Names? = null,
+    val name: String? = null,
+    val canonicalName: String? = null,
+    val otherNames: List<String>? = null,
+    val image: ImageDto? = null,
 ) {
     fun toModel(): Attributes =
         Attributes(
@@ -59,6 +65,11 @@ data class AttributesDto(
             startDate = startDate,
             userCount = userCount,
             averageRating = averageRating,
-            ratingRank = ratingRank
+            ratingRank = ratingRank,
+            names = names,
+            name = name,
+            canonicalName = canonicalName,
+            otherNames = otherNames,
+            image = image?.toModel(),
         )
 }

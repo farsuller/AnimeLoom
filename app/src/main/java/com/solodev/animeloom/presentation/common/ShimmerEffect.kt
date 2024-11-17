@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -129,6 +133,17 @@ fun ShimmerEffectCarouselWithHeader() {
 }
 
 @Composable
+fun ShimmerEffectCastings() {
+    LazyRow (
+        modifier = Modifier.padding(start = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        items(10) {
+            CastingsCardShimmerEffect()
+        }
+    }
+}
+
+@Composable
 fun ShimmerEffectCategoryCarousel() {
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         repeat(10) {
@@ -165,6 +180,16 @@ fun AnimeCardShimmerEffect(modifier: Modifier = Modifier, height: Int = 402, wid
 }
 
 @Composable
+fun CastingsCardShimmerEffect(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(100.dp)
+            .clip(CircleShape)
+            .shimmerEffect(),
+    )
+}
+
+@Composable
 fun HeaderShimmerEffect(modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
@@ -188,6 +213,18 @@ fun CategoryShimmerEffect(modifier: Modifier = Modifier) {
 
 @AnimesPreviews
 @Composable
+internal fun ShimmerEffectCastingsPreview() {
+    AnimeLoomTheme {
+        Surface {
+            Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
+                ShimmerEffectCastings()
+            }
+        }
+    }
+}
+
+@AnimesPreviews
+@Composable
 internal fun ShimmerEffectDetailColumnPreview() {
     AnimeLoomTheme {
         Surface {
@@ -195,7 +232,6 @@ internal fun ShimmerEffectDetailColumnPreview() {
                 ShimmerEffectDetailColumn()
             }
         }
-
     }
 }
 
@@ -208,7 +244,6 @@ internal fun ShimmerEffectVerticalGridPreview() {
                 ShimmerEffectVerticalGrid()
             }
         }
-
     }
 }
 
@@ -221,7 +256,6 @@ internal fun ShimmerEffectPreview() {
                 AnimeCardShimmerEffect()
             }
         }
-
     }
 }
 

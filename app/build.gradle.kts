@@ -34,12 +34,12 @@ android {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 18
-        versionName = "1.1.1"
+        versionCode = 19
+        versionName = "1.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", "\"https://kitsu.io/api/edge/\"")
+        buildConfigField("String", "BASE_URL", "\"https://kitsu.app/api/edge/\"")
     }
 
     if(ProjectConfig.GENERATE_LOCAL_ARCHIVE){

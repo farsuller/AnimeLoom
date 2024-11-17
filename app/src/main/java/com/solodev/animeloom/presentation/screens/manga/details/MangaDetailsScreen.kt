@@ -113,8 +113,9 @@ fun SharedTransitionScope.MangaDetailsScreen(
                     }
 
                     mangaState.mangaDataDetail != null -> {
-                        val title = mangaState.mangaDataDetail?.attributes?.titles?.en ?: mangaState.mangaDataDetail?.attributes?.canonicalTitle
-                        val details = mangaState.mangaDataDetail?.attributes?.description ?: mangaState.mangaDataDetail?.attributes?.synopsis
+                        val mangaDataAttributes = mangaData.attributes
+                        val title = mangaDataAttributes?.titles?.en ?: mangaDataAttributes?.canonicalTitle
+                        val details = mangaDataAttributes?.description ?: mangaDataAttributes?.synopsis
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -134,7 +135,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
 
                             Row {
                                 Text(
-                                    text = mangaState.mangaDataDetail?.attributes?.startDate?.split("-")?.first() ?: "-",
+                                    text = mangaDataAttributes?.startDate?.split("-")?.first() ?: "-",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -149,8 +150,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
                                     )
 
                                     Text(
-                                        text = mangaState.mangaDataDetail?.attributes?.averageRating
-                                            ?: "0.0",
+                                        text = mangaDataAttributes?.averageRating ?: "0.0",
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Medium
                                     )

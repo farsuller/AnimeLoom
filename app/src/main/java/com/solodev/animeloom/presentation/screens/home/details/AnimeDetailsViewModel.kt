@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
-import com.solodev.animeloom.presentation.screens.home.states.AnimeDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +26,8 @@ class AnimeDetailsViewModel @Inject constructor(
     private val _animeDetailState = MutableStateFlow(AnimeDetailState())
     val animeDetailState: StateFlow<AnimeDetailState> = _animeDetailState.asStateFlow()
 
+    private val _castingsState = MutableStateFlow(CastingsState())
+    val castingsState: StateFlow<CastingsState> = _castingsState.asStateFlow()
 
     var sideEffect by mutableStateOf<String?>(null)
         private set
@@ -35,10 +37,9 @@ class AnimeDetailsViewModel @Inject constructor(
             is AnimeDetailsEvent.UpsertDeleteAnime -> {
                 viewModelScope.launch {
                     val anime = animesUseCases.selectAnimeById(event.animeData.id)
-                    if(anime == null){
+                    if (anime == null) {
                         upsertAnime(animeData = event.animeData)
-                    }
-                    else{
+                    } else {
                         deleteAnime(deleteAnimeById = event.animeData.localId)
                     }
                 }
@@ -51,20 +52,57 @@ class AnimeDetailsViewModel @Inject constructor(
     }
 
 
-    fun getAnimesById(id : Int){
+    fun getAnimesById(id: Int) {
         viewModelScope.launch {
             animesUseCases.getAnimeId(id = id)
                 .onStart {
-                    _animeDetailState.value = AnimeDetailState(isLoading = true)
+                    _animeDetailState.update {
+                        it.copy(isLoading = true)
+                    }
                 }
                 .catch { e ->
-                    _animeDetailState.value = AnimeDetailState(errorMessage = e.message)
-                    _animeDetailState.value = _animeDetailState.value.copy(isLoading = false)
+                    _animeDetailState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = e.message)
+                    }
 
                 }.collectLatest { result ->
                     val detail = result.body()?.data?.toModel()
-                    _animeDetailState.value = AnimeDetailState(animeDataDetail = detail)
-                    _animeDetailState.value = _animeDetailState.value.copy(isLoading = false)
+                    _animeDetailState.update {
+                        it.copy(
+                            animeDataDetail = detail,
+                            isLoading = false)
+                    }
+                }
+        }
+    }
+
+    fun getCastingsById(mediaId: Int?, mediaType: String?) {
+        viewModelScope.launch {
+            animesUseCases.getCastingsById(
+                mediaType = mediaType,
+                mediaId = mediaId,
+                isCharacter = true,
+                language = "Japanese",
+                include = "character,person",
+                sort = "-featured"
+            )
+                .onStart {
+                    _castingsState.update {
+                        it.copy(isLoading = true)
+                    }
+                }
+                .catch { e ->
+                    _castingsState.update {
+                        it.copy(isLoading = false, errorMessage = e.message)
+                    }
+
+                }.collectLatest { result ->
+                    val castings = result.body()?.included?.map { it.toModel() }
+                    _castingsState.update {
+                        it.copy(isLoading = false, castingDataList = castings)
+                    }
                 }
         }
     }

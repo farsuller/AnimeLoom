@@ -14,6 +14,7 @@ import com.solodev.animeloom.domain.usecase.anime.GetAnime
 import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
 import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
 import com.solodev.animeloom.domain.usecase.anime.GetAnimeId
+import com.solodev.animeloom.domain.usecase.anime.GetCastingsById
 import com.solodev.animeloom.domain.usecase.anime.GetCategories
 import com.solodev.animeloom.domain.usecase.anime.SelectAnime
 import com.solodev.animeloom.domain.usecase.anime.SelectAnimeById
@@ -60,6 +61,7 @@ object AppModule {
             getTrendingAnimes = GetTrendingAnime(repository),
             getAnime = GetAnime(repository),
             getAnimeId = GetAnimeId(repository),
+            getCastingsById = GetCastingsById(repository),
             getCategories = GetCategories(repository),
             upsertAnime = UpsertAnime(repository),
             deleteAnimeById = DeleteAnimeById(repository),
