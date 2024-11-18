@@ -17,5 +17,9 @@ data class CoverImage(
     val large: String?,
 
     @SerializedName("original")
-    val original: String?
+    val original: String?,
+
+    @SerializedName("meta")
+    val meta: Meta? = null
+
 ):Parcelable

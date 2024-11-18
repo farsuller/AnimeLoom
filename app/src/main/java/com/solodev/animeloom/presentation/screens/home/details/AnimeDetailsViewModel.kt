@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -68,6 +69,7 @@ class AnimeDetailsViewModel @Inject constructor(
                     }
 
                 }.collectLatest { result ->
+                    delay(1500)
                     val detail = result.body()?.data?.toModel()
                     _animeDetailState.update {
                         it.copy(
@@ -99,6 +101,7 @@ class AnimeDetailsViewModel @Inject constructor(
                     }
 
                 }.collectLatest { result ->
+                    delay(1500)
                     val castings = result.body()?.included?.map { it.toModel() }
                     _castingsState.update {
                         it.copy(isLoading = false, castingDataList = castings)

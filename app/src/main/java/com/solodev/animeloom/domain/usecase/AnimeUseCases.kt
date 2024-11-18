@@ -11,7 +11,6 @@ import com.solodev.animeloom.domain.usecase.anime.SelectAnimeById
 import com.solodev.animeloom.domain.usecase.anime.UpsertAnime
 
 data class AnimeUseCases(
-    val getTrendingAnimes: GetTrendingAnime,
     val getAnime: GetAnime,
     val getAnimeId: GetAnimeId,
     val getCastingsById: GetCastingsById,

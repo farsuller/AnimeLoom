@@ -44,7 +44,6 @@ import com.solodev.animeloom.presentation.common.PartialBottomSheet
 import com.solodev.animeloom.presentation.common.SeeAll
 import com.solodev.animeloom.presentation.common.ShimmerEffectCarouselWithHeader
 import com.solodev.animeloom.presentation.common.ShimmerEffectCategoryCarousel
-import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCard
 import com.solodev.animeloom.presentation.screens.home.components.AnimeCategoryChips
@@ -64,9 +63,9 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SharedTransitionScope.HomeAnimesScreen(
-    animeState: AnimeState,
+    upcomingAnimeState: AnimeState,
     animeHighRateState: AnimeState,
-    animeRomanceState: AnimeState,
+    animeNewReleaseState: AnimeState,
     trendingAnimeState: AnimeState,
     animeByCategoryState: AnimeState,
     animeBySeeAllState: AnimeState,
@@ -122,20 +121,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                 ) {
                     item {
                         when {
-                            animeState.isLoading -> HeaderShimmerEffect()
-                            animeState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
-                            animeState.animeDataList != null -> {
+                            upcomingAnimeState.isLoading -> HeaderShimmerEffect()
+                            upcomingAnimeState.errorMessage != null -> ErrorContentMessage(animeState = upcomingAnimeState)
+                            upcomingAnimeState.animeDataList != null -> {
                                 HomeHeader(
                                     modifier = Modifier,
-                                    animeData = animeState.animeDataList.getOrNull(1)
+                                    animeData = upcomingAnimeState.animeDataList.getOrNull(1)
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
@@ -145,15 +136,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     item {
                         when {
                             categoryState.isLoading -> ShimmerEffectCategoryCarousel()
-                            categoryState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
+                            categoryState.errorMessage != null -> ErrorContentMessage(categoryState = categoryState)
                             categoryState.categories != null -> {
                                 AnimeCategoryChips(
                                     modifier = Modifier,
@@ -173,18 +156,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     item {
                         when {
                             trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            trendingAnimeState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
+                            trendingAnimeState.errorMessage != null -> ErrorContentMessage(trendingAnimeState)
+
 
                             trendingAnimeState.animeDataList != null -> {
                                 val takeAnimeList = trendingAnimeState.animeDataList.take(7)
-                                val trendingAnimeText = "Trending Anime"
+                                val trendingAnimeText = "Popular Anime"
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = trendingAnimeText),
@@ -222,18 +199,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                     item {
                         when {
-                            animeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            animeState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
-                            animeState.animeDataList != null -> {
-                                val takeAnimeList = animeState.animeDataList.take(7)
+                            upcomingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            upcomingAnimeState.errorMessage != null -> ErrorContentMessage(animeState = upcomingAnimeState)
+                            upcomingAnimeState.animeDataList != null -> {
+                                val takeAnimeList = upcomingAnimeState.animeDataList.take(7)
                                 val upcomingAnimeText = "Upcoming Anime"
 
                                 HeaderBar(
@@ -273,15 +242,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     item {
                         when {
                             animeHighRateState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            animeHighRateState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeState.errorMessage}")
-                                }
-                            }
-
+                            animeHighRateState.errorMessage != null -> ErrorContentMessage(animeState = animeHighRateState)
                             animeHighRateState.animeDataList != null -> {
                                 val takeAnimeList = animeHighRateState.animeDataList.take(7)
                                 val highestAnimeText = "Highest Rated Anime"
@@ -322,19 +283,11 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
                     item {
                         when {
-                            animeRomanceState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            animeRomanceState.errorMessage != null -> {
-                                Box(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = "Error: ${animeRomanceState.errorMessage}")
-                                }
-                            }
-
-                            animeRomanceState.animeDataList != null -> {
-                                val takeAnimeList = animeRomanceState.animeDataList.take(7)
-                                val romanceAnimeText = "Anime"
+                            animeNewReleaseState.isLoading -> ShimmerEffectCarouselWithHeader()
+                            animeNewReleaseState.errorMessage != null -> ErrorContentMessage(animeState = animeNewReleaseState)
+                            animeNewReleaseState.animeDataList != null -> {
+                                val takeAnimeList = animeNewReleaseState.animeDataList.take(7)
+                                val romanceAnimeText = "Newly Released Anime"
 
                                 HeaderBar(
                                     headerTitle = HeaderTitle(text = romanceAnimeText),
@@ -397,6 +350,22 @@ fun SharedTransitionScope.HomeAnimesScreen(
                     .zIndex(1f)
                     .align(Alignment.TopCenter),
             )
+        }
+    }
+}
+
+@Composable
+private fun ErrorContentMessage(animeState: AnimeState? = null, categoryState: CategoryState? = null) {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (animeState != null) {
+            Text(text = "Error: ${animeState.errorMessage}")
+        }
+
+        if (categoryState != null) {
+            Text(text = "Error: ${categoryState.errorMessage}")
         }
     }
 }

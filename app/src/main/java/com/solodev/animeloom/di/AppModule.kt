@@ -58,7 +58,6 @@ object AppModule {
         repository: AnimeRepository,
     ): AnimeUseCases {
         return AnimeUseCases(
-            getTrendingAnimes = GetTrendingAnime(repository),
             getAnime = GetAnime(repository),
             getAnimeId = GetAnimeId(repository),
             getCastingsById = GetCastingsById(repository),

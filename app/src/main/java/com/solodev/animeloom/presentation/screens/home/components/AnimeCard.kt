@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -68,7 +69,7 @@ fun SharedTransitionScope.AnimeCard(
         val imageHeight = animeData.attributes?.posterImage?.meta?.dimensions?.small?.height ?: 402
         val imageWidth = animeData.attributes?.posterImage?.meta?.dimensions?.small?.width ?: 284
 
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = image,
             contentDescription = animeData.attributes?.canonicalTitle,
             modifier = Modifier
@@ -82,7 +83,22 @@ fun SharedTransitionScope.AnimeCard(
                 .height(imageHeight.toDp())
                 .width(imageWidth.toDp())
                 .clip(RoundedCornerShape(10.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            loading = {
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    AnimeCardShimmerEffect(height = imageHeight, width = imageWidth)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
+                }
+            },
+            error = {
+                if (LocalInspectionMode.current) {
+                    LocalAnimeCardPreview()
+                } else {
+                    ErrorFailedToLoadImage()
+                }
+            }
         )
     }
 
@@ -124,31 +140,42 @@ fun AnimeCard(
             },
             error = {
                 if (LocalInspectionMode.current) {
-                    Image(
-                        painter = painterResource(id = R.drawable.onboarding1),
-                        contentDescription = ""
-                    )
+                    LocalAnimeCardPreview()
                 } else {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.ErrorOutline,
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Failed to Load Image",
-                            color = MaterialTheme.colorScheme.error,
-                            textAlign = TextAlign.Center
-                        )
-                    }
+                    ErrorFailedToLoadImage()
                 }
             }
         )
     }
+}
+
+@Composable
+private fun ErrorFailedToLoadImage() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.ErrorOutline,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.error
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Failed to Load Image",
+            color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun LocalAnimeCardPreview() {
+    Image(
+        painter = painterResource(id = R.drawable.onboarding1),
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+    )
 }
 
 @AnimesPreviews

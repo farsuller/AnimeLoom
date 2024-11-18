@@ -2,7 +2,6 @@ package com.solodev.animeloom.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.data.remote.dto.AnimeDataDto
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
@@ -27,8 +26,8 @@ class HomeAnimeViewModel @Inject constructor(
     private val animesUseCases: AnimeUseCases,
 ) : ViewModel() {
 
-    private val _animeState = MutableStateFlow(AnimeState())
-    val animeState: StateFlow<AnimeState> = _animeState.asStateFlow()
+    private val _animeNewReleaseState = MutableStateFlow(AnimeState())
+    val animeNewReleaseState: StateFlow<AnimeState> = _animeNewReleaseState.asStateFlow()
 
     private val _animeHighRateState = MutableStateFlow(AnimeState())
     val animeHighRateState: StateFlow<AnimeState> = _animeHighRateState.asStateFlow()
@@ -36,8 +35,8 @@ class HomeAnimeViewModel @Inject constructor(
     private val _animeUpcomingState = MutableStateFlow(AnimeState())
     val animeUpcomingState: StateFlow<AnimeState> = _animeUpcomingState.asStateFlow()
 
-    private val _trendingAnimeState = MutableStateFlow(AnimeState())
-    val trendingAnimeState: StateFlow<AnimeState> = _trendingAnimeState.asStateFlow()
+    private val _popularAnimeState = MutableStateFlow(AnimeState())
+    val popularAnimeState: StateFlow<AnimeState> = _popularAnimeState.asStateFlow()
 
     private val _animeBySeeAllState = MutableStateFlow(AnimeState())
     val animeBySeeAllState: StateFlow<AnimeState> = _animeBySeeAllState.asStateFlow()
@@ -70,12 +69,11 @@ class HomeAnimeViewModel @Inject constructor(
     fun getAnimeBySeeAll(selectedSeeAll: String) {
         viewModelScope.launch {
             when (selectedSeeAll) {
-                "Trending Anime" -> {
+                "Popular Anime" -> {
                     getSeeAllAnimes(fetchAnimeData = {
-                        animesUseCases.getTrendingAnimes(
-                            status = "current",
+                        animesUseCases.getAnime(
                             limit = 20,
-                            sort = "-start_date"
+                            sort = "-user_count"
                         )
                     })
                 }
@@ -97,10 +95,11 @@ class HomeAnimeViewModel @Inject constructor(
                     })
                 }
 
-                "Anime" -> {
+                "Newly Released Anime" -> {
                     getSeeAllAnimes(fetchAnimeData = {
                         animesUseCases.getAnime(
-                            status = "upcoming",
+                            status = "current",
+                            categories = "adventure",
                             limit = 20,
                             sort = "-start_date"
                         )
@@ -149,14 +148,13 @@ class HomeAnimeViewModel @Inject constructor(
         )
     }
 
-    fun getTrendingAnimes() {
+    private fun getTrendingAnimes() {
         fetchAndSetAnimeState(
-            state = _trendingAnimeState,
+            state = _popularAnimeState,
             fetchAnimeData = {
-                animesUseCases.getTrendingAnimes(
-                    status = "current",
+                animesUseCases.getAnime(
                     limit = 20,
-                    sort = "-start_date"
+                    sort = "-user_count"
                 )
             }
         )
@@ -177,10 +175,11 @@ class HomeAnimeViewModel @Inject constructor(
 
     private fun getAnimes() {
         fetchAndSetAnimeState(
-            state = _animeState,
+            state = _animeNewReleaseState,
             fetchAnimeData = {
                 animesUseCases.getAnime(
-                    status = "upcoming",
+                    status = "current",
+                    categories = "adventure",
                     limit = 20,
                     sort = "-start_date"
                 )

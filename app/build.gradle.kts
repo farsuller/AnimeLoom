@@ -34,19 +34,24 @@ android {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 19
-        versionName = "1.2.1"
+        versionCode = 22
+        versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BASE_URL", "\"https://kitsu.app/api/edge/\"")
-    }
 
-    if(ProjectConfig.GENERATE_LOCAL_ARCHIVE){
-        applicationVariants.all {
-            base.archivesName.set("${ProjectConfig.APP_FILENAME}-${buildType.name}-$versionCode-$versionName")
+        if (ProjectConfig.GENERATE_LOCAL_ARCHIVE) {
+            versionCode = ProjectConfig.VERSION_CODE
+            versionName = "${ProjectConfig.MAJOR_VERSION}.${ProjectConfig.MINOR_VERSION}.${ProjectConfig.PATCH_VERSION}"
+
+            applicationVariants.all {
+                base.archivesName.set("${ProjectConfig.APP_FILENAME}-${buildType.name}-$versionCode-$versionName")
+            }
         }
     }
+
+
 
     buildTypes {
         debug {

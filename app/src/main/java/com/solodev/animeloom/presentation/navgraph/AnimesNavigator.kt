@@ -69,10 +69,10 @@ fun AnimesNavigator(
 
     val lastRoute = mainViewModel.getLastRoute()
 
-    val animeState by homeAnimesViewModel.animeUpcomingState.collectAsStateWithLifecycle()
-    val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
+    val upcomingAnimeState by homeAnimesViewModel.animeUpcomingState.collectAsStateWithLifecycle()
+    val trendingAnimeState by homeAnimesViewModel.popularAnimeState.collectAsStateWithLifecycle()
     val animeHighRateState by homeAnimesViewModel.animeHighRateState.collectAsStateWithLifecycle()
-    val animeRomanceState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
+    val animeNewReleaseState by homeAnimesViewModel.animeNewReleaseState.collectAsStateWithLifecycle()
     val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
     val animeByCategoryState by homeAnimesViewModel.animeByCategoryState.collectAsStateWithLifecycle()
     val animeBySeeAllState by homeAnimesViewModel.animeBySeeAllState.collectAsStateWithLifecycle()
@@ -145,9 +145,9 @@ fun AnimesNavigator(
 
                 composable(Route.HomeRoute.route) {
                     HomeAnimesScreen(
-                        animeState = animeState,
+                        upcomingAnimeState = upcomingAnimeState,
                         animeHighRateState = animeHighRateState,
-                        animeRomanceState = animeRomanceState,
+                        animeNewReleaseState = animeNewReleaseState,
                         trendingAnimeState = trendingAnimeState,
                         categoryState = categoryState,
                         isLoadingData = isLoadingHomeData,

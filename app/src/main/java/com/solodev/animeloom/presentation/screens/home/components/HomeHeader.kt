@@ -32,7 +32,7 @@ fun HomeHeader(
     ) {
         AsyncImage(
             modifier = Modifier.matchParentSize(),
-            model = animeData?.attributes?.posterImage?.original,
+            model = animeData?.attributes?.coverImage?.original,
             contentDescription = animeData?.attributes?.title,
             contentScale = ContentScale.Crop
         )
