@@ -28,8 +28,8 @@ import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.manga.components.MangaCard
 import com.solodev.animeloom.presentation.screens.manga.states.MangaState
 import com.solodev.animeloom.utils.alasIdString
-import com.solodev.animeloom.utils.aliasPosterString
 import com.solodev.animeloom.utils.aliasLocalIdString
+import com.solodev.animeloom.utils.aliasPosterString
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -37,6 +37,7 @@ import com.solodev.animeloom.utils.aliasLocalIdString
 fun SharedTransitionScope.MangaScreen(
     mangaState: MangaState,
     onNavigate: (String) -> Unit,
+    isLoadingData: Boolean,
     onMangaClick: (aliasPosterString?, alasIdString?, aliasLocalIdString) -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
@@ -47,67 +48,70 @@ fun SharedTransitionScope.MangaScreen(
         onNavigate(Route.MangaRoute.route)
     }
 
-    Column(
-        modifier = Modifier
-            .padding(top = 24.dp, start = 8.dp, end = 8.dp)
-            .statusBarsPadding()
-            .fillMaxSize(),
-    ) {
-        Text(
-            modifier = Modifier.padding(start = 8.dp, bottom = 10.dp),
-            text = "Manga",
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+    if (isLoadingData) CircularProgressIndicator()
+    else {
+        Column(
+            modifier = Modifier
+                .padding(top = 24.dp, start = 8.dp, end = 8.dp)
+                .statusBarsPadding()
+                .fillMaxSize(),
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 8.dp, bottom = 10.dp),
+                text = "Manga",
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
 
-        when {
-            mangaState.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            mangaState.errorMessage != null -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "Error: ${mangaState.errorMessage}")
-                }
-            }
-
-            mangaState.mangaList != null ->{
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(4),
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(all = 10.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(mangaState.mangaList){ manga ->
-                        MangaCard(
-                            mangaData = manga,
-                            onClick = {
-                                onMangaClick(
-                                    manga.attributes?.posterImage?.original ?: "",
-                                    manga.id,
-                                    manga.localId
-                                )
-                            },
-                            animatedVisibilityScope = animatedVisibilityScope
-                        )
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(10.dp))
+            when {
+                mangaState.isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
                     }
                 }
+
+                mangaState.errorMessage != null -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = "Error: ${mangaState.errorMessage}")
+                    }
+                }
+
+                mangaState.mangaList != null -> {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(4),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = 10.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(mangaList) { manga ->
+                            MangaCard(
+                                mangaData = manga,
+                                onClick = {
+                                    onMangaClick(
+                                        manga.attributes?.posterImage?.original ?: "",
+                                        manga.id,
+                                        manga.localId
+                                    )
+                                },
+                                animatedVisibilityScope = animatedVisibilityScope
+                            )
+                        }
+
+                        item {
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+                    }
+                }
             }
+            Spacer(modifier = Modifier.height(24.dp))
         }
-        Spacer(modifier = Modifier.height(24.dp))
-
     }
 }

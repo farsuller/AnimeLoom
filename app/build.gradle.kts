@@ -141,12 +141,19 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
-    // Unit testing
-    testImplementation(libs.junit)
+    // Mockito for mocking
+    testImplementation (libs.mockk)
+    testImplementation (libs.mockk.mockk)
+    testImplementation (libs.mockito.kotlin)
+
+    // Coroutines test
     testImplementation (libs.kotlinx.coroutines.test)
 
-    // Mocking framework
-    testImplementation (libs.mockk)
+    // Turbine for Flow testing
+    testImplementation (libs.turbine)
+
+    // ByteBuddy for mock creation
+    testImplementation (libs.byte.buddy)
 
     // Lifecycle and ViewModel testing
     testImplementation (libs.androidx.core.testing)

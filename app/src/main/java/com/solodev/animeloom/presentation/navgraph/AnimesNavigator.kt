@@ -73,14 +73,18 @@ fun AnimesNavigator(
     val trendingAnimeState by homeAnimesViewModel.trendingAnimeState.collectAsStateWithLifecycle()
     val animeHighRateState by homeAnimesViewModel.animeHighRateState.collectAsStateWithLifecycle()
     val animeRomanceState by homeAnimesViewModel.animeState.collectAsStateWithLifecycle()
+    val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
     val animeByCategoryState by homeAnimesViewModel.animeByCategoryState.collectAsStateWithLifecycle()
     val animeBySeeAllState by homeAnimesViewModel.animeBySeeAllState.collectAsStateWithLifecycle()
     val isLoadingHomeData by homeAnimesViewModel.isLoadingData.collectAsStateWithLifecycle()
 
     val mangaState by mangaViewModel.combinedMangaState.collectAsStateWithLifecycle()
+    val isLoadingMangaData by mangaViewModel.isLoadingData.collectAsStateWithLifecycle()
 
-    val categoryState by homeAnimesViewModel.categoryState.collectAsStateWithLifecycle()
+
+
     val bookmarkState = bookmarkViewModel.bookmarkState.value
+    val isLoadingBookmarkData by bookmarkViewModel.isLoadingData.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         delay(300L)
@@ -193,6 +197,7 @@ fun AnimesNavigator(
                     MangaScreen(
                         mangaState = mangaState,
                         onNavigate = onNavigate,
+                        isLoadingData = isLoadingMangaData,
                         onMangaClick = { cover, id , localId ->
                             navController.navigate(
                                 Route.MangaDetailsRoute(
@@ -224,6 +229,7 @@ fun AnimesNavigator(
                     BookmarkScreen(
                         bookmarkState = bookmarkState,
                         onNavigate = onNavigate,
+                        isLoadingData = isLoadingBookmarkData,
                         onAnimeClick = { cover, id, localId ->
                             navController.navigate(
                                 Route.AnimeDetailsRoute(animeId = id, coverImage = cover, localId = localId, isFromBookmarked = true)

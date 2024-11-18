@@ -8,7 +8,12 @@ import retrofit2.Response
 
 fun <T> safeApiCall(apiCall: suspend () -> Response<T>): Flow<Response<T>> = flow {
     val response = apiCall()
-    emit(Response.success(response.body()))
+    if (response.isSuccessful) {
+        emit(response)
+    } else {
+        val errorResponseBody = response.errorBody()?.string() ?: "Unknown error"
+        emit(Response.error(response.code(), errorResponseBody.toResponseBody(null)))
+    }
 }.catch { e ->
     val errorResponseBody = (e.message ?: "Unknown error").toResponseBody(null)
     emit(Response.error(500, errorResponseBody))

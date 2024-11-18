@@ -1,5 +1,7 @@
 [versions]
 agp = "8.7.2"
+byteBuddy = "1.14.8"
+byteBuddyVersion = "1.14.8"
 coreTesting = "2.2.0"
 
 gson = "2.10.1"
@@ -15,6 +17,7 @@ composeBom = "2024.11.00"
 composeNavigation = "2.8.4"
 
 kotlinxCoroutinesTest = "1.9.0"
+kotlinxCoroutinesTestVersion = "1.9.0"
 lifecycleRuntimeKtx = "2.8.7"
 lifecycleViewmodelCompose = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
@@ -26,6 +29,8 @@ devtoolKsp = "2.0.0-1.0.22"
 hilt = "2.50"
 hiltComposeNavigation = "1.2.0"
 
+mockitoKotlin = "4.1.0"
+mockkVersion = "1.13.7"
 retrofit = "2.11.0"
 loggingInterceptor = "5.0.0-alpha.3"
 converterGson = "2.9.0"
@@ -52,7 +57,9 @@ splash = "1.0.1"
 kotlinSerialization = "2.0.0"
 kotlinxSerializationJson = "1.6.3"
 
-mockk = "1.12.0"
+mockk = "5.6.0"
+turbine = "1.0.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -111,10 +118,16 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk = { module = "org.mockito:mockito-core", version.ref = "mockk" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk-mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
+
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
+byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddyVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

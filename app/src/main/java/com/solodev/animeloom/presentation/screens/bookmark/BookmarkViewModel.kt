@@ -7,8 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +25,18 @@ class BookmarkViewModel @Inject constructor(
     private val _bookMarkState = mutableStateOf(BookmarkState(bookMarkAnimeList = null, bookMarkMangaList = null))
     val bookmarkState: State<BookmarkState> = _bookMarkState
 
-    init {
-        getBookmarkedAnimes()
-        getBookmarkedManga()
+    private val _isLoadingData = MutableStateFlow(false)
+    val isLoadingData = _isLoadingData
+        .onStart {
+            requestApis()
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
+
+    private fun requestApis() {
+        viewModelScope.launch {
+            getBookmarkedAnimes()
+            getBookmarkedManga()
+        }
     }
 
     private fun getBookmarkedAnimes() {

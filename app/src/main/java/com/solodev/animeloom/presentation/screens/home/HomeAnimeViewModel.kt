@@ -2,6 +2,7 @@ package com.solodev.animeloom.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.solodev.animeloom.data.remote.dto.AnimeDataDto
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import com.solodev.animeloom.presentation.screens.home.states.AnimeState
@@ -53,10 +54,6 @@ class HomeAnimeViewModel @Inject constructor(
             requestApis()
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), false)
-
-    init {
-        requestApis()
-    }
 
     fun requestApis() {
         viewModelScope.launch {
@@ -152,7 +149,7 @@ class HomeAnimeViewModel @Inject constructor(
         )
     }
 
-    private fun getTrendingAnimes() {
+    fun getTrendingAnimes() {
         fetchAndSetAnimeState(
             state = _trendingAnimeState,
             fetchAnimeData = {
