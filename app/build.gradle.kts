@@ -79,7 +79,7 @@ android {
         }
 
         release {
-            if (ProjectConfig.GENERATE_LOCAL_ARCHIVE) signingConfig = signingConfigs.getByName("release")
+            if (isGenerateBuild) signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
