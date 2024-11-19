@@ -39,7 +39,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.common.DetailHeaderBar
-import com.solodev.animeloom.presentation.common.HeaderShimmerEffect
 import com.solodev.animeloom.presentation.common.ShimmerEffectCastings
 import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
 import com.solodev.animeloom.presentation.screens.home.components.CharactersItem
@@ -52,14 +51,14 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     isFromBookmark: Boolean = false,
     coverImage: String,
     navigateUp: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     val viewModel: AnimeDetailsViewModel = hiltViewModel()
     val animeState by viewModel.animeDetailState.collectAsStateWithLifecycle()
     val castingsState by viewModel.castingsState.collectAsStateWithLifecycle()
 
     val animeData = animeState.animeDataDetail ?: AnimeData()
-    val castingData = castingsState.castingDataList?.filter { it.type == "characters"} ?: emptyList()
+    val castingData = castingsState.castingDataList?.filter { it.type == "characters" } ?: emptyList()
 
     LaunchedEffect(true) {
         viewModel.getAnimesById(id.toInt())
@@ -71,11 +70,11 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(bottom = innerPadding.calculateBottomPadding() + 10.dp)
+                .padding(bottom = innerPadding.calculateBottomPadding() + 10.dp),
         ) {
             item {
                 AsyncImage(
@@ -87,24 +86,23 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                             animatedVisibilityScope = animatedVisibilityScope,
                             boundsTransform = { _, _ ->
                                 tween(durationMillis = 500)
-                            }
+                            },
                         )
                         .fillMaxWidth()
                         .height(400.dp)
                         .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             }
 
             item {
-
                 when {
                     animeState.isLoading -> ShimmerEffectDetailColumn()
 
                     animeState.errorMessage != null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(text = "Error: ${animeState.errorMessage}")
                         }
@@ -117,7 +115,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
 
                         Column(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Spacer(modifier = Modifier.height(10.dp))
 
@@ -127,31 +125,33 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         AnimeDetailsEvent.UpsertDeleteAnime(
-                                            animeData.copy(localId = id.hashCode().toString())
-                                        )
+                                            animeData.copy(localId = id.hashCode().toString()),
+                                        ),
                                     )
-                                })
+                                },
+                            )
 
                             Row {
                                 Text(
-                                    text = animeDataAttributes?.startDate?.split("-")?.first() ?: "-",
+                                    text = animeDataAttributes?.startDate?.split("-")?.first()
+                                        ?: "-",
                                     style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
                                 )
 
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(1.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Icon(
                                         imageVector = Icons.Rounded.Star,
-                                        contentDescription = null
+                                        contentDescription = null,
                                     )
 
                                     Text(
                                         text = animeDataAttributes?.averageRating ?: "0.0",
                                         style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Medium
+                                        fontWeight = FontWeight.Medium,
                                     )
                                 }
                             }
@@ -163,17 +163,16 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 20.dp, vertical = 10.dp)
                                         .fillMaxWidth(),
-                                    horizontalAlignment = Alignment.Start
+                                    horizontalAlignment = Alignment.Start,
                                 ) {
                                     Text(
                                         text = "Synopsis",
                                         style = MaterialTheme.typography.titleLarge,
-                                        fontWeight = FontWeight.Bold
+                                        fontWeight = FontWeight.Bold,
                                     )
                                     Text(text = synopsis)
                                 }
                             }
-
                         }
                     }
                 }
@@ -186,21 +185,21 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                     castingsState.errorMessage != null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(text = "Error: ${castingsState.errorMessage}")
                         }
                     }
 
-                    castingsState.castingDataList != null ->{
+                    castingsState.castingDataList != null -> {
                         LazyRow(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            items(castingData){ cast ->
+                            items(castingData) { cast ->
                                 CharactersItem(
                                     castingsData = cast,
-                                    onClick = {}
+                                    onClick = {},
                                 )
                             }
                         }
@@ -210,4 +209,3 @@ fun SharedTransitionScope.AnimeDetailsScreen(
         }
     }
 }
-

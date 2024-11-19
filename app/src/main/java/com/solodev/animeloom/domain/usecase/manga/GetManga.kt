@@ -12,13 +12,13 @@ class GetManga(
         status: String? = null,
         categories: String? = null,
         limit: Int? = null,
-        sort: String? = null
+        sort: String? = null,
     ): Flow<Response<MangaListResponse>> {
         return repository.getManga(
             status = status,
             categories = categories,
             limit = limit,
-            sort = sort
+            sort = sort,
         )
     }
 }

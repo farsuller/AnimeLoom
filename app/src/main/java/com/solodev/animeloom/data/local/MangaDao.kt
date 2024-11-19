@@ -1,11 +1,9 @@
 package com.solodev.animeloom.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.Attributes
 import com.solodev.animeloom.domain.model.MangaData
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +27,6 @@ interface MangaDao {
     suspend fun updateAttributesById(id: String, attributes: Attributes)
 
     suspend fun upsert(mangaData: MangaData) {
-
         val existingManga = selectMangaById(mangaData.id)
 
         if (existingManga == null) {

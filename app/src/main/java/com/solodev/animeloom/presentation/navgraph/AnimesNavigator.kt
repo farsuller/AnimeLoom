@@ -21,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.presentation.MainViewModel
 import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
 import com.solodev.animeloom.presentation.navgraph.component.bottomNavItems
@@ -58,8 +57,8 @@ fun AnimesNavigator(
 
     val isBottomNavBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == Route.HomeRoute.route ||
-                backStackState?.destination?.route == Route.MangaRoute.route ||
-                backStackState?.destination?.route == Route.BookmarkRoute.route
+            backStackState?.destination?.route == Route.MangaRoute.route ||
+            backStackState?.destination?.route == Route.BookmarkRoute.route
     }
 
     val mainViewModel: MainViewModel = hiltViewModel()
@@ -81,14 +80,12 @@ fun AnimesNavigator(
     val mangaState by mangaViewModel.combinedMangaState.collectAsStateWithLifecycle()
     val isLoadingMangaData by mangaViewModel.isLoadingData.collectAsStateWithLifecycle()
 
-
-
     val bookmarkState = bookmarkViewModel.bookmarkState.value
     val isLoadingBookmarkData by bookmarkViewModel.isLoadingData.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
-        delay(300L)
         if (lastRoute.isNotEmpty() && lastRoute != Route.AnimesNavigation.route) {
+            delay(800L)
             navigateToTap(
                 navController = navController,
                 route = lastRoute,
@@ -142,7 +139,6 @@ fun AnimesNavigator(
                 navController = navController,
                 startDestination = Route.HomeRoute.route,
             ) {
-
                 composable(Route.HomeRoute.route) {
                     HomeAnimesScreen(
                         upcomingAnimeState = upcomingAnimeState,
@@ -162,8 +158,8 @@ fun AnimesNavigator(
                                     animeId = id ?: "",
                                     coverImage = cover ?: "",
                                     localId = localId,
-                                    isFromBookmarked = false
-                                )
+                                    isFromBookmarked = false,
+                                ),
                             )
                         },
                         animatedVisibilityScope = this,
@@ -176,7 +172,7 @@ fun AnimesNavigator(
                             homeAnimesViewModel.getAnimeBySeeAll(selectedSeeAll = selectedSeeAll)
                         },
                         animeByCategoryState = animeByCategoryState,
-                        animeBySeeAllState = animeBySeeAllState
+                        animeBySeeAllState = animeBySeeAllState,
                     )
                 }
                 composable<Route.AnimeDetailsRoute> { detail ->
@@ -188,9 +184,8 @@ fun AnimesNavigator(
                         navigateUp = {
                             navController.navigateUp()
                         },
-                        animatedVisibilityScope = this
+                        animatedVisibilityScope = this,
                     )
-
                 }
 
                 composable(Route.MangaRoute.route) {
@@ -198,17 +193,17 @@ fun AnimesNavigator(
                         mangaState = mangaState,
                         onNavigate = onNavigate,
                         isLoadingData = isLoadingMangaData,
-                        onMangaClick = { cover, id , localId ->
+                        onMangaClick = { cover, id, localId ->
                             navController.navigate(
                                 Route.MangaDetailsRoute(
                                     mangaId = id ?: "",
                                     coverImage = cover ?: "",
                                     localId = localId,
-                                    isFromBookmarked = false
-                                )
+                                    isFromBookmarked = false,
+                                ),
                             )
                         },
-                        animatedVisibilityScope = this
+                        animatedVisibilityScope = this,
                     )
                 }
 
@@ -221,7 +216,7 @@ fun AnimesNavigator(
                         navigateUp = {
                             navController.navigateUp()
                         },
-                        animatedVisibilityScope = this
+                        animatedVisibilityScope = this,
                     )
                 }
 
@@ -232,20 +227,19 @@ fun AnimesNavigator(
                         isLoadingData = isLoadingBookmarkData,
                         onAnimeClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover, localId = localId, isFromBookmarked = true)
+                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover, localId = localId, isFromBookmarked = true),
                             )
                         },
                         onMangaClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover, localId = localId, isFromBookmarked = true)
+                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover, localId = localId, isFromBookmarked = true),
                             )
                         },
-                        animatedVisibilityScope = this
+                        animatedVisibilityScope = this,
                     )
                 }
             }
         }
-
     }
 }
 
@@ -259,9 +253,4 @@ fun navigateToTap(navController: NavController, route: String) {
             launchSingleTop = true
         }
     }
-}
-
-private fun navigateToDetails(navController: NavController, anime: AnimeData) {
-    navController.currentBackStackEntry?.savedStateHandle?.set("anime", anime)
-    navController.navigate(route = Route.AnimeDetailsRoute)
 }

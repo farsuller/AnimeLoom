@@ -9,7 +9,7 @@ data class AnimeDataDto(
     val id: String,
     val links: Links,
     val relationships: Relationships,
-    val type: String
+    val type: String,
 ) {
     fun toModel(): AnimeData = AnimeData(id = id, attributes = attributes.toModel())
 }

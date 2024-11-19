@@ -32,8 +32,9 @@ fun SharedTransitionScope.BookmarkedAnimeCard(
     modifier: Modifier = Modifier,
     animeData: AnimeData,
     onClick: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
+    val animeDataAttribute = animeData.attributes
     Card(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -43,19 +44,19 @@ fun SharedTransitionScope.BookmarkedAnimeCard(
             modifier = modifier.padding(all = 10.dp),
         ) {
             AsyncImage(
-                model = animeData.attributes?.posterImage?.original,
-                contentDescription = animeData.attributes?.canonicalTitle,
+                model = animeDataAttribute?.posterImage?.original,
+                contentDescription = animeDataAttribute?.canonicalTitle,
                 modifier = Modifier
                     .sharedElement(
                         rememberSharedContentState(key = animeData.localId),
                         animatedVisibilityScope = animatedVisibilityScope,
                         boundsTransform = { _, _ ->
                             tween(durationMillis = 500)
-                        }
+                        },
                     )
                     .size(90.dp)
                     .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             Column(
@@ -63,34 +64,33 @@ fun SharedTransitionScope.BookmarkedAnimeCard(
                     .fillMaxWidth()
                     .padding(start = 16.dp),
 
-                ) {
+            ) {
                 Text(
-                    text = animeData.attributes?.canonicalTitle ?: "Default Title",
+                    text = animeDataAttribute?.canonicalTitle ?: animeDataAttribute?.title
+                        ?: "Default Title",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface,
-                    lineHeight = 30.sp,
+                    lineHeight = 20.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
 
                 Text(
-                    text = animeData.attributes?.ageRating ?: "Default Genre",
+                    text = animeDataAttribute?.ageRating ?: "Default Genre",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 Text(
-                    text = animeData.attributes?.description ?: "Default Description",
+                    text = animeDataAttribute?.synopsis ?: animeDataAttribute?.description
+                        ?: "Default Description",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     lineHeight = 15.sp,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
     }
-
 }
-
-

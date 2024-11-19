@@ -12,13 +12,13 @@ class GetAnime(
         status: String? = null,
         categories: String? = null,
         limit: Int? = null,
-        sort: String? = null
+        sort: String? = null,
     ): Flow<Response<AnimeListResponse>> {
         return animeRepository.getAnimeList(
             status = status,
             categories = categories,
             limit = limit,
-            sort = sort
+            sort = sort,
         )
     }
 }

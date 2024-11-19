@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.presentation.screens.manga.states.MangaState
-import com.solodev.animeloom.presentation.screens.manga.states.TrendingMangaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +43,11 @@ class MangaViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchManga(status: String? = null, limit: Int? = null, sort: String? = null): Flow<MangaState> {
+    private suspend fun fetchManga(
+        status: String? = null,
+        limit: Int? = null,
+        sort: String? = null,
+    ): Flow<MangaState> {
         return mangaUseCases.getManga(status = status, limit = limit, sort = sort)
             .onStart {
                 MangaState(isLoading = true)
@@ -65,12 +68,12 @@ class MangaViewModel @Inject constructor(
                 fetchManga(status = "upcoming", limit = 15, sort = "-start_date"),
                 fetchManga(status = "current", limit = 15, sort = "-start_date"),
                 fetchManga(limit = 15, sort = "-average_rating"),
-                fetchManga(limit = 15, sort = "-user_count")
+                fetchManga(limit = 15, sort = "-user_count"),
             )
                 .flattenMerge()
                 .collectLatest { state ->
                     val updatedList = _combinedMangaState.value.mangaList.orEmpty() + (state.mangaList ?: emptyList())
-                    _combinedMangaState.value = _combinedMangaState.value.copy(mangaList = updatedList)
+                    _combinedMangaState.update { it.copy(mangaList = updatedList) }
                 }
         }
     }

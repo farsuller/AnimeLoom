@@ -14,19 +14,19 @@ import javax.inject.Inject
 
 class MangaRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
-    private val mangaDao: MangaDao
+    private val mangaDao: MangaDao,
 ) : MangaRepository {
     override suspend fun getTrendingMangaList(
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
+        sort: String?,
     ): Flow<Response<TrendingMangaListResponse>> = safeApiCall {
         apiService.getTrendingMangaList(
             status = status,
             categories = categories,
             limit = limit,
-            sort = sort
+            sort = sort,
         )
     }
 
@@ -34,13 +34,13 @@ class MangaRepositoryImpl @Inject constructor(
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
+        sort: String?,
     ): Flow<Response<MangaListResponse>> = safeApiCall {
         apiService.getMangaList(
             status = status,
             categories = categories,
             limit = limit,
-            sort = sort
+            sort = sort,
         )
     }
 

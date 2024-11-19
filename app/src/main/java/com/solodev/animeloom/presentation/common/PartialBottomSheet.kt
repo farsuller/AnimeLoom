@@ -28,21 +28,18 @@ fun PartialBottomSheet(
     onClickItem: (AnimeData) -> Unit = {},
     sheetState: SheetState,
     dismissBottomSheet: () -> Unit,
-    animeBySeeAllState : AnimeState,
+    animeBySeeAllState: AnimeState,
     animeByCategoryState: AnimeState,
     isSelectedSeeAll: Boolean = false,
     selectedSeeAllTitle: String? = null,
-    selectedCategoryTitle : String? = null
+    selectedCategoryTitle: String? = null,
 ) {
-
     ModalBottomSheet(
         modifier = Modifier.fillMaxHeight(),
         sheetState = sheetState,
-        onDismissRequest = { dismissBottomSheet() }
+        onDismissRequest = { dismissBottomSheet() },
     ) {
-
-
-        if(isSelectedSeeAll){
+        if (isSelectedSeeAll) {
             selectedSeeAllTitle?.let { seeAllTitle ->
                 HeaderBar(headerTitle = HeaderTitle(text = seeAllTitle))
             }
@@ -52,7 +49,7 @@ fun PartialBottomSheet(
                 animeBySeeAllState.errorMessage != null -> {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(text = "Error: ${animeBySeeAllState.errorMessage}")
                     }
@@ -67,7 +64,7 @@ fun PartialBottomSheet(
                             .padding(all = 8.dp),
                         columns = GridCells.Fixed(3),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(takeAnimeList) { anime ->
                             AnimeCard(
@@ -79,8 +76,7 @@ fun PartialBottomSheet(
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
-        }
-        else {
+        } else {
             selectedCategoryTitle?.let { categoryTitle ->
                 HeaderBar(headerTitle = HeaderTitle(text = "$categoryTitle Anime"))
             }
@@ -90,7 +86,7 @@ fun PartialBottomSheet(
                 animeByCategoryState.errorMessage != null -> {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(text = "Error: ${animeByCategoryState.errorMessage}")
                     }
@@ -105,7 +101,7 @@ fun PartialBottomSheet(
                             .padding(all = 8.dp),
                         columns = GridCells.Fixed(3),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(takeAnimeList) { anime ->
                             AnimeCard(
@@ -121,6 +117,4 @@ fun PartialBottomSheet(
 
         Spacer(modifier = Modifier.height(20.dp))
     }
-
-
 }

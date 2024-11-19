@@ -31,7 +31,7 @@ fun DetailHeaderBar(
             .fillMaxWidth()
             .padding(10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
     ) {
         Icon(
             modifier = Modifier.clickableWithoutRipple { navigateUp() },
@@ -45,7 +45,7 @@ fun DetailHeaderBar(
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            lineHeight = 30.sp
+            lineHeight = 30.sp,
         )
 
         Icon(

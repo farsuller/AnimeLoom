@@ -8,11 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.utils.clickableWithoutRipple
 
-
 class SeeAll(
-    private val seeAllClicked: () -> Unit = {}
+    private val seeAllClicked: () -> Unit = {},
 ) : @Composable () -> Unit {
-
 
     @Composable
     override fun invoke() {

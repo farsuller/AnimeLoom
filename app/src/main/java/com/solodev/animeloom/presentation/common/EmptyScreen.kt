@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.R
 import com.solodev.animeloom.utils.AnimesPreviews
 
-
 @Composable
 fun EmptyContent(message: String, iconId: Int) {
     Column(

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,10 +35,9 @@ class MangaDetailsViewModel @Inject constructor(
             is MangaDetailsEvent.UpsertDeleteManga -> {
                 viewModelScope.launch {
                     val anime = mangaUseCases.selectMangaById(event.mangaData.id)
-                    if(anime == null){
+                    if (anime == null) {
                         upsertManga(manga = event.mangaData)
-                    }
-                    else{
+                    } else {
                         deleteMangaById(deleteMangaById = event.mangaData.localId)
                     }
                 }
@@ -49,26 +49,34 @@ class MangaDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getMangaById(id : Int){
+    fun getMangaById(id: Int) {
         viewModelScope.launch {
             mangaUseCases.getMangaId(id = id)
                 .onStart {
-                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = true)
+                    _mangaDetailState.update {
+                        it.copy(
+                            isLoading = true,
+                        )
+                    }
                 }
                 .catch { e ->
-                    _mangaDetailState.value = _mangaDetailState.value.copy(errorMessage = e.message)
-                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = false)
+                    _mangaDetailState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = e.message,
+                        )
+                    }
                 }.collectLatest { result ->
-
                     val detail = result.body()?.data?.toModel()
-                    _mangaDetailState.value = _mangaDetailState.value.copy(mangaDataDetail = detail)
-                    _mangaDetailState.value = _mangaDetailState.value.copy(isLoading = false)
+                    _mangaDetailState.update {
+                        it.copy(
+                            isLoading = false,
+                            mangaDataDetail = detail,
+                        )
+                    }
                 }
         }
     }
-
-
-    
 
     private suspend fun deleteMangaById(deleteMangaById: String) {
         mangaUseCases.deleteMangaById(deleteMangaById = deleteMangaById)

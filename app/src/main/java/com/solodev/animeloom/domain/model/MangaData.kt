@@ -14,13 +14,13 @@ data class MangaData(
 
     @PrimaryKey
     @SerializedName("id")
-    val id : String = "",
+    val id: String = "",
 
     @SerializedName("type")
-    val type : String = "",
+    val type: String = "",
 
     @SerializedName("attributes")
-    val attributes : Attributes? = null,
+    val attributes: Attributes? = null,
 
-    val localId: String = ""
-):Parcelable
+    val localId: String = "",
+) : Parcelable

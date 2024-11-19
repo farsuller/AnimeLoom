@@ -27,7 +27,6 @@ class AnimesNavigatorKtTest {
 
     @Test
     fun navBar_Assert_animesNavigator() {
-
         composeTestRule.setContent {
             AnimesBottomNavigation(
                 items = items,
@@ -44,6 +43,5 @@ class AnimesNavigatorKtTest {
 
         // Verify if "Bookmark" item is displayed
         composeTestRule.onNodeWithText("Bookmark").assertExists()
-
     }
 }

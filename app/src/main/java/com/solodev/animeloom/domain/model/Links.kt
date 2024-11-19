@@ -1,6 +1,5 @@
 package com.solodev.animeloom.domain.model
 
 data class Links(
-    val self: String? = null
+    val self: String? = null,
 )
-

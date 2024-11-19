@@ -31,7 +31,6 @@ import com.solodev.animeloom.utils.alasIdString
 import com.solodev.animeloom.utils.aliasLocalIdString
 import com.solodev.animeloom.utils.aliasPosterString
 
-
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.MangaScreen(
@@ -39,17 +38,17 @@ fun SharedTransitionScope.MangaScreen(
     onNavigate: (String) -> Unit,
     isLoadingData: Boolean,
     onMangaClick: (aliasPosterString?, alasIdString?, aliasLocalIdString) -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-
     val mangaList = mangaState.mangaList ?: emptyList()
 
     LaunchedEffect(Unit) {
         onNavigate(Route.MangaRoute.route)
     }
 
-    if (isLoadingData) CircularProgressIndicator()
-    else {
+    if (isLoadingData) {
+        CircularProgressIndicator()
+    } else {
         Column(
             modifier = Modifier
                 .padding(top = 24.dp, start = 8.dp, end = 8.dp)
@@ -67,7 +66,7 @@ fun SharedTransitionScope.MangaScreen(
                 mangaState.isLoading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
@@ -76,7 +75,7 @@ fun SharedTransitionScope.MangaScreen(
                 mangaState.errorMessage != null -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(text = "Error: ${mangaState.errorMessage}")
                     }
@@ -89,7 +88,7 @@ fun SharedTransitionScope.MangaScreen(
                             .fillMaxWidth()
                             .padding(all = 10.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(mangaList) { manga ->
                             MangaCard(
@@ -98,10 +97,10 @@ fun SharedTransitionScope.MangaScreen(
                                     onMangaClick(
                                         manga.attributes?.posterImage?.original ?: "",
                                         manga.id,
-                                        manga.localId
+                                        manga.localId,
                                     )
                                 },
-                                animatedVisibilityScope = animatedVisibilityScope
+                                animatedVisibilityScope = animatedVisibilityScope,
                             )
                         }
 

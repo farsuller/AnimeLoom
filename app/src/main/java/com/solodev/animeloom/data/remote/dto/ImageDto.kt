@@ -8,7 +8,7 @@ data class ImageDto(
     val meta: Meta? = null,
     val original: String? = null,
     val small: String? = null,
-    val tiny: String? = null
+    val tiny: String? = null,
 ) {
     fun toModel(): Image =
         Image(tiny = tiny, small = small, large = large, original = original)

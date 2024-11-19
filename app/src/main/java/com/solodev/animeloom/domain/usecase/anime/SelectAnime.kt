@@ -5,9 +5,9 @@ import com.solodev.animeloom.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
 
 class SelectAnime(
-    private val animeRepository: AnimeRepository
+    private val animeRepository: AnimeRepository,
 ) {
-    operator fun invoke () : Flow<List<AnimeData>> {
-       return animeRepository.selectAnime()
+    operator fun invoke(): Flow<List<AnimeData>> {
+        return animeRepository.selectAnime()
     }
 }

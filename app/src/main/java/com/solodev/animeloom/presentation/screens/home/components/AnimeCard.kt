@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,6 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import com.solodev.animeloom.R
 import com.solodev.animeloom.domain.model.AnimeData
@@ -57,7 +55,6 @@ fun SharedTransitionScope.AnimeCard(
     onClick: () -> Unit = {},
     animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-
     Card(
         onClick = onClick,
         modifier = modifier
@@ -78,7 +75,7 @@ fun SharedTransitionScope.AnimeCard(
                     animatedVisibilityScope = animatedVisibilityScope,
                     boundsTransform = { _, _ ->
                         tween(durationMillis = 500)
-                    }
+                    },
                 )
                 .height(imageHeight.toDp())
                 .width(imageWidth.toDp())
@@ -98,10 +95,9 @@ fun SharedTransitionScope.AnimeCard(
                 } else {
                     ErrorFailedToLoadImage()
                 }
-            }
+            },
         )
     }
-
 }
 
 @Composable
@@ -144,7 +140,7 @@ fun AnimeCard(
                 } else {
                     ErrorFailedToLoadImage()
                 }
-            }
+            },
         )
     }
 }
@@ -153,18 +149,18 @@ fun AnimeCard(
 private fun ErrorFailedToLoadImage() {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Outlined.ErrorOutline,
             contentDescription = "",
-            tint = MaterialTheme.colorScheme.error
+            tint = MaterialTheme.colorScheme.error,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "Failed to Load Image",
             color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -190,16 +186,14 @@ fun AnimeCardPreview() {
                         posterImage = PosterImage(
                             meta = Meta(
                                 dimensions = Dimensions(
-                                    medium = Size(width = 390, height = 554)
-                                )
+                                    medium = Size(width = 390, height = 554),
+                                ),
                             ),
-                            medium = "https://media.kitsu.app/anime/poster_images/7442/medium.jpg"
-                        )
-                    )
-                )
+                            medium = "https://media.kitsu.app/anime/poster_images/7442/medium.jpg",
+                        ),
+                    ),
+                ),
             )
         }
     }
 }
-
-

@@ -28,15 +28,14 @@ fun HomeHeader(
         modifier = modifier
             .fillMaxWidth()
             .height(360.dp),
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomCenter,
     ) {
         AsyncImage(
             modifier = Modifier.matchParentSize(),
             model = animeData?.attributes?.coverImage?.original,
             contentDescription = animeData?.attributes?.title,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
-
 
         Box(
             modifier = Modifier
@@ -47,13 +46,13 @@ fun HomeHeader(
                             MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
                             MaterialTheme.colorScheme.surface.copy(alpha = 1f),
                         ),
-                    )
-                )
+                    ),
+                ),
         )
 
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+            contentAlignment = Alignment.BottomCenter,
         ) {
             Text(
                 modifier = Modifier.width(300.dp),
@@ -61,9 +60,8 @@ fun HomeHeader(
                 style = MaterialTheme.typography.displayLarge.copy(fontSize = 30.sp),
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
-                lineHeight = 25.sp
+                lineHeight = 25.sp,
             )
         }
-
     }
 }

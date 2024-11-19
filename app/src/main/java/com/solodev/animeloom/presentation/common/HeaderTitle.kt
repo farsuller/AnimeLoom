@@ -8,8 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-
-class HeaderTitle(private val text: String) : @Composable () -> Unit{
+class HeaderTitle(private val text: String) : @Composable () -> Unit {
     @Composable
     override fun invoke() {
         Text(

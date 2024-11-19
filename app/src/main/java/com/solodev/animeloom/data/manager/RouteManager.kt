@@ -10,6 +10,6 @@ class RouteManager @Inject constructor(@ApplicationContext context: Context) {
     var lastRoute: String by SharedPreferenceDelegate(
         context,
         "last_route",
-        Route.AnimesNavigation.route
+        Route.AnimesNavigation.route,
     )
 }

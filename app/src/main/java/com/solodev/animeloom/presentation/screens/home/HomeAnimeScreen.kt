@@ -58,7 +58,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalMaterialApi::class,
-    ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalSharedTransitionApi::class,
+    ExperimentalMaterial3Api::class,
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -75,8 +76,8 @@ fun SharedTransitionScope.HomeAnimesScreen(
     onNavigate: (String) -> Unit,
     onPullRefresh: () -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    selectedCategory:(CategoryData?) -> Unit = {},
-    selectedSeeAll:(String?) -> Unit = {}
+    selectedCategory: (CategoryData?) -> Unit = {},
+    selectedSeeAll: (String?) -> Unit = {},
 ) {
     var selectedSeeAllAnime by remember { mutableStateOf("Trending Anime") }
     var selectedCategoryAnime by remember { mutableStateOf("Romance") }
@@ -106,27 +107,29 @@ fun SharedTransitionScope.HomeAnimesScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Box(
             modifier = Modifier
-                .pullRefresh(pullRefreshState)
+                .pullRefresh(pullRefreshState),
         ) {
-
             if (isLoadingData) {
                 CircularProgressIndicator()
             } else {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     item {
                         when {
                             upcomingAnimeState.isLoading -> HeaderShimmerEffect()
-                            upcomingAnimeState.errorMessage != null -> ErrorContentMessage(animeState = upcomingAnimeState)
+                            upcomingAnimeState.errorMessage != null -> ErrorContentMessage(
+                                animeState = upcomingAnimeState,
+                            )
+
                             upcomingAnimeState.animeDataList != null -> {
                                 HomeHeader(
                                     modifier = Modifier,
-                                    animeData = upcomingAnimeState.animeDataList.getOrNull(1)
+                                    animeData = upcomingAnimeState.animeDataList.getOrNull(1),
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
@@ -146,18 +149,16 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                         isSeeAllSelected = false
                                         selectedCategory(category)
                                         selectedCategoryAnime = category?.attributes?.title ?: ""
-                                    }
+                                    },
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
-
                     }
                     item {
                         when {
                             trendingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
-                            trendingAnimeState.errorMessage != null -> ErrorContentMessage(trendingAnimeState)
-
+                            trendingAnimeState.errorMessage != null -> ErrorContentMessage(animeState = trendingAnimeState)
 
                             trendingAnimeState.animeDataList != null -> {
                                 val takeAnimeList = trendingAnimeState.animeDataList.take(7)
@@ -170,12 +171,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                         selectedSeeAll(trendingAnimeText)
                                         selectedSeeAllAnime = trendingAnimeText
                                         isSeeAllSelected = true
-                                    })
+                                    }),
                                 )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
                                     items(takeAnimeList) { anime ->
                                         AnimeCard(
@@ -185,10 +186,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
                                                     anime.id,
-                                                    anime.localId
+                                                    anime.localId,
                                                 )
                                             },
-                                            animatedVisibilityScope = animatedVisibilityScope
+                                            animatedVisibilityScope = animatedVisibilityScope,
                                         )
                                     }
                                 }
@@ -201,6 +202,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         when {
                             upcomingAnimeState.isLoading -> ShimmerEffectCarouselWithHeader()
                             upcomingAnimeState.errorMessage != null -> ErrorContentMessage(animeState = upcomingAnimeState)
+
                             upcomingAnimeState.animeDataList != null -> {
                                 val takeAnimeList = upcomingAnimeState.animeDataList.take(7)
                                 val upcomingAnimeText = "Upcoming Anime"
@@ -212,12 +214,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                         isSeeAllSelected = true
                                         selectedSeeAll(upcomingAnimeText)
                                         selectedSeeAllAnime = upcomingAnimeText
-                                    })
+                                    }),
                                 )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
                                     items(takeAnimeList) { anime ->
                                         AnimeCard(
@@ -227,10 +229,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
                                                     anime.id,
-                                                    anime.localId
+                                                    anime.localId,
                                                 )
                                             },
-                                            animatedVisibilityScope = animatedVisibilityScope
+                                            animatedVisibilityScope = animatedVisibilityScope,
                                         )
                                     }
                                 }
@@ -243,6 +245,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         when {
                             animeHighRateState.isLoading -> ShimmerEffectCarouselWithHeader()
                             animeHighRateState.errorMessage != null -> ErrorContentMessage(animeState = animeHighRateState)
+
                             animeHighRateState.animeDataList != null -> {
                                 val takeAnimeList = animeHighRateState.animeDataList.take(7)
                                 val highestAnimeText = "Highest Rated Anime"
@@ -254,12 +257,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                         isSeeAllSelected = true
                                         selectedSeeAll(highestAnimeText)
                                         selectedSeeAllAnime = highestAnimeText
-                                    })
+                                    }),
                                 )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
                                     items(takeAnimeList) { anime ->
                                         AnimeCard(
@@ -269,10 +272,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
                                                     anime.id,
-                                                    anime.localId
+                                                    anime.localId,
                                                 )
                                             },
-                                            animatedVisibilityScope = animatedVisibilityScope
+                                            animatedVisibilityScope = animatedVisibilityScope,
                                         )
                                     }
                                 }
@@ -285,6 +288,7 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         when {
                             animeNewReleaseState.isLoading -> ShimmerEffectCarouselWithHeader()
                             animeNewReleaseState.errorMessage != null -> ErrorContentMessage(animeState = animeNewReleaseState)
+
                             animeNewReleaseState.animeDataList != null -> {
                                 val takeAnimeList = animeNewReleaseState.animeDataList.take(7)
                                 val romanceAnimeText = "Newly Released Anime"
@@ -296,12 +300,12 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                         isSeeAllSelected = true
                                         selectedSeeAll(romanceAnimeText)
                                         selectedSeeAllAnime = romanceAnimeText
-                                    })
+                                    }),
                                 )
 
                                 LazyRow(
                                     modifier = Modifier.padding(horizontal = 8.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 ) {
                                     items(takeAnimeList) { anime ->
                                         AnimeCard(
@@ -311,10 +315,10 @@ fun SharedTransitionScope.HomeAnimesScreen(
                                                 onAnimeClick(
                                                     anime.attributes?.posterImage?.original ?: "",
                                                     anime.id,
-                                                    anime.localId
+                                                    anime.localId,
                                                 )
                                             },
-                                            animatedVisibilityScope = animatedVisibilityScope
+                                            animatedVisibilityScope = animatedVisibilityScope,
                                         )
                                     }
                                 }
@@ -332,14 +336,14 @@ fun SharedTransitionScope.HomeAnimesScreen(
                         onAnimeClick(
                             anime.attributes?.posterImage?.original ?: "",
                             anime.id,
-                            anime.localId
+                            anime.localId,
                         )
                     },
                     selectedSeeAllTitle = selectedSeeAllAnime,
-                    selectedCategoryTitle = selectedCategoryAnime ,
+                    selectedCategoryTitle = selectedCategoryAnime,
                     isSelectedSeeAll = isSeeAllSelected,
                     animeByCategoryState = animeByCategoryState,
-                    animeBySeeAllState = animeBySeeAllState
+                    animeBySeeAllState = animeBySeeAllState,
                 )
             }
 
@@ -355,10 +359,13 @@ fun SharedTransitionScope.HomeAnimesScreen(
 }
 
 @Composable
-private fun ErrorContentMessage(animeState: AnimeState? = null, categoryState: CategoryState? = null) {
+private fun ErrorContentMessage(
+    animeState: AnimeState? = null,
+    categoryState: CategoryState? = null,
+) {
     Box(
         modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         if (animeState != null) {
             Text(text = "Error: ${animeState.errorMessage}")
@@ -369,8 +376,3 @@ private fun ErrorContentMessage(animeState: AnimeState? = null, categoryState: C
         }
     }
 }
-
-
-
-
-

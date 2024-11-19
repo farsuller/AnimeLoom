@@ -20,6 +20,6 @@ data class CoverImage(
     val original: String?,
 
     @SerializedName("meta")
-    val meta: Meta? = null
+    val meta: Meta? = null,
 
-):Parcelable
+) : Parcelable

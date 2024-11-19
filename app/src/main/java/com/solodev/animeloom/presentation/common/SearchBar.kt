@@ -29,10 +29,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.R
 import com.solodev.animeloom.theme.AnimeLoomTheme
-
-import com.solodev.animeloom.utils.Constants.TestTags.SEARCH_BAR
 import com.solodev.animeloom.utils.AnimesPreviews
-
+import com.solodev.animeloom.utils.Constants.TestTags.SEARCH_BAR
 import kotlinx.coroutines.flow.debounce
 
 @OptIn(kotlinx.coroutines.FlowPreview::class)

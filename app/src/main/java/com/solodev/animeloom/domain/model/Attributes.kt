@@ -104,4 +104,4 @@ data class Attributes(
     @SerializedName("image")
     val image: Image? = null,
 
-    ) : Parcelable
+) : Parcelable

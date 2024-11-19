@@ -17,10 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.theme.AnimeLoomTheme
+import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.Constants.TestTags.DETAIL_TOP_BAR
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,6 +68,5 @@ internal fun DetailTopBarPreview() {
                 )
             }
         }
-
     }
 }

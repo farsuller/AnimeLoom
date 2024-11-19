@@ -73,7 +73,7 @@ class HomeAnimeViewModel @Inject constructor(
                     getSeeAllAnimes(fetchAnimeData = {
                         animesUseCases.getAnime(
                             limit = 20,
-                            sort = "-user_count"
+                            sort = "-user_count",
                         )
                     })
                 }
@@ -83,10 +83,9 @@ class HomeAnimeViewModel @Inject constructor(
                         animesUseCases.getAnime(
                             status = "upcoming",
                             limit = 20,
-                            sort = "-user_count"
+                            sort = "-user_count",
                         )
                     })
-
                 }
 
                 "Highest Rated Anime" -> {
@@ -101,7 +100,7 @@ class HomeAnimeViewModel @Inject constructor(
                             status = "current",
                             categories = "adventure",
                             limit = 20,
-                            sort = "-start_date"
+                            sort = "-start_date",
                         )
                     })
                 }
@@ -113,7 +112,7 @@ class HomeAnimeViewModel @Inject constructor(
 
     private fun fetchAndSetAnimeState(
         state: MutableStateFlow<AnimeState>,
-        fetchAnimeData: suspend () -> Flow<Response<AnimeListResponse>>
+        fetchAnimeData: suspend () -> Flow<Response<AnimeListResponse>>,
     ) {
         viewModelScope.launch {
             fetchAnimeData()
@@ -126,7 +125,8 @@ class HomeAnimeViewModel @Inject constructor(
                     state.update {
                         it.copy(
                             errorMessage = e.message,
-                            isLoading = false)
+                            isLoading = false,
+                        )
                     }
                 }
                 .collectLatest { result ->
@@ -135,7 +135,8 @@ class HomeAnimeViewModel @Inject constructor(
                     state.update {
                         it.copy(
                             animeDataList = animeList,
-                            isLoading = false)
+                            isLoading = false,
+                        )
                     }
                 }
         }
@@ -144,7 +145,7 @@ class HomeAnimeViewModel @Inject constructor(
     private fun getSeeAllAnimes(fetchAnimeData: suspend () -> Flow<Response<AnimeListResponse>>) {
         fetchAndSetAnimeState(
             state = _animeBySeeAllState,
-            fetchAnimeData = { fetchAnimeData() }
+            fetchAnimeData = { fetchAnimeData() },
         )
     }
 
@@ -154,9 +155,9 @@ class HomeAnimeViewModel @Inject constructor(
             fetchAnimeData = {
                 animesUseCases.getAnime(
                     limit = 20,
-                    sort = "-user_count"
+                    sort = "-user_count",
                 )
-            }
+            },
         )
     }
 
@@ -167,9 +168,9 @@ class HomeAnimeViewModel @Inject constructor(
                 animesUseCases.getAnime(
                     status = "upcoming",
                     limit = 20,
-                    sort = "-user_count"
+                    sort = "-user_count",
                 )
-            }
+            },
         )
     }
 
@@ -181,9 +182,9 @@ class HomeAnimeViewModel @Inject constructor(
                     status = "current",
                     categories = "adventure",
                     limit = 20,
-                    sort = "-start_date"
+                    sort = "-start_date",
                 )
-            }
+            },
         )
     }
 
@@ -193,9 +194,9 @@ class HomeAnimeViewModel @Inject constructor(
             fetchAnimeData = {
                 animesUseCases.getAnime(
                     limit = 20,
-                    sort = "-average_rating"
+                    sort = "-average_rating",
                 )
-            }
+            },
         )
     }
 
@@ -207,9 +208,9 @@ class HomeAnimeViewModel @Inject constructor(
                     status = "current",
                     categories = categorySelected,
                     limit = 15,
-                    sort = "-start_date"
+                    sort = "-start_date",
                 )
-            }
+            },
         )
     }
 
@@ -225,14 +226,16 @@ class HomeAnimeViewModel @Inject constructor(
                     _categoryState.update {
                         it.copy(
                             errorMessage = e.message,
-                            isLoading = false)
+                            isLoading = false,
+                        )
                     }
                 }.collectLatest { result ->
                     val categories = result.body()?.data?.map { it.toModel() }
                     _categoryState.update {
                         it.copy(
                             categories = categories,
-                            isLoading = false)
+                            isLoading = false,
+                        )
                     }
                 }
         }

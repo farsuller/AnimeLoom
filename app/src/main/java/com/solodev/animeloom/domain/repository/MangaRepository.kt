@@ -13,17 +13,17 @@ interface MangaRepository {
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
-    ) : Flow<Response<TrendingMangaListResponse>>
+        sort: String?,
+    ): Flow<Response<TrendingMangaListResponse>>
 
     suspend fun getManga(
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
-    ) : Flow<Response<MangaListResponse>>
+        sort: String?,
+    ): Flow<Response<MangaListResponse>>
 
-    suspend fun getMangaById(id: Int) : Flow<Response<MangaResponse>>
+    suspend fun getMangaById(id: Int): Flow<Response<MangaResponse>>
 
     suspend fun upsertManga(mangaData: MangaData)
 

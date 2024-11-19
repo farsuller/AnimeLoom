@@ -2,7 +2,6 @@ package com.solodev.animeloom.domain.usecase
 
 import com.solodev.animeloom.domain.usecase.anime.DeleteAnimeById
 import com.solodev.animeloom.domain.usecase.anime.GetAnime
-import com.solodev.animeloom.domain.usecase.anime.GetTrendingAnime
 import com.solodev.animeloom.domain.usecase.anime.GetAnimeId
 import com.solodev.animeloom.domain.usecase.anime.GetCastingsById
 import com.solodev.animeloom.domain.usecase.anime.GetCategories
@@ -18,5 +17,5 @@ data class AnimeUseCases(
     val upsertAnime: UpsertAnime,
     val deleteAnimeById: DeleteAnimeById,
     val selectAnime: SelectAnime,
-    val selectAnimeById: SelectAnimeById
+    val selectAnimeById: SelectAnimeById,
 )

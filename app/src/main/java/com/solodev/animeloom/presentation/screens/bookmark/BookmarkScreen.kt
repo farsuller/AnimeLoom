@@ -32,7 +32,6 @@ import com.solodev.animeloom.utils.alasIdString
 import com.solodev.animeloom.utils.aliasLocalIdString
 import com.solodev.animeloom.utils.aliasPosterString
 
-
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.BookmarkScreen(
@@ -41,14 +40,15 @@ fun SharedTransitionScope.BookmarkScreen(
     isLoadingData: Boolean,
     onAnimeClick: (aliasPosterString, alasIdString, aliasLocalIdString) -> Unit,
     onMangaClick: (aliasPosterString, alasIdString, aliasLocalIdString) -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
     LaunchedEffect(Unit) {
         onNavigate(Route.BookmarkRoute.route)
     }
 
-    if (isLoadingData) CircularProgressIndicator()
-    else {
+    if (isLoadingData) {
+        CircularProgressIndicator()
+    } else {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,7 +66,7 @@ fun SharedTransitionScope.BookmarkScreen(
             HeaderBar(headerTitle = HeaderTitle(text = "Manga"))
             if (bookmarkState.bookMarkMangaList?.isEmpty() == true || bookmarkState.bookMarkMangaList == null) {
                 EmptyBookmarked(
-                    message = "Bookmark your Favorite Manga"
+                    message = "Bookmark your Favorite Manga",
                 )
             } else {
                 LazyRow(
@@ -82,10 +82,10 @@ fun SharedTransitionScope.BookmarkScreen(
                                 onMangaClick(
                                     manga.attributes?.posterImage?.original ?: "",
                                     manga.id,
-                                    manga.localId
+                                    manga.localId,
                                 )
                             },
-                            animatedVisibilityScope = animatedVisibilityScope
+                            animatedVisibilityScope = animatedVisibilityScope,
                         )
                     }
                 }
@@ -98,14 +98,13 @@ fun SharedTransitionScope.BookmarkScreen(
                     message = "Bookmark your Favorite Anime",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(300.dp)
+                        .height(300.dp),
                 )
             } else {
                 LazyColumn(
                     modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-
                     items(bookmarkState.bookMarkAnimeList) { anime ->
                         BookmarkedAnimeCard(
                             animeData = anime,
@@ -113,10 +112,10 @@ fun SharedTransitionScope.BookmarkScreen(
                                 onAnimeClick(
                                     anime.attributes?.posterImage?.original ?: "",
                                     anime.id,
-                                    anime.localId
+                                    anime.localId,
                                 )
                             },
-                            animatedVisibilityScope = animatedVisibilityScope
+                            animatedVisibilityScope = animatedVisibilityScope,
                         )
                     }
                 }
@@ -124,5 +123,4 @@ fun SharedTransitionScope.BookmarkScreen(
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
-
 }

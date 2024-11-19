@@ -13,7 +13,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.theme.onSecondaryDark
-import com.solodev.animeloom.theme.primaryDark
 import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.Dimens.IndicatorSize
 

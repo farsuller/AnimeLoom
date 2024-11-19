@@ -7,8 +7,30 @@ on:
 
 
 jobs:
+
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Grant execute permissions for gradlew
+        run: chmod +x gradlew
+
+      - name: Run Spotless with Gradle
+        run: ./gradlew spotlessApply
+
   test:
     name: Unit Test
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:

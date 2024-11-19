@@ -10,7 +10,7 @@ data class AttributesDto(
     val synopsis: String? = null,
     val description: String? = null,
     val coverImageTopOffset: Int? = null,
-    val title : String? = null,
+    val title: String? = null,
     val titles: TitlesDto? = null,
     val canonicalTitle: String? = null,
     val abbreviatedTitles: List<String>? = null,

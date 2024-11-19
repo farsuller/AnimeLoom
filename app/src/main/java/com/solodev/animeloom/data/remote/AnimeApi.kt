@@ -1,18 +1,16 @@
 package com.solodev.animeloom.data.remote
 
-
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
+import com.solodev.animeloom.data.remote.dto.response.CastingsResponse
 import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaListResponse
 import com.solodev.animeloom.data.remote.dto.response.MangaResponse
 import com.solodev.animeloom.data.remote.dto.response.TrendingMangaListResponse
-import com.solodev.animeloom.data.remote.dto.response.CastingsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-
 
 interface AnimeApi {
     @GET("trending/anime")
@@ -20,7 +18,7 @@ interface AnimeApi {
         @Query("filter[status]") status: String? = null,
         @Query("filter[categories]") categories: String? = null,
         @Query("page[limit]") limit: Int? = null,
-        @Query("sort") sort: String? = null
+        @Query("sort") sort: String? = null,
     ): Response<AnimeListResponse>
 
     @GET("anime")
@@ -28,7 +26,7 @@ interface AnimeApi {
         @Query("filter[status]") status: String? = null,
         @Query("filter[categories]") categories: String? = null,
         @Query("page[limit]") limit: Int? = null,
-        @Query("sort") sort: String? = null
+        @Query("sort") sort: String? = null,
     ): Response<AnimeListResponse>
 
     @GET("anime/{id}")
@@ -47,7 +45,7 @@ interface AnimeApi {
     @GET("categories")
     suspend fun getCategories(
         @Query("page[limit]") limit: Int? = null,
-        @Query("sort") sort: String? = null
+        @Query("sort") sort: String? = null,
     ): Response<CategoriesResponse>
 
     @GET("trending/manga")
@@ -55,7 +53,7 @@ interface AnimeApi {
         @Query("filter[status]") status: String? = null,
         @Query("filter[categories]") categories: String? = null,
         @Query("page[limit]") limit: Int? = null,
-        @Query("sort") sort: String? = null
+        @Query("sort") sort: String? = null,
     ): Response<TrendingMangaListResponse>
 
     @GET("manga")
@@ -63,7 +61,7 @@ interface AnimeApi {
         @Query("filter[status]") status: String? = null,
         @Query("filter[categories]") categories: String? = null,
         @Query("page[limit]") limit: Int? = null,
-        @Query("sort") sort: String? = null
+        @Query("sort") sort: String? = null,
     ): Response<MangaListResponse>
 
     @GET("manga/{id}")

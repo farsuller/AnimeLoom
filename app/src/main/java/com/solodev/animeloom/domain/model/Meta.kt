@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Meta(
-    val dimensions: Dimensions? = null
-):Parcelable
+    val dimensions: Dimensions? = null,
+) : Parcelable

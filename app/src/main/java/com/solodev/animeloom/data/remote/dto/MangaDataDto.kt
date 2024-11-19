@@ -9,7 +9,7 @@ data class MangaDataDto(
     val type: String,
     val links: Links,
     val attributes: AttributesDto,
-    val relationships: RelationshipsX
+    val relationships: RelationshipsX,
 ) {
     fun toModel(): MangaData = MangaData(
         id = id,
@@ -17,6 +17,3 @@ data class MangaDataDto(
         attributes = attributes.toModel(),
     )
 }
-
-
-

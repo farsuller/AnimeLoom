@@ -52,7 +52,6 @@ class AnimeDetailsViewModel @Inject constructor(
         }
     }
 
-
     fun getAnimesById(id: Int) {
         viewModelScope.launch {
             animesUseCases.getAnimeId(id = id)
@@ -65,16 +64,17 @@ class AnimeDetailsViewModel @Inject constructor(
                     _animeDetailState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = e.message)
+                            errorMessage = e.message,
+                        )
                     }
-
                 }.collectLatest { result ->
                     delay(1500)
                     val detail = result.body()?.data?.toModel()
                     _animeDetailState.update {
                         it.copy(
                             animeDataDetail = detail,
-                            isLoading = false)
+                            isLoading = false,
+                        )
                     }
                 }
         }
@@ -88,7 +88,7 @@ class AnimeDetailsViewModel @Inject constructor(
                 isCharacter = true,
                 language = "Japanese",
                 include = "character,person",
-                sort = "-featured"
+                sort = "-featured",
             )
                 .onStart {
                     _castingsState.update {
@@ -99,7 +99,6 @@ class AnimeDetailsViewModel @Inject constructor(
                     _castingsState.update {
                         it.copy(isLoading = false, errorMessage = e.message)
                     }
-
                 }.collectLatest { result ->
                     delay(1500)
                     val castings = result.body()?.included?.map { it.toModel() }

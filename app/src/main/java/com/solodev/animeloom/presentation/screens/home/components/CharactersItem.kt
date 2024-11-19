@@ -44,7 +44,6 @@ import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.Constants
 
-
 @Composable
 fun CharactersItem(
     modifier: Modifier = Modifier,
@@ -57,7 +56,7 @@ fun CharactersItem(
     Column(
         modifier = Modifier.size(height = 140.dp, width = 120.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Card(
             onClick = onClick,
@@ -90,17 +89,17 @@ fun CharactersItem(
                                 .clip(CircleShape),
                             painter = painterResource(id = R.drawable.onboarding1),
                             contentDescription = "",
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
                         )
                     } else {
                         Column(
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.ErrorOutline,
                                 contentDescription = "",
-                                tint = MaterialTheme.colorScheme.error
+                                tint = MaterialTheme.colorScheme.error,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
@@ -108,11 +107,11 @@ fun CharactersItem(
                                 fontFamily = MaterialTheme.typography.labelSmall.fontFamily,
                                 text = "Failed to Load Image",
                                 color = MaterialTheme.colorScheme.error,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }
-                }
+                },
             )
         }
 
@@ -121,17 +120,16 @@ fun CharactersItem(
                 .padding(
                     top = 10.dp,
                     start = 10.dp,
-                    end = 10.dp
+                    end = 10.dp,
                 )
                 .width(120.dp),
             text = data?.name ?: data?.canonicalName ?: "",
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            lineHeight = 20.sp
+            lineHeight = 20.sp,
         )
     }
-
 }
 
 @AnimesPreviews
@@ -140,22 +138,21 @@ fun CharactersItemPreview() {
     AnimeLoomTheme {
         Surface {
             CharactersItem(
-                onClick = {}, castingsData = CastingsData(
+                onClick = {},
+                castingsData = CastingsData(
                     attributes = Attributes(
                         name = "Character Name",
                         posterImage = PosterImage(
                             meta = Meta(
                                 dimensions = Dimensions(
-                                    medium = Size(width = 390, height = 554)
-                                )
+                                    medium = Size(width = 390, height = 554),
+                                ),
                             ),
-                            medium = "https://media.kitsu.app/anime/poster_images/7442/medium.jpg"
-                        )
-                    )
-                )
+                            medium = "https://media.kitsu.app/anime/poster_images/7442/medium.jpg",
+                        ),
+                    ),
+                ),
             )
         }
     }
 }
-
-

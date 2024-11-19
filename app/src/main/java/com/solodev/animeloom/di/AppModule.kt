@@ -6,19 +6,18 @@ import com.solodev.animeloom.domain.manager.LocalUserManager
 import com.solodev.animeloom.domain.repository.AnimeRepository
 import com.solodev.animeloom.domain.repository.MangaRepository
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
-import com.solodev.animeloom.domain.usecase.MangaUseCases
-import com.solodev.animeloom.domain.usecase.anime.GetTrendingAnime
 import com.solodev.animeloom.domain.usecase.AppEntryUseCases
+import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.domain.usecase.anime.DeleteAnimeById
 import com.solodev.animeloom.domain.usecase.anime.GetAnime
-import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
-import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
 import com.solodev.animeloom.domain.usecase.anime.GetAnimeId
 import com.solodev.animeloom.domain.usecase.anime.GetCastingsById
 import com.solodev.animeloom.domain.usecase.anime.GetCategories
 import com.solodev.animeloom.domain.usecase.anime.SelectAnime
 import com.solodev.animeloom.domain.usecase.anime.SelectAnimeById
 import com.solodev.animeloom.domain.usecase.anime.UpsertAnime
+import com.solodev.animeloom.domain.usecase.appentry.ReadAppEntry
+import com.solodev.animeloom.domain.usecase.appentry.SaveAppEntry
 import com.solodev.animeloom.domain.usecase.manga.DeleteMangaById
 import com.solodev.animeloom.domain.usecase.manga.GetManga
 import com.solodev.animeloom.domain.usecase.manga.GetMangaId
@@ -40,8 +39,6 @@ object AppModule {
     @Singleton
     fun provideLocalUserManager(application: Application): LocalUserManager =
         LocalUserManagerImpl(application)
-
-
 
     @Provides
     @Singleton
@@ -65,16 +62,15 @@ object AppModule {
             upsertAnime = UpsertAnime(repository),
             deleteAnimeById = DeleteAnimeById(repository),
             selectAnime = SelectAnime(repository),
-            selectAnimeById = SelectAnimeById(repository)
-
+            selectAnimeById = SelectAnimeById(repository),
         )
     }
 
     @Provides
     @Singleton
     fun provideMangaUseCases(
-        repository: MangaRepository
-    ) : MangaUseCases{
+        repository: MangaRepository,
+    ): MangaUseCases {
         return MangaUseCases(
             getTrendingManga = GetTrendingManga(repository),
             getManga = GetManga(repository),
@@ -82,7 +78,7 @@ object AppModule {
             upsertManga = UpsertManga(repository),
             deleteMangaById = DeleteMangaById(repository),
             selectManga = SelectManga(repository),
-            selectMangaById = SelectMangaById(repository)
+            selectMangaById = SelectMangaById(repository),
         )
     }
 }

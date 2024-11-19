@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-
 @Immutable
 @Parcelize
 @Entity(tableName = "anime_data")
@@ -20,14 +19,5 @@ data class AnimeData(
     @SerializedName("attributes")
     val attributes: Attributes? = null,
 
-    val localId: String = ""
-):Parcelable
-
-
-
-
-
-
-
-
-
+    val localId: String = "",
+) : Parcelable

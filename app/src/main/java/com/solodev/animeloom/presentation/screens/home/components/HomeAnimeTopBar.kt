@@ -27,7 +27,7 @@ internal fun HomeAnimeTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         },
         title = {},

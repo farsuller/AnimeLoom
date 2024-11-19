@@ -8,7 +8,7 @@ data class CoverImageDto(
     val meta: Meta? = null,
     val original: String? = null,
     val small: String? = null,
-    val tiny: String? = null
+    val tiny: String? = null,
 ) {
     fun toModel(): CoverImage =
         CoverImage(tiny = tiny, small = small, large = large, original = original)

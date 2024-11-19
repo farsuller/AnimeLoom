@@ -22,7 +22,7 @@ class GetCastingsById(
             isCharacter = isCharacter,
             language = language,
             include = include,
-            sort = sort
+            sort = sort,
         )
     }
 }

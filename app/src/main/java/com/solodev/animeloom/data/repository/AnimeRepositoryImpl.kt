@@ -4,8 +4,8 @@ import com.solodev.animeloom.data.local.AnimeDao
 import com.solodev.animeloom.data.remote.AnimeApi
 import com.solodev.animeloom.data.remote.dto.response.AnimeListResponse
 import com.solodev.animeloom.data.remote.dto.response.AnimeResponse
-import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.dto.response.CastingsResponse
+import com.solodev.animeloom.data.remote.dto.response.CategoriesResponse
 import com.solodev.animeloom.data.remote.safeApiCall
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.repository.AnimeRepository
@@ -15,20 +15,20 @@ import javax.inject.Inject
 
 class AnimeRepositoryImpl @Inject constructor(
     private val apiService: AnimeApi,
-    private val animeDao: AnimeDao
+    private val animeDao: AnimeDao,
 ) : AnimeRepository {
     override suspend fun getTrendingAnimeList(
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
+        sort: String?,
     ): Flow<Response<AnimeListResponse>> =
         safeApiCall {
             apiService.getTrendingAnimeList(
                 status = status,
                 categories = categories,
                 limit = limit,
-                sort = sort
+                sort = sort,
             )
         }
 
@@ -36,13 +36,13 @@ class AnimeRepositoryImpl @Inject constructor(
         status: String?,
         categories: String?,
         limit: Int?,
-        sort: String?
+        sort: String?,
     ): Flow<Response<AnimeListResponse>> = safeApiCall {
         apiService.getAnimeList(
             status = status,
             categories = categories,
             limit = limit,
-            sort = sort
+            sort = sort,
         )
     }
 
@@ -56,7 +56,7 @@ class AnimeRepositoryImpl @Inject constructor(
         isCharacter: Boolean?,
         language: String?,
         include: String?,
-        sort: String?
+        sort: String?,
     ): Flow<Response<CastingsResponse>> = safeApiCall {
         apiService.getCastingsById(
             mediaType = mediaType,
@@ -64,7 +64,7 @@ class AnimeRepositoryImpl @Inject constructor(
             isCharacter = isCharacter,
             language = language,
             include = include,
-            sort = sort
+            sort = sort,
         )
     }
 

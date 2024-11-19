@@ -4,13 +4,12 @@ import com.solodev.animeloom.domain.model.Links
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.model.RelationshipsX
 
-
 data class TrendingMangaDataDto(
     val id: String,
     val type: String,
     val links: Links,
     val attributes: AttributesDto,
-    val relationships: RelationshipsX
+    val relationships: RelationshipsX,
 ) {
     fun toModel(): MangaData = MangaData(
         id = id,
@@ -18,6 +17,3 @@ data class TrendingMangaDataDto(
         attributes = attributes.toModel(),
     )
 }
-
-
-

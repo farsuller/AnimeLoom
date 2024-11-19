@@ -13,7 +13,6 @@ object Constants {
 
     const val ANIMES_LOOM_DB_NAME = "animes_loom_db"
 
-
     object Elevation {
         val level0 = 0.0.dp
         val level1 = 1.0.dp

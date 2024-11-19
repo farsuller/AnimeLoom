@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     alias(libs.plugins.devtool.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias (libs.plugins.gms.google.services)
+    alias (libs.plugins.firebase.crashlytics)
     id("kotlin-parcelize")
 }
 
@@ -30,28 +32,44 @@ android {
     namespace = ProjectConfig.NAMESPACE
     compileSdk = ProjectConfig.COMPILE_SDK
 
+    val isGenerateBuild = ProjectConfig.GENERATE_LOCAL_ARCHIVE
+    val configVersionCode = ProjectConfig.VERSION_CODE
+    val configMajorVersion = ProjectConfig.MAJOR_VERSION
+    val configMinorVersion = ProjectConfig.MINOR_VERSION
+    val configPatchVersion = ProjectConfig.PATCH_VERSION
+    val appName = ProjectConfig.APP_FILENAME
+
     defaultConfig {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 22
-        versionName = "1.2.2"
+        versionCode = 23
+        versionName = "1.2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BASE_URL", "\"https://kitsu.app/api/edge/\"")
 
-        if (ProjectConfig.GENERATE_LOCAL_ARCHIVE) {
-            versionCode = ProjectConfig.VERSION_CODE
-            versionName = "${ProjectConfig.MAJOR_VERSION}.${ProjectConfig.MINOR_VERSION}.${ProjectConfig.PATCH_VERSION}"
+        if (isGenerateBuild) {
+            versionCode = configVersionCode
+            versionName = "${configMajorVersion}.${configMinorVersion}.${configPatchVersion}"
 
             applicationVariants.all {
-                base.archivesName.set("${ProjectConfig.APP_FILENAME}-${buildType.name}-$versionCode-$versionName")
+                base.archivesName.set("$appName-${buildType.name}-$versionCode-$versionName")
             }
         }
     }
 
-
+    if (isGenerateBuild){
+        signingConfigs {
+            register("release") {
+                storeFile = file("keystore/animeloom.jks")
+                storePassword = animeLoomProperties["storePassword"].toString()
+                keyAlias = animeLoomProperties["keyAlias"].toString()
+                keyPassword = animeLoomProperties["keyPassword"].toString()
+            }
+        }
+    }
 
     buildTypes {
         debug {
@@ -61,6 +79,7 @@ android {
         }
 
         release {
+            if (isGenerateBuild) signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
@@ -140,6 +159,11 @@ dependencies {
 
     //Material Icon Extended
     implementation (libs.material.icons.extended)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     //Datastore
     implementation (libs.androidx.datastore.preferences)

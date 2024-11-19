@@ -48,9 +48,8 @@ fun SharedTransitionScope.MangaDetailsScreen(
     isFromBookmark: Boolean = false,
     coverImage: String,
     navigateUp: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-
     val viewModel: MangaDetailsViewModel = hiltViewModel()
     val mangaState by viewModel.mangaDetailState.collectAsStateWithLifecycle()
 
@@ -70,8 +69,8 @@ fun SharedTransitionScope.MangaDetailsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = innerPadding.calculateBottomPadding() + 10.dp
-                )
+                    bottom = innerPadding.calculateBottomPadding() + 10.dp,
+                ),
         ) {
             item {
                 AsyncImage(
@@ -83,21 +82,20 @@ fun SharedTransitionScope.MangaDetailsScreen(
                             animatedVisibilityScope = animatedVisibilityScope,
                             boundsTransform = { _, _ ->
                                 tween(durationMillis = 500)
-                            }
+                            },
                         )
                         .fillMaxWidth()
                         .height(400.dp)
                         .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             }
             item {
-
                 when {
                     mangaState.isLoading -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator()
                         }
@@ -106,7 +104,7 @@ fun SharedTransitionScope.MangaDetailsScreen(
                     mangaState.errorMessage != null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(text = "Error: ${mangaState.errorMessage}")
                         }
@@ -116,9 +114,10 @@ fun SharedTransitionScope.MangaDetailsScreen(
                         val mangaDataAttributes = mangaData.attributes
                         val title = mangaDataAttributes?.titles?.en ?: mangaDataAttributes?.canonicalTitle
                         val details = mangaDataAttributes?.description ?: mangaDataAttributes?.synopsis
+
                         Column(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             Spacer(modifier = Modifier.height(10.dp))
 
@@ -128,44 +127,45 @@ fun SharedTransitionScope.MangaDetailsScreen(
                                 onBookmarkClick = {
                                     viewModel.onEvent(
                                         MangaDetailsEvent.UpsertDeleteManga(
-                                            mangaData.copy(localId = id.hashCode().toString())
-                                        )
+                                            mangaData.copy(localId = id.hashCode().toString()),
+                                        ),
                                     )
-                                })
+                                },
+                            )
 
                             Row {
                                 Text(
-                                    text = mangaDataAttributes?.startDate?.split("-")?.first() ?: "-",
+                                    text = mangaDataAttributes?.startDate?.split("-")?.first()
+                                        ?: "-",
                                     style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
                                 )
 
                                 Row(
                                     horizontalArrangement = Arrangement.spacedBy(1.dp),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Icon(
                                         imageVector = Icons.Rounded.Star,
-                                        contentDescription = null
+                                        contentDescription = null,
                                     )
 
                                     Text(
                                         text = mangaDataAttributes?.averageRating ?: "0.0",
                                         style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Medium
+                                        fontWeight = FontWeight.Medium,
                                     )
                                 }
                             }
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-
                             details?.let { synopsis ->
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(horizontal = 20.dp, vertical = 10.dp),
-                                    horizontalAlignment = Alignment.Start
+                                    horizontalAlignment = Alignment.Start,
                                 ) {
                                     Text(
                                         modifier = Modifier
@@ -173,14 +173,14 @@ fun SharedTransitionScope.MangaDetailsScreen(
                                         text = "Synopsis",
                                         style = MaterialTheme.typography.titleLarge,
                                         fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Start
+                                        textAlign = TextAlign.Start,
                                     )
                                     Text(
                                         modifier = Modifier.fillMaxWidth(),
-                                        text = synopsis)
+                                        text = synopsis,
+                                    )
                                 }
                             }
-
                         }
                     }
                 }
@@ -188,4 +188,3 @@ fun SharedTransitionScope.MangaDetailsScreen(
         }
     }
 }
-

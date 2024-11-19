@@ -11,6 +11,6 @@ data class Names(
     val en: String,
 
     @SerializedName("ja_jp")
-    val jaJp: String
+    val jaJp: String,
 
-): Parcelable
+) : Parcelable

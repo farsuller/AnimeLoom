@@ -30,7 +30,6 @@ fun OnboardingPage(
     page: Page,
 ) {
     Column(modifier = modifier) {
-
         Box(modifier = Modifier.fillMaxWidth()) {
             Image(
                 modifier = Modifier
@@ -38,7 +37,7 @@ fun OnboardingPage(
                     .fillMaxHeight(fraction = 0.6F),
                 painter = painterResource(id = page.image),
                 contentDescription = null,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         }
 

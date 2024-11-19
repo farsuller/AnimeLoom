@@ -37,6 +37,40 @@
 
 -keep class com.solodev.animeloom.domain.model.** { *; }
 -keep class com.solodev.animeloom.data.** { *; }
+-keep class com.solodev.animeloom.utils.** { *; }
+
+# Hilt annotations
+-keep class dagger.hilt.** { *; }
+-keep class androidx.hilt.** { *; }
+-keep class dagger.hilt.android.** { *; }
+
+# Retain generated Hilt components
+-keep class **_HiltModules_ { *; }
+-keep class **_HiltComponents { *; }
+
+# Keep Navigation-related classes
+-keep class androidx.navigation.** { *; }
+
+# Room library
+# Preserve Room's generated classes and interfaces
+-keep class androidx.room.** { *; }
+-keep interface androidx.room.** { *; }
+
+# Preserve @Database annotated classes
+-keep @androidx.room.Database class * {
+    *;
+}
+
+# Preserve @Entity annotated classes
+-keep @androidx.room.Entity class * {
+    *;
+}
+
+# Preserve @Dao annotated interfaces
+-keep @androidx.room.Dao class * {
+    *;
+}
+
 
 -keepclasseswithmembernames class * {
     @retrofit2.* <methods>;
@@ -50,8 +84,10 @@
     @retrofit2.http.* <methods>;
 }
 
+# Retrofit library
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }
+-keep interface retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
 

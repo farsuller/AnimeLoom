@@ -15,5 +15,5 @@ data class MangaUseCases(
     val upsertManga: UpsertManga,
     val deleteMangaById: DeleteMangaById,
     val selectManga: SelectManga,
-    val selectMangaById: SelectMangaById
+    val selectMangaById: SelectMangaById,
 )

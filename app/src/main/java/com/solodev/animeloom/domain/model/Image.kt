@@ -23,6 +23,6 @@ data class Image(
     val original: String? = null,
 
     @SerializedName("meta")
-    val meta: Meta? = null
+    val meta: Meta? = null,
 
 ) : Parcelable

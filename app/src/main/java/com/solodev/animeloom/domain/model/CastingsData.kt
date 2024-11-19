@@ -13,5 +13,5 @@ data class CastingsData(
     val attributes: Attributes? = null,
 
     @SerializedName("type")
-    val type : String = ""
+    val type: String = "",
 )

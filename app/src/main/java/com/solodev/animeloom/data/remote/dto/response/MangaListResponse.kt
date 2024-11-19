@@ -5,10 +5,7 @@ import com.solodev.animeloom.domain.model.LinksX
 import com.solodev.animeloom.domain.model.MetaC
 
 data class MangaListResponse(
-    val data : List<MangaDataDto>,
-    val meta : MetaC,
-    val links : LinksX
+    val data: List<MangaDataDto>,
+    val meta: MetaC,
+    val links: LinksX,
 )
-
-
-

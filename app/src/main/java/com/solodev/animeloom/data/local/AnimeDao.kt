@@ -1,7 +1,6 @@
 package com.solodev.animeloom.data.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -28,7 +27,6 @@ interface AnimeDao {
     suspend fun updateAttributesById(id: String, attributes: Attributes)
 
     suspend fun upsert(animeData: AnimeData) {
-
         val existingAnime = selectAnimeById(animeData.id)
 
         if (existingAnime == null) {

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -34,19 +33,19 @@ import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.toDp
 
-
-
 @Composable
 fun ShimmerEffectDetailColumn() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween) {
-
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
             Box(
                 modifier = Modifier
                     .padding(all = 4.dp)
@@ -73,7 +72,6 @@ fun ShimmerEffectDetailColumn() {
                     .clip(MaterialTheme.shapes.medium)
                     .shimmerEffect(),
             )
-
         }
 
         Spacer(modifier = Modifier.height(26.dp))
@@ -81,12 +79,11 @@ fun ShimmerEffectDetailColumn() {
             modifier = Modifier
                 .padding(all = 8.dp)
                 .fillMaxWidth()
-
                 .height(682.toDp())
                 .clip(MaterialTheme.shapes.medium)
                 .shimmerEffect(),
-            contentAlignment = Alignment.Center
-        ){
+            contentAlignment = Alignment.Center,
+        ) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
         }
     }
@@ -100,7 +97,7 @@ fun ShimmerEffectVerticalGrid() {
             .padding(all = 8.dp),
         columns = GridCells.Fixed(3),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(10) {
             AnimeCardShimmerEffect(
@@ -134,9 +131,10 @@ fun ShimmerEffectCarouselWithHeader() {
 
 @Composable
 fun ShimmerEffectCastings() {
-    LazyRow (
+    LazyRow(
         modifier = Modifier.padding(start = 10.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
         items(10) {
             CastingsCardShimmerEffect()
         }

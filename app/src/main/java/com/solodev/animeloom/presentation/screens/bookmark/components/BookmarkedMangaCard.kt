@@ -34,8 +34,10 @@ import com.solodev.animeloom.utils.Constants
 fun SharedTransitionScope.BookmarkedMangaCard(
     mangaData: MangaData,
     onClick: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
+    val mangaDataAttribute = mangaData.attributes
+
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -46,27 +48,27 @@ fun SharedTransitionScope.BookmarkedMangaCard(
         Column(
             modifier = Modifier.padding(all = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             AsyncImage(
-                model = mangaData.attributes?.posterImage?.original,
-                contentDescription = mangaData.attributes?.canonicalTitle,
+                model = mangaDataAttribute?.posterImage?.original,
+                contentDescription = mangaDataAttribute?.canonicalTitle,
                 modifier = Modifier
                     .sharedElement(
                         rememberSharedContentState(key = mangaData.localId),
                         animatedVisibilityScope = animatedVisibilityScope,
                         boundsTransform = { _, _ ->
                             tween(durationMillis = 500)
-                        }
+                        },
                     )
                     .size(90.dp)
                     .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
 
             Text(
                 modifier = Modifier.width(100.dp),
-                text = mangaData.attributes?.canonicalTitle ?: "Default Title",
+                text = mangaDataAttribute?.title ?: mangaDataAttribute?.canonicalTitle ?: "Default Title",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
@@ -76,7 +78,4 @@ fun SharedTransitionScope.BookmarkedMangaCard(
             )
         }
     }
-
 }
-
-

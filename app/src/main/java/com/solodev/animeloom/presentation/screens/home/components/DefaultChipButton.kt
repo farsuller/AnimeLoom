@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.solodev.animeloom.theme.surfaceLight
 
-
 @Composable
 fun DefaultChipButton(
     modifier: Modifier = Modifier,
@@ -25,14 +24,13 @@ fun DefaultChipButton(
         colors = FilterChipDefaults.filterChipColors(
             labelColor = MaterialTheme.colorScheme.onSurface,
             selectedLabelColor = surfaceLight,
-            selectedContainerColor = MaterialTheme.colorScheme.onSurface
+            selectedContainerColor = MaterialTheme.colorScheme.onSurface,
         ),
 
         border = FilterChipDefaults.filterChipBorder(
             enabled = isSelected,
             selected = isSelected,
             disabledBorderColor = MaterialTheme.colorScheme.onSurface,
-        )
+        ),
     )
 }
-

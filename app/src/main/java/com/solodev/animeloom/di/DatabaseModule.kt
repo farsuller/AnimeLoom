@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import com.solodev.animeloom.data.local.AnimeDao
 import com.solodev.animeloom.data.local.AnimeLoomDatabase
-import com.solodev.animeloom.data.local.MangaDao
 import com.solodev.animeloom.data.local.Converters
+import com.solodev.animeloom.data.local.MangaDao
 import com.solodev.animeloom.utils.Constants.ANIMES_LOOM_DB_NAME
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideAnimeLoomDatabase(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): AnimeLoomDatabase {
         return Room.databaseBuilder(
             context = context,

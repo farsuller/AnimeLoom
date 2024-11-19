@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.solodev.animeloom.presentation.screens.onboarding.components.AnimeButton
 import com.solodev.animeloom.presentation.screens.onboarding.components.AnimeTextButton
 import com.solodev.animeloom.presentation.screens.onboarding.components.OnboardingPage
-import com.solodev.animeloom.utils.Dimens.MediumPadding2
 import com.solodev.animeloom.presentation.screens.onboarding.components.PagerIndicator
+import com.solodev.animeloom.utils.Dimens.MediumPadding2
 import kotlinx.coroutines.launch
 
 @Composable

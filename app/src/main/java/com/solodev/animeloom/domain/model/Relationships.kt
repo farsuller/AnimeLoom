@@ -9,5 +9,5 @@ data class Relationships(
     val mangaStaff: Relation? = null,
     val mappings: Relation? = null,
     val mediaRelationships: Relation? = null,
-    val reviews: Relation? = null
+    val reviews: Relation? = null,
 )

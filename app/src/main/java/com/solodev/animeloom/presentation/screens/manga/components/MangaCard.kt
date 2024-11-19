@@ -31,9 +31,8 @@ fun SharedTransitionScope.MangaCard(
     modifier: Modifier = Modifier,
     mangaData: MangaData,
     onClick: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
-
     val image = mangaData.attributes?.posterImage?.original
     val imageHeight = mangaData.attributes?.posterImage?.meta?.dimensions?.small?.height ?: 402
     val imageWidth = mangaData.attributes?.posterImage?.meta?.dimensions?.small?.width ?: 284
@@ -55,7 +54,7 @@ fun SharedTransitionScope.MangaCard(
                     animatedVisibilityScope = animatedVisibilityScope,
                     boundsTransform = { _, _ ->
                         tween(durationMillis = 500)
-                    }
+                    },
                 )
                 .height(imageHeight.toDp())
                 .width(imageWidth.toDp())
@@ -68,10 +67,7 @@ fun SharedTransitionScope.MangaCard(
                     AnimeCardShimmerEffect(height = imageHeight, width = imageWidth)
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.surface)
                 }
-            }
+            },
         )
     }
-
 }
-
-
