@@ -14,10 +14,10 @@ plugins {
     id("kotlin-parcelize")
 }
 
-val animeLoomProperties: Properties by lazy {
+val keystoreProperties: Properties by lazy {
     val properties = Properties()
 
-    val localPropertiesFile = rootProject.file("local.properties")
+    val localPropertiesFile = rootProject.file("keystore.properties")
 
     if (localPropertiesFile.exists()) {
         properties.load(localPropertiesFile.inputStream())
@@ -64,9 +64,9 @@ android {
         signingConfigs {
             register("release") {
                 storeFile = file("keystore/animeloom.jks")
-                storePassword = animeLoomProperties["storePassword"].toString()
-                keyAlias = animeLoomProperties["keyAlias"].toString()
-                keyPassword = animeLoomProperties["keyPassword"].toString()
+                storePassword = keystoreProperties["storePassword"].toString()
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
             }
         }
     }
@@ -79,7 +79,7 @@ android {
         }
 
         release {
-            if (isGenerateBuild) signingConfig = signingConfigs.getByName("release")
+            if (ProjectConfig.GENERATE_LOCAL_ARCHIVE) signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
