@@ -52,6 +52,9 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
+      - name: Setup Google Services
+        run: echo '${{ secrets.GOOGLE_SERVICES }}' > google_services.json
+
       - name: Run unit tests
         run: ./gradlew clean :app:testDebugUnitTest
 
