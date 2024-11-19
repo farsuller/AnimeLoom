@@ -43,8 +43,8 @@ android {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 23
-        versionName = "1.2.4"
+        versionCode = 24
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -163,7 +163,6 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
 
     //Datastore
     implementation (libs.androidx.datastore.preferences)
