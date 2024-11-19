@@ -53,7 +53,9 @@ jobs:
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       - name: Setup Google Services
-        run: echo '${{ secrets.GOOGLE_SERVICES }}' > google_services.json
+        run: |
+            mkdir -p app/src/debug
+            echo '${{ secrets.GOOGLE_SERVICES }}' > app/src/debug/google-services.json
 
       - name: Run unit tests
         run: ./gradlew clean :app:testDebugUnitTest
@@ -84,6 +86,11 @@ jobs:
 
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+      - name: Setup Google Services
+        run: |
+            mkdir -p app/src/debug
+            echo '${{ secrets.GOOGLE_SERVICES }}' > app/src/release/google-services.json
 
       - name : Assemble Release Bundle
         run: ./gradlew bundleRelease
