@@ -89,7 +89,7 @@ jobs:
 
       - name: Setup Google Services
         run: |
-            mkdir -p app/src/debug
+            mkdir -p app/src/release
             echo '${{ secrets.GOOGLE_SERVICES }}' > app/src/release/google-services.json
 
       - name : Assemble Release Bundle
