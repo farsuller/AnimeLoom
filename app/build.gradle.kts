@@ -110,9 +110,8 @@ dependencies {
 
     implementation(libs.material)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.bundles.bundle.androidx.compose)
+
     implementation(libs.androidx.material3)
 
     implementation(libs.androidx.ui.text.google.fonts)
@@ -124,15 +123,12 @@ dependencies {
     implementation(libs.androidx.compose.navigation)
 
     // Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.bundles.bundle.androidx.lifecycle)
+
+    implementation(libs.androidx.runtime.livedata)
 
     //Coil
-    implementation(libs.coil.compose)
-    implementation(libs.coil.network.okhttp)
+    implementation(libs.bundles.bundle.coil)
 
     //Retrofit
     implementation (libs.retrofit)
@@ -144,18 +140,15 @@ dependencies {
     //Hilt
     implementation(libs.androidx.hilt.compose.navigation)
     implementation(libs.hilt)
-    implementation(libs.androidx.runtime.livedata)
     ksp(libs.hilt.compiler)
-    androidTestImplementation(libs.hilt.android.testing)
 
     //Room
-    implementation (libs.androidx.room.runtime)
+    implementation (libs.bundles.bundle.room)
     ksp (libs.androidx.room.compiler)
-    implementation (libs.androidx.room.ktx)
+
 
     //Paging 3
-    implementation (libs.androidx.paging.runtime)
-    implementation (libs.androidx.paging.compose)
+    implementation (libs.bundles.bundle.paging)
 
     //Material Icon Extended
     implementation (libs.material.icons.extended)
@@ -186,10 +179,11 @@ dependencies {
     // Lifecycle and ViewModel testing
     testImplementation (libs.androidx.core.testing)
 
+    androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
