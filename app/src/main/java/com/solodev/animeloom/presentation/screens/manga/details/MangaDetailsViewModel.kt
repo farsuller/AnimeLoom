@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.presentation.screens.manga.states.MangaDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,13 +81,20 @@ class MangaDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteMangaById(deleteMangaById: String) {
-        mangaUseCases.deleteMangaById(deleteMangaById = deleteMangaById)
-        sideEffect = "Deleted Bookmarked"
+    private fun deleteMangaById(deleteMangaById: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mangaUseCases.deleteMangaById(deleteMangaById = deleteMangaById)
+            withContext(Dispatchers.Main) {
+                sideEffect = "Deleted Bookmarked"
+            }
+        }
     }
-
-    private suspend fun upsertManga(manga: MangaData) {
-        mangaUseCases.upsertManga(mangaData = manga)
-        sideEffect = "Bookmarked"
+    private fun upsertManga(manga: MangaData) {
+        viewModelScope.launch(Dispatchers.IO){
+            mangaUseCases.upsertManga(mangaData = manga)
+            withContext(Dispatchers.Main) {
+                sideEffect = "Bookmarked"
+            }
+        }
     }
 }

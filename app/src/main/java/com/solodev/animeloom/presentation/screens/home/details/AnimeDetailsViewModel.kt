@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -109,13 +111,21 @@ class AnimeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteAnime(deleteAnimeById: String) {
-        animesUseCases.deleteAnimeById(deleteAnimeById = deleteAnimeById)
-        sideEffect = "Deleted Bookmarked"
+    private fun deleteAnime(deleteAnimeById: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            animesUseCases.deleteAnimeById(deleteAnimeById = deleteAnimeById)
+            withContext(Dispatchers.Main) {
+                sideEffect = "Deleted Bookmarked"
+            }
+        }
     }
 
-    private suspend fun upsertAnime(animeData: AnimeData) {
-        animesUseCases.upsertAnime(animeData = animeData)
-        sideEffect = "Bookmarked"
+    private fun upsertAnime(animeData: AnimeData) {
+        viewModelScope.launch(Dispatchers.IO){
+            animesUseCases.upsertAnime(animeData = animeData)
+            withContext(Dispatchers.Main) {
+                sideEffect = "Bookmarked"
+            }
+        }
     }
 }
