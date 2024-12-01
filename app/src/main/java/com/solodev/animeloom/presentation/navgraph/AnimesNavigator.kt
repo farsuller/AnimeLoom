@@ -80,7 +80,7 @@ fun AnimesNavigator(
     val mangaState by mangaViewModel.combinedMangaState.collectAsStateWithLifecycle()
     val isLoadingMangaData by mangaViewModel.isLoadingData.collectAsStateWithLifecycle()
 
-    val bookmarkState = bookmarkViewModel.bookmarkState.value
+    val bookmarkState = bookmarkViewModel.bookmarkState.collectAsStateWithLifecycle()
     val isLoadingBookmarkData by bookmarkViewModel.isLoadingData.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
@@ -222,7 +222,7 @@ fun AnimesNavigator(
 
                 composable(Route.BookmarkRoute.route) {
                     BookmarkScreen(
-                        bookmarkState = bookmarkState,
+                        bookmarkState = bookmarkState.value,
                         onNavigate = onNavigate,
                         isLoadingData = isLoadingBookmarkData,
                         onAnimeClick = { cover, id, localId ->

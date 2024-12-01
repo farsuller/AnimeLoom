@@ -66,6 +66,8 @@ crashlytics = "3.0.2"
 
 spotless = "6.19.0"
 
+appUpdate = "2.1.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
@@ -140,6 +142,9 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddyVersion" }
 
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -153,6 +158,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 [bundles]
+bundle-app-updates = ["app-update","app-update-ktx"]
 
 bundle-androidx-compose = [
     "androidx-compose-ui",
