@@ -18,9 +18,8 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun AnimeLoomSplashScreen(
-    onNavigateToMainGraph: () -> Unit
+    onNavigateToMainGraph: () -> Unit,
 ) {
-
     LaunchedEffect(Unit) {
         delay(2000L) // Simulate a splash delay
         onNavigateToMainGraph()
@@ -32,7 +31,6 @@ fun AnimeLoomSplashScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Image(
             modifier = Modifier.clip(CircleShape),
             painter = painterResource(id = R.drawable.animeloom),

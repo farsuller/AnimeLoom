@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.usecase.AnimeUseCases
+import com.solodev.animeloom.presentation.screens.home.states.AnimeDetailState
+import com.solodev.animeloom.presentation.screens.home.states.CastingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -121,7 +123,7 @@ class AnimeDetailsViewModel @Inject constructor(
     }
 
     private fun upsertAnime(animeData: AnimeData) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             animesUseCases.upsertAnime(animeData = animeData)
             withContext(Dispatchers.Main) {
                 sideEffect = "Bookmarked"

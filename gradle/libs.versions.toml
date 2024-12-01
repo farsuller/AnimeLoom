@@ -58,7 +58,7 @@ splash = "1.0.1"
 kotlinSerialization = "2.0.0"
 kotlinxSerializationJson = "1.7.1"
 
-mockk = "5.6.0"
+mockk = "5.7.0"
 turbine = "1.0.0"
 
 googleServices = "4.4.2"
@@ -67,6 +67,8 @@ crashlytics = "3.0.2"
 spotless = "6.19.0"
 
 appUpdate = "2.1.0"
+
+material3-adaptive = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -144,6 +146,8 @@ byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddyVers
 
 app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
+
+androidx-compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

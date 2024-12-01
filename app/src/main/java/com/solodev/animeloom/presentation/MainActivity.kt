@@ -74,7 +74,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
     private fun startAppUpdate(appUpdateInfo: AppUpdateInfo) {
         val appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&

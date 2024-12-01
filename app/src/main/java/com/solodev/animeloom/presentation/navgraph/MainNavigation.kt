@@ -15,7 +15,6 @@ fun MainNavigation(
     startDestination: String,
     onNavigate: (String) -> Unit,
 ) {
-
     NavHost(
         navController = navController,
         startDestination = startDestination,

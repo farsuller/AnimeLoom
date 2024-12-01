@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.solodev.animeloom.domain.model.AnimeData
 import com.solodev.animeloom.domain.model.MangaData
 import com.solodev.animeloom.domain.usecase.MangaUseCases
 import com.solodev.animeloom.presentation.screens.manga.states.MangaDetailState
@@ -90,7 +89,7 @@ class MangaDetailsViewModel @Inject constructor(
         }
     }
     private fun upsertManga(manga: MangaData) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             mangaUseCases.upsertManga(mangaData = manga)
             withContext(Dispatchers.Main) {
                 sideEffect = "Bookmarked"

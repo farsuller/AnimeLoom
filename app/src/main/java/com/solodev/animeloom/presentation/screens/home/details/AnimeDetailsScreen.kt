@@ -17,13 +17,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBackIos
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.layout.AnimatedPane
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,8 +50,9 @@ import com.solodev.animeloom.presentation.common.DetailHeaderBar
 import com.solodev.animeloom.presentation.common.ShimmerEffectCastings
 import com.solodev.animeloom.presentation.common.ShimmerEffectDetailColumn
 import com.solodev.animeloom.presentation.screens.home.components.CharactersItem
+import com.solodev.animeloom.utils.clickableWithoutRipple
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun SharedTransitionScope.AnimeDetailsScreen(
     id: String,
@@ -58,7 +67,10 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     val castingsState by viewModel.castingsState.collectAsStateWithLifecycle()
 
     val animeData = animeState.animeDataDetail ?: AnimeData()
-    val castingData = castingsState.castingDataList?.filter { it.type == "characters" } ?: emptyList()
+    val castingData =
+        castingsState.castingDataList?.filter { it.type == "characters" } ?: emptyList()
+
+    val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
 
     LaunchedEffect(true) {
         viewModel.getAnimesById(id.toInt())
@@ -72,140 +84,205 @@ fun SharedTransitionScope.AnimeDetailsScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(bottom = innerPadding.calculateBottomPadding() + 10.dp),
-        ) {
-            item {
-                AsyncImage(
-                    model = coverImage,
-                    contentDescription = null,
+
+        NavigableListDetailPaneScaffold(
+            modifier = Modifier,
+            navigator = navigator,
+            listPane = {
+                LazyColumn(
                     modifier = Modifier
-                        .sharedElement(
-                            rememberSharedContentState(key = if (isFromBookmark) localId else id),
-                            animatedVisibilityScope = animatedVisibilityScope,
-                            boundsTransform = { _, _ ->
-                                tween(durationMillis = 500)
-                            },
+                        .padding(bottom = innerPadding.calculateBottomPadding() + 10.dp),
+                ) {
+                    item {
+                        AsyncImage(
+                            model = coverImage,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .sharedElement(
+                                    rememberSharedContentState(key = if (isFromBookmark) localId else id),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    boundsTransform = { _, _ ->
+                                        tween(durationMillis = 500)
+                                    },
+                                )
+                                .fillMaxWidth()
+                                .height(400.dp)
+                                .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
+                            contentScale = ContentScale.Crop,
                         )
-                        .fillMaxWidth()
-                        .height(400.dp)
-                        .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)),
-                    contentScale = ContentScale.Crop,
-                )
-            }
+                    }
 
-            item {
-                when {
-                    animeState.isLoading -> ShimmerEffectDetailColumn()
+                    item {
+                        when {
+                            animeState.isLoading -> ShimmerEffectDetailColumn()
 
-                    animeState.errorMessage != null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = "Error: ${animeState.errorMessage}")
+                            animeState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(text = "Error: ${animeState.errorMessage}")
+                                }
+                            }
+
+                            animeState.animeDataDetail != null -> {
+                                val animeDataAttributes = animeData.attributes
+                                val title = animeDataAttributes?.titles?.en
+                                    ?: animeDataAttributes?.canonicalTitle
+                                val details = animeDataAttributes?.synopsis
+                                    ?: animeDataAttributes?.description
+
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Spacer(modifier = Modifier.height(10.dp))
+
+                                    DetailHeaderBar(
+                                        navigateUp = navigateUp,
+                                        titleDetail = title,
+                                        onBookmarkClick = {
+                                            viewModel.onEvent(
+                                                AnimeDetailsEvent.UpsertDeleteAnime(
+                                                    animeData.copy(
+                                                        localId = id.hashCode().toString(),
+                                                    ),
+                                                ),
+                                            )
+                                        },
+                                    )
+
+                                    Row {
+                                        Text(
+                                            text = animeDataAttributes?.startDate?.split("-")
+                                                ?.first()
+                                                ?: "-",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Medium,
+                                        )
+
+                                        Row(
+                                            horizontalArrangement = Arrangement.spacedBy(1.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Star,
+                                                contentDescription = null,
+                                            )
+
+                                            Text(
+                                                text = animeDataAttributes?.averageRating ?: "0.0",
+                                                style = MaterialTheme.typography.titleMedium,
+                                                fontWeight = FontWeight.Medium,
+                                            )
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(16.dp))
+
+                                    details?.let { synopsis ->
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(horizontal = 20.dp, vertical = 10.dp)
+                                                .fillMaxWidth(),
+                                            horizontalAlignment = Alignment.Start,
+                                        ) {
+                                            Text(
+                                                text = "Synopsis",
+                                                style = MaterialTheme.typography.titleLarge,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                            Text(text = synopsis)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    animeState.animeDataDetail != null -> {
-                        val animeDataAttributes = animeData.attributes
-                        val title = animeDataAttributes?.titles?.en ?: animeDataAttributes?.canonicalTitle
-                        val details = animeDataAttributes?.synopsis ?: animeDataAttributes?.description
+                    item {
+                        when {
+                            castingsState.isLoading -> ShimmerEffectCastings()
 
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Spacer(modifier = Modifier.height(10.dp))
+                            castingsState.errorMessage != null -> {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(text = "Error: ${castingsState.errorMessage}")
+                                }
+                            }
 
-                            DetailHeaderBar(
-                                navigateUp = navigateUp,
-                                titleDetail = title,
-                                onBookmarkClick = {
-                                    viewModel.onEvent(
-                                        AnimeDetailsEvent.UpsertDeleteAnime(
-                                            animeData.copy(localId = id.hashCode().toString()),
-                                        ),
-                                    )
-                                },
-                            )
-
-                            Row {
-                                Text(
-                                    text = animeDataAttributes?.startDate?.split("-")?.first()
-                                        ?: "-",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Medium,
-                                )
-
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(1.dp),
+                            castingsState.castingDataList != null -> {
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Star,
-                                        contentDescription = null,
-                                    )
-
-                                    Text(
-                                        text = animeDataAttributes?.averageRating ?: "0.0",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Medium,
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            details?.let { synopsis ->
-                                Column(
-                                    modifier = Modifier
-                                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                                        .fillMaxWidth(),
-                                    horizontalAlignment = Alignment.Start,
-                                ) {
-                                    Text(
-                                        text = "Synopsis",
-                                        style = MaterialTheme.typography.titleLarge,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                    Text(text = synopsis)
+                                    items(castingData) { cast ->
+                                        CharactersItem(
+                                            castingsData = cast,
+                                            onClick = {
+                                                navigator.navigateTo(
+                                                    pane = ListDetailPaneScaffoldRole.Detail,
+                                                    content = "${cast.attributes?.name}\n${cast.attributes?.description}",
+                                                )
+                                            },
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
+            },
+            detailPane = {
+                val content = navigator.currentDestination?.content
+                AnimatedPane {
+                    Column(
+                        modifier = Modifier
+                            .padding(
+                                start = 10.dp,
+                                end = 10.dp,
+                                top = innerPadding.calculateTopPadding(),
+                                bottom = innerPadding.calculateBottomPadding(),
+                            )
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.Start,
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(start = 10.dp)
+                                .clickableWithoutRipple { navigator.navigateBack() },
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
+                            contentDescription = "BackButton",
+                        )
 
-            item {
-                when {
-                    castingsState.isLoading -> ShimmerEffectCastings()
+                        content?.let { desc ->
 
-                    castingsState.errorMessage != null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = "Error: ${castingsState.errorMessage}")
-                        }
-                    }
+                            val splitContent = desc.toString().split("\n", limit = 2)
+                            val name = splitContent.first()
+                            val description = splitContent.last()
 
-                    castingsState.castingDataList != null -> {
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            items(castingData) { cast ->
-                                CharactersItem(
-                                    castingsData = cast,
-                                    onClick = {},
-                                )
-                            }
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                text = name,
+                            )
+
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 10.dp),
+                                text = description,
+                            )
                         }
                     }
                 }
-            }
-        }
+            },
+        )
     }
 }

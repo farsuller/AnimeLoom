@@ -44,7 +44,7 @@ android {
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
         versionCode = 25
-        versionName = "1.4.0"
+        versionName = "1.4.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -149,6 +149,7 @@ dependencies {
     implementation (libs.bundles.bundle.room)
     ksp (libs.androidx.room.compiler)
 
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
 
     //Paging 3
     implementation (libs.bundles.bundle.paging)

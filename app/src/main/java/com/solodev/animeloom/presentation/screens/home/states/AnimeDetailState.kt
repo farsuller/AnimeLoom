@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.screens.home.details
+package com.solodev.animeloom.presentation.screens.home.states
 
 import com.solodev.animeloom.domain.model.AnimeData
 
