@@ -44,7 +44,7 @@ android {
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
         versionCode = 26
-        versionName = "1.4.3"
+        versionName = "1.4.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -143,6 +143,8 @@ dependencies {
     //Hilt
     implementation(libs.androidx.hilt.compose.navigation)
     implementation(libs.hilt)
+
+    testImplementation(libs.junit.junit)
     ksp(libs.hilt.compiler)
 
     //Room
@@ -166,6 +168,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(libs.core.ktx)
+
     // Mockito for mocking
     testImplementation (libs.mockk)
     testImplementation (libs.mockk.mockk)
@@ -176,9 +180,6 @@ dependencies {
 
     // Turbine for Flow testing
     testImplementation (libs.turbine)
-
-    // ByteBuddy for mock creation
-    testImplementation (libs.byte.buddy)
 
     // Lifecycle and ViewModel testing
     testImplementation (libs.androidx.core.testing)

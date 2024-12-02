@@ -22,8 +22,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.solodev.animeloom.presentation.MainViewModel
-import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
-import com.solodev.animeloom.presentation.navgraph.component.bottomNavItems
+import com.solodev.animeloom.presentation.components.AnimesBottomNavigation
+import com.solodev.animeloom.presentation.components.bottomNavItems
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkScreen
 import com.solodev.animeloom.presentation.screens.bookmark.BookmarkViewModel
 import com.solodev.animeloom.presentation.screens.home.HomeAnimeViewModel
@@ -57,8 +57,8 @@ fun AnimesNavigator(
 
     val isBottomNavBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == Route.HomeRoute.route ||
-            backStackState?.destination?.route == Route.MangaRoute.route ||
-            backStackState?.destination?.route == Route.BookmarkRoute.route
+                backStackState?.destination?.route == Route.MangaRoute.route ||
+                backStackState?.destination?.route == Route.BookmarkRoute.route
     }
 
     val mainViewModel: MainViewModel = hiltViewModel()
@@ -227,12 +227,22 @@ fun AnimesNavigator(
                         isLoadingData = isLoadingBookmarkData,
                         onAnimeClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.AnimeDetailsRoute(animeId = id, coverImage = cover, localId = localId, isFromBookmarked = true),
+                                Route.AnimeDetailsRoute(
+                                    animeId = id,
+                                    coverImage = cover,
+                                    localId = localId,
+                                    isFromBookmarked = true
+                                ),
                             )
                         },
                         onMangaClick = { cover, id, localId ->
                             navController.navigate(
-                                Route.MangaDetailsRoute(mangaId = id, coverImage = cover, localId = localId, isFromBookmarked = true),
+                                Route.MangaDetailsRoute(
+                                    mangaId = id,
+                                    coverImage = cover,
+                                    localId = localId,
+                                    isFromBookmarked = true
+                                ),
                             )
                         },
                         animatedVisibilityScope = this,

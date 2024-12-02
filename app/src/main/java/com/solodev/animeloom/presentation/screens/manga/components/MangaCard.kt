@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.solodev.animeloom.domain.model.MangaData
-import com.solodev.animeloom.presentation.common.AnimeCardShimmerEffect
+import com.solodev.animeloom.presentation.components.AnimeCardShimmerEffect
 import com.solodev.animeloom.utils.Constants
 import com.solodev.animeloom.utils.toDp
 

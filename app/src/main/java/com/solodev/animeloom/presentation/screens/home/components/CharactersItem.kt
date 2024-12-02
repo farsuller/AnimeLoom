@@ -39,7 +39,7 @@ import com.solodev.animeloom.domain.model.Dimensions
 import com.solodev.animeloom.domain.model.Meta
 import com.solodev.animeloom.domain.model.PosterImage
 import com.solodev.animeloom.domain.model.Size
-import com.solodev.animeloom.presentation.common.AnimeCardShimmerEffect
+import com.solodev.animeloom.presentation.components.AnimeCardShimmerEffect
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.utils.AnimesPreviews
 import com.solodev.animeloom.utils.Constants

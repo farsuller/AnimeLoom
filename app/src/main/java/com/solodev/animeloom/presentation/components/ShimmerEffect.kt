@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.common
+package com.solodev.animeloom.presentation.components
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat

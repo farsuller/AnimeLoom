@@ -22,9 +22,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.solodev.animeloom.presentation.common.EmptyBookmarked
-import com.solodev.animeloom.presentation.common.HeaderBar
-import com.solodev.animeloom.presentation.common.HeaderTitle
+import com.solodev.animeloom.presentation.components.EmptyBookmarked
+import com.solodev.animeloom.presentation.components.HeaderBar
+import com.solodev.animeloom.presentation.components.HeaderTitle
 import com.solodev.animeloom.presentation.navgraph.Route
 import com.solodev.animeloom.presentation.screens.bookmark.components.BookmarkedAnimeCard
 import com.solodev.animeloom.presentation.screens.bookmark.components.BookmarkedMangaCard

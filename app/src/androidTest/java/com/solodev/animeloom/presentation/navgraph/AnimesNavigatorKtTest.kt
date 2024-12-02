@@ -7,8 +7,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.solodev.animeloom.presentation.navgraph.component.AnimesBottomNavigation
-import com.solodev.animeloom.presentation.navgraph.component.BottomNavigationItem
+import com.solodev.animeloom.presentation.components.AnimesBottomNavigation
+import com.solodev.animeloom.presentation.components.BottomNavigationItem
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

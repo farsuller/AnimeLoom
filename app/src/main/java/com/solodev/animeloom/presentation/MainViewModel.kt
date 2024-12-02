@@ -27,7 +27,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val appEntryUseCases: AppEntryUseCases,
     private val routeManager: RouteManager,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     var splashCondition by mutableStateOf(true)
@@ -36,12 +35,11 @@ class MainViewModel @Inject constructor(
     var startDestination by mutableStateOf(Route.AppStartNavigation.route)
         private set
 
-
     init {
         checkAppEntry()
     }
 
-    private fun checkAppEntry() {
+    fun checkAppEntry() {
         appEntryUseCases.readAppEntry().onEach { startHomeScreen ->
             startDestination = if (startHomeScreen) Route.AnimesNavigation.route else Route.AppStartNavigation.route
 

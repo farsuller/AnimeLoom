@@ -1,7 +1,6 @@
 [versions]
 agp = "8.7.2"
-byteBuddy = "1.14.8"
-byteBuddyVersion = "1.14.8"
+
 coreTesting = "2.2.0"
 
 firebaseBom = "33.6.0"
@@ -30,7 +29,7 @@ devtoolKsp = "2.0.20-1.0.25"
 hilt = "2.50"
 hiltComposeNavigation = "1.2.0"
 
-mockitoKotlin = "4.1.0"
+mockitoKotlin = "5.3.1"
 mockkVersion = "1.13.7"
 retrofit = "2.11.0"
 loggingInterceptor = "5.0.0-alpha.3"
@@ -69,16 +68,19 @@ spotless = "6.19.0"
 appUpdate = "2.1.0"
 
 material3-adaptive = "1.0.0"
+junitJunit = "4.13.2"
+coreKtxVersion = "1.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
@@ -142,12 +144,12 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
-byte-buddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddyVersion" }
-
 app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdate" }
 
 androidx-compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
+junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -47,4 +47,7 @@ sealed class Route(val route: String) {
 
     @Serializable
     data object AnimesNavigation : Route(route = "animesNav")
+
+    @Serializable
+    data object LoomNavigation : Route(route = "loomNav")
 }

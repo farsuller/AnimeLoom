@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.navgraph.component
+package com.solodev.animeloom.presentation.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark

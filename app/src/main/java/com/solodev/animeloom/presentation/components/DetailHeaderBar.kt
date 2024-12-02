@@ -1,4 +1,4 @@
-package com.solodev.animeloom.presentation.common
+package com.solodev.animeloom.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

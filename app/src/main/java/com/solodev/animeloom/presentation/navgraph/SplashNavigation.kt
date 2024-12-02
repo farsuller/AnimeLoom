@@ -22,7 +22,7 @@ fun SplashNavigation(
         composable(Route.SplashRoute.route) {
             LoomSplashScreen(
                 onNavigateToMain = {
-                    navHostController.navigate("main") {
+                    navHostController.navigate(Route.LoomNavigation.route) {
                         popUpTo(Route.SplashRoute.route) { inclusive = true }
                     }
                 },
@@ -30,7 +30,7 @@ fun SplashNavigation(
             )
         }
 
-        composable("main") {
+        composable(Route.LoomNavigation.route) {
             MainNavigation(
                 startDestination = viewModel.startDestination,
                 onNavigate = { route -> viewModel.saveRoute(route) },
