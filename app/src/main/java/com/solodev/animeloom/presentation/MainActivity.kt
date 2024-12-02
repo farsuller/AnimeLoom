@@ -16,12 +16,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.solodev.animeloom.presentation.screens.splash.AnimeLoomSplashScreen
+import com.solodev.animeloom.presentation.navgraph.SplashNavigation
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,22 +47,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                viewModel.splashCondition
+                viewModel.splashCondition || isUpdateAvailable.value
             }
         }
         setContent {
             AnimeLoomTheme(
                 dynamicColor = false,
             ) {
-                val navController = rememberNavController()
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    AnimeLoomSplashScreen(
+                    SplashNavigation(
                         viewModel = viewModel,
-                        navHostController = navController,
                         isUpdateAvailable = isUpdateAvailable,
                     )
                 }
@@ -86,9 +82,7 @@ class MainActivity : ComponentActivity() {
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                 )
                 isUpdateAvailable.value = true
-            } else {
-                isUpdateAvailable.value = false
-            }
+            } else isUpdateAvailable.value = false
         }
     }
 }

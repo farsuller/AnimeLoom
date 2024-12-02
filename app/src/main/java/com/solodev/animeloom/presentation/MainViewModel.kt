@@ -36,27 +36,9 @@ class MainViewModel @Inject constructor(
     var startDestination by mutableStateOf(Route.AppStartNavigation.route)
         private set
 
-    private val _appUpdateInfo = MutableStateFlow<AppUpdateInfo?>(null)
-    val appUpdateInfo: StateFlow<AppUpdateInfo?> = _appUpdateInfo
 
     init {
-        viewModelScope.launch {
-            checkAppUpdate()
-            delay(500)
-            checkAppEntry()
-        }
-    }
-    private fun checkAppUpdate() {
-        val appUpdateManager = AppUpdateManagerFactory.create(context)
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                _appUpdateInfo.value = appUpdateInfo
-            }
-        }
+        checkAppEntry()
     }
 
     private fun checkAppEntry() {

@@ -2,21 +2,22 @@ package com.solodev.animeloom.presentation.navgraph
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.solodev.animeloom.presentation.screens.onboarding.OnboardingScreen
 import com.solodev.animeloom.presentation.screens.onboarding.OnboardingViewModel
 
 @Composable
 fun MainNavigation(
-    navController: NavHostController,
     startDestination: String,
     onNavigate: (String) -> Unit,
 ) {
+    val navHostController = rememberNavController()
+
     NavHost(
-        navController = navController,
+        navController = navHostController,
         startDestination = startDestination,
     ) {
         navigation(
