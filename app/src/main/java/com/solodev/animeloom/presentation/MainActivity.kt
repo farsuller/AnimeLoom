@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
                     "Update Failed! Result Code:${result.resultCode}",
                     Toast.LENGTH_SHORT,
                 ).show()
+                isUpdateAvailable.value = false
             }
         }
 
@@ -66,6 +68,18 @@ class MainActivity : ComponentActivity() {
             }
         }
         checkAppUpdate()
+
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (isUpdateAvailable.value) {
+                        isUpdateAvailable.value = false
+                    }
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            },
+        )
     }
 
     private fun checkAppUpdate() {
