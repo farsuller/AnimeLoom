@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import com.solodev.animeloom.theme.onSecondaryDark
 import com.solodev.animeloom.utils.AnimesPreviews
@@ -24,13 +25,17 @@ fun PagerIndicator(
     selectedColor: Color = Color.White,
     unselectedColor: Color = onSecondaryDark,
 ) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        modifier = modifier.testTag("PagerIndicator"),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         repeat(times = pagesSize) { page ->
             Box(
                 modifier = Modifier
                     .size(IndicatorSize)
                     .clip(CircleShape)
-                    .background(color = if (page == selectedPage) selectedColor else unselectedColor),
+                    .background(color = if (page == selectedPage) selectedColor else unselectedColor)
+                    .testTag(if (page == selectedPage) "Indicator_Selected" else "Indicator_Unselected_$page"),
             )
         }
     }
