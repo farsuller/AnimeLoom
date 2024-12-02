@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     "Update Failed! Result Code:${result.resultCode}",
                     Toast.LENGTH_SHORT,
                 ).show()
-                isUpdateAvailable.value = false
+                isUpdateAvailable.value = true
             }
         }
 
@@ -73,9 +73,7 @@ class MainActivity : ComponentActivity() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (isUpdateAvailable.value) {
-                        isUpdateAvailable.value = false
-                    }
+                    isUpdateAvailable.value = true
                     onBackPressedDispatcher.onBackPressed()
                 }
             },

@@ -1,10 +1,8 @@
 package com.solodev.animeloom.presentation.onboarding
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -13,7 +11,6 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.solodev.animeloom.presentation.screens.onboarding.OnboardingEvent
 import com.solodev.animeloom.presentation.screens.onboarding.OnboardingScreen
-import com.solodev.animeloom.theme.onSecondaryDark
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +24,7 @@ class OnboardingScreenTest {
     private val pageTitles = listOf(
         "Get the Latest",
         "Discover and Read",
-        "Animes & Manga "
+        "Animes & Manga ",
     )
 
     @Test
@@ -122,7 +119,6 @@ class OnboardingScreenTest {
                 eventInvoked = event
             }
         }
-
 
         // Navigate and validate each page
         pageTitles.forEachIndexed { index, title ->

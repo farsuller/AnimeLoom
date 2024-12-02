@@ -27,7 +27,7 @@ fun PagerIndicator(
 ) {
     Row(
         modifier = modifier.testTag("PagerIndicator"),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         repeat(times = pagesSize) { page ->
             Box(
