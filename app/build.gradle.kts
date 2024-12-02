@@ -43,8 +43,8 @@ android {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 25
-        versionName = "1.4.1"
+        versionCode = 26
+        versionName = "1.4.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

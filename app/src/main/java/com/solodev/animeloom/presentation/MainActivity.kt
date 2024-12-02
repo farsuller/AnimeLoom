@@ -13,17 +13,15 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.solodev.animeloom.presentation.navgraph.MainNavigation
+import com.solodev.animeloom.presentation.screens.splash.AnimeLoomSplashScreen
 import com.solodev.animeloom.theme.AnimeLoomTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
+
+    private val isUpdateAvailable = mutableStateOf(false)
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
@@ -61,29 +61,34 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val appUpdateInfo by viewModel.appUpdateInfo.collectAsState()
-                    appUpdateInfo?.let { startAppUpdate(it) }
-
-                    MainNavigation(
-                        navController = navController,
-                        startDestination = viewModel.startDestination,
-                        onNavigate = { route -> viewModel.saveRoute(route) },
+                    AnimeLoomSplashScreen(
+                        viewModel = viewModel,
+                        navHostController = navController,
+                        isUpdateAvailable = isUpdateAvailable,
                     )
                 }
             }
         }
+        checkAppUpdate()
     }
 
-    private fun startAppUpdate(appUpdateInfo: AppUpdateInfo) {
+    private fun checkAppUpdate() {
         val appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
-        if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-        ) {
-            appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                activityResultLauncher,
-                AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
-            )
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    activityResultLauncher,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
+                )
+                isUpdateAvailable.value = true
+            } else {
+                isUpdateAvailable.value = false
+            }
         }
     }
 }
