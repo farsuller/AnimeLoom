@@ -12,7 +12,7 @@ object ProjectConfig {
 
     const val MAJOR_VERSION = 1
     const val MINOR_VERSION = 4
-    const val PATCH_VERSION = 9
+    const val PATCH_VERSION = 10
 
     const val GENERATE_LOCAL_ARCHIVE = false
 }

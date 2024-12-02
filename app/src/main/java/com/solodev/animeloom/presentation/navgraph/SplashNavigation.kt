@@ -30,8 +30,10 @@ fun SplashNavigation(
         }
 
         composable(Route.LoomNavigation.route) {
+            val startDestination = if (isUpdateAvailable) Route.SplashRoute.route else viewModel.startDestination
+
             MainNavigation(
-                startDestination = viewModel.startDestination,
+                startDestination = startDestination,
                 onNavigate = { route -> viewModel.saveRoute(route) },
             )
         }

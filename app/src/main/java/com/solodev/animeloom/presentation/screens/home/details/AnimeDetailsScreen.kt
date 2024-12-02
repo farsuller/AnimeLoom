@@ -267,7 +267,7 @@ fun SharedTransitionScope.AnimeDetailsScreen(
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = 10.dp),
+                                    .padding(start = 10.dp, top = 10.dp),
                                 style = MaterialTheme.typography.titleLarge,
                                 fontWeight = FontWeight.Bold,
                                 text = name,

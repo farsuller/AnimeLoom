@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                viewModel.splashCondition || isUpdateAvailable
+                isUpdateAvailable
             }
         }
         setContent {
