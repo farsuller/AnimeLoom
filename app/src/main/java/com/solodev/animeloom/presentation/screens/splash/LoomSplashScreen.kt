@@ -23,8 +23,8 @@ fun LoomSplashScreen(
     isUpdateAvailable: MutableState<Boolean>,
 ) {
     LaunchedEffect(Unit) {
+        delay(2000)
         if (!isUpdateAvailable.value) {
-            delay(2000)
             onNavigateToMain()
         }
     }
