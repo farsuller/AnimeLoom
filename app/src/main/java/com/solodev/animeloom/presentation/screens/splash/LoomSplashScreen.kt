@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,11 +21,9 @@ fun LoomSplashScreen(
     onNavigateToMain: () -> Unit,
     isUpdateAvailable: Boolean,
 ) {
-    LaunchedEffect(Unit) {
+    LaunchedEffect(!isUpdateAvailable) {
         delay(2000)
-        if (!isUpdateAvailable) {
-            onNavigateToMain()
-        }
+        if (!isUpdateAvailable) onNavigateToMain()
     }
 
     Column(
