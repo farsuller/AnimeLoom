@@ -14,7 +14,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -30,7 +29,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private val isUpdateAvailable = mutableStateOf(false)
+    private var isUpdateAvailable = false
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result: ActivityResult ->
@@ -40,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     "Update Failed! Result Code:${result.resultCode}",
                     Toast.LENGTH_SHORT,
                 ).show()
-                isUpdateAvailable.value = true
+                isUpdateAvailable = true
             }
         }
 
@@ -49,7 +48,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                viewModel.splashCondition || isUpdateAvailable.value
+                viewModel.splashCondition || isUpdateAvailable
             }
         }
         setContent {
@@ -73,7 +72,7 @@ class MainActivity : ComponentActivity() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    isUpdateAvailable.value = true
+                    isUpdateAvailable = true
                     onBackPressedDispatcher.onBackPressed()
                 }
             },
@@ -93,8 +92,8 @@ class MainActivity : ComponentActivity() {
                     activityResultLauncher,
                     AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                 )
-                isUpdateAvailable.value = true
-            } else isUpdateAvailable.value = false
+                isUpdateAvailable = true
+            } else isUpdateAvailable = false
         }
     }
 }

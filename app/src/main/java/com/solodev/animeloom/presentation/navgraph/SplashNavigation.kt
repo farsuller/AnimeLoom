@@ -11,7 +11,7 @@ import com.solodev.animeloom.presentation.screens.splash.LoomSplashScreen
 @Composable
 fun SplashNavigation(
     viewModel: MainViewModel,
-    isUpdateAvailable: MutableState<Boolean>,
+    isUpdateAvailable: Boolean,
 ) {
     val navHostController = rememberNavController()
 

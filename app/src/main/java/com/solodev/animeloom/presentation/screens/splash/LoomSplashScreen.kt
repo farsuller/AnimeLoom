@@ -20,11 +20,11 @@ import kotlinx.coroutines.delay
 @Composable
 fun LoomSplashScreen(
     onNavigateToMain: () -> Unit,
-    isUpdateAvailable: MutableState<Boolean>,
+    isUpdateAvailable: Boolean,
 ) {
     LaunchedEffect(Unit) {
         delay(2000)
-        if (!isUpdateAvailable.value) {
+        if (!isUpdateAvailable) {
             onNavigateToMain()
         }
     }
