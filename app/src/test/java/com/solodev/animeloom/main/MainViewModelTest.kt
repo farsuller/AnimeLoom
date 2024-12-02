@@ -1,4 +1,5 @@
 package com.solodev.animeloom.main
+
 import com.solodev.animeloom.data.manager.RouteManager
 import com.solodev.animeloom.domain.usecase.AppEntryUseCases
 import com.solodev.animeloom.presentation.MainViewModel
@@ -8,14 +9,18 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MainViewModelTest{
+class MainViewModelTest {
 
     private val appEntryUseCases: AppEntryUseCases = mockk()
     private lateinit var viewModel: MainViewModel

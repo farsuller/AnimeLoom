@@ -57,8 +57,8 @@ fun AnimesNavigator(
 
     val isBottomNavBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == Route.HomeRoute.route ||
-                backStackState?.destination?.route == Route.MangaRoute.route ||
-                backStackState?.destination?.route == Route.BookmarkRoute.route
+            backStackState?.destination?.route == Route.MangaRoute.route ||
+            backStackState?.destination?.route == Route.BookmarkRoute.route
     }
 
     val mainViewModel: MainViewModel = hiltViewModel()
@@ -231,7 +231,7 @@ fun AnimesNavigator(
                                     animeId = id,
                                     coverImage = cover,
                                     localId = localId,
-                                    isFromBookmarked = true
+                                    isFromBookmarked = true,
                                 ),
                             )
                         },
@@ -241,7 +241,7 @@ fun AnimesNavigator(
                                     mangaId = id,
                                     coverImage = cover,
                                     localId = localId,
-                                    isFromBookmarked = true
+                                    isFromBookmarked = true,
                                 ),
                             )
                         },
