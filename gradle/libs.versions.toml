@@ -1,20 +1,19 @@
 [versions]
-agp = "8.7.2"
-
+agp = "8.7.3"
+kotlin = "2.1.0"
 coreTesting = "2.2.0"
 
-firebaseBom = "33.6.0"
+firebaseBom = "33.7.0"
 gson = "2.11.0"
-kotlin = "2.0.20"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
 activityCompose = "1.9.3"
-composeBom = "2024.11.00"
+composeBom = "2024.12.01"
 
-composeNavigation = "2.8.4"
+composeNavigation = "2.8.5"
 
 kotlinxCoroutinesTest = "1.9.0"
 kotlinxCoroutinesTestVersion = "1.9.0"
@@ -23,10 +22,10 @@ lifecycleViewmodelCompose = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 lifecycleLivedataKtx = "2.8.7"
 
-material-icons-extended = "1.7.5"
+material-icons-extended = "1.7.6"
 
-devtoolKsp = "2.0.20-1.0.25"
-hilt = "2.50"
+devtoolKsp = "2.1.0-1.0.29"
+hilt = "2.51.1"
 hiltComposeNavigation = "1.2.0"
 
 mockitoKotlin = "5.3.1"
@@ -42,20 +41,20 @@ roomRuntime = "2.6.1"
 coil = "3.0.2"
 coilNetworkOkhttp = "3.0.2"
 
-pagingCompose = "3.3.4"
-pagingRuntime = "3.3.4"
+pagingCompose = "3.3.5"
+pagingRuntime = "3.3.5"
 
-googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
-runtimeLivedata = "1.7.5"
+secretsGradlePlugin = "2.0.1"
+runtimeLivedata = "1.7.6"
 
-material = "1.7.5"
+material = "1.7.6"
 
 datastorePreferences = "1.1.1"
 
 splash = "1.0.1"
 
-kotlinSerialization = "2.0.0"
-kotlinxSerializationJson = "1.7.1"
+kotlinSerialization = "2.1.0"
+kotlinxSerializationJson = "1.7.3"
 
 mockk = "5.7.0"
 turbine = "1.0.0"
@@ -158,10 +157,12 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 devtool-ksp = { id = "com.google.devtools.ksp", version.ref = "devtoolKsp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
-google-android-libraries-mapsplatform-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "googleAndroidLibrariesMapsplatformSecretsGradlePlugin" }
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics"}
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+kotlin-parcelize = { id = "kotlin-parcelize"}
+
 
 [bundles]
 bundle-app-updates = ["app-update","app-update-ktx"]

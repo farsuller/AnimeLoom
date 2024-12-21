@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.devtool.ksp) apply false
     alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
+    alias(libs.plugins.secrets.gradle.plugin) apply false
     alias(libs.plugins.gms.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.spotless) apply false

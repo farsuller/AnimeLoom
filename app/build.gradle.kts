@@ -6,12 +6,12 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.devtool.ksp)
     alias(libs.plugins.kotlin.serialization)
     alias (libs.plugins.gms.google.services)
     alias (libs.plugins.firebase.crashlytics)
-    id("kotlin-parcelize")
+    alias (libs.plugins.kotlin.parcelize)
 }
 
 val keystoreProperties: Properties by lazy {
@@ -43,8 +43,8 @@ android {
         applicationId = ProjectConfig.APPLICATION_ID
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
-        versionCode = 27
-        versionName = "1.4.10"
+        versionCode = 28
+        versionName = "1.4.11"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -143,8 +143,6 @@ dependencies {
     //Hilt
     implementation(libs.androidx.hilt.compose.navigation)
     implementation(libs.hilt)
-
-    testImplementation(libs.junit.junit)
     ksp(libs.hilt.compiler)
 
     //Room
@@ -169,6 +167,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.core.ktx)
+
+    testImplementation(libs.junit.junit)
 
     // Mockito for mocking
     testImplementation (libs.mockk)
